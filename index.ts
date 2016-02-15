@@ -3,6 +3,7 @@ export * from "./src/colorUtils";
 export * from "./src/styles";
 export * from "./src/paper";
 export * from "./src/button";
-import * as f from "./src/fonts";
+export * from "./src/divider";
+export * from "./src/fonts";
+export * from "./src/normalize";
 
-f.loadFonts();

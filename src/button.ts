@@ -5,6 +5,7 @@ import * as styles from "./styles";
 import * as colors from "./colors";
 
 export const enum Feature {
+    /** ButtonType.Floating does not have Default style so Primary is used instead */
     Default,
     Primary,
     Secondary
@@ -13,7 +14,7 @@ export const enum Feature {
 export const enum ButtonType {
     Flat,
     Raised,
-    Circle
+    Floating
 }
 
 export interface IButtonData {
@@ -23,6 +24,7 @@ export interface IButtonData {
     disabled?: boolean;
     feature?: Feature;
     tabindex?: number;
+    icon?: (data: { color: string }) => b.IBobrilNode;
 }
 
 interface IButtonCtx extends b.IBobrilCtx {
@@ -108,6 +110,29 @@ let raisedButtonStyles = [
     })
 ];
 
+let floatingStyle = b.styleDef({
+    display: "inline-block",
+    width: 56,
+    height: 56,
+    borderRadius: "50%"
+});
+
+let floatingButtonStyles = [
+    null, // no default
+    b.styleDef({ // Primary
+        backgroundColor: () => styles.accent1Color,
+        color: () => styles.alternateTextColor
+    }),
+    b.styleDef({ // Secondary
+        backgroundColor: styles.primary1Color,
+        color: () => styles.alternateTextColor
+    }),
+    b.styleDef({ // Disabled
+        backgroundColor: () => styles.borderColor,
+        color: () => styles.alternateTextColor
+    })
+];
+
 export const Button = b.createComponent<IButtonData>({
     init(ctx: IButtonCtx) {
         ctx.focusFromKeyboard = false;
@@ -126,17 +151,21 @@ export const Button = b.createComponent<IButtonData>({
     render(ctx: IButtonCtx, me: b.IBobrilNode) {
         let d = ctx.data;
         let showHover = (ctx.hover || ctx.focusFromKeyboard) && !d.disabled;
+        let type = d.type || ButtonType.Flat;
+        let trueChildren = d.children;
+        if (type === ButtonType.Floating) {
+            trueChildren = b.styledDiv(d.icon({ color: styles.alternateTextColor }), { padding: 8 });
+        }
         me.children = ripple.Ripple({
-            pulse: ctx.focusFromKeyboard && !d.disabled,
+            pulse: (type < ButtonType.Floating) && ctx.focusFromKeyboard && !d.disabled,
             pointerDown: ctx.pointerDown,
             disabled: d.disabled,
             style: [{ padding: 8, backgroundColor: showHover ? (ctx.focusFromKeyboard ? styles.keyboardFocusColor : styles.hoverColor) : undefined }]
-        }, ctx.data.children);
+        }, trueChildren);
         b.style(me, paper.paperStyle);
         b.style(me, d.disabled ? disabledStyle : enabledStyle);
         let featD = <FeatureWithDisabled><number>(d.feature || Feature.Default);
         if (d.disabled) featD = FeatureWithDisabled.Disabled;
-        let type = d.type || ButtonType.Flat;
         switch (type) {
             case ButtonType.Flat:
                 b.style(me, flatStyle, paper.roundStyle, flatButtonStyles[featD]);
@@ -145,6 +174,15 @@ export const Button = b.createComponent<IButtonData>({
                 b.style(me, raisedStyle, paper.roundStyle, raisedButtonStyles[featD]);
                 if (!d.disabled) {
                     let zOrder = 1;
+                    if (ctx.down !== ctx.focusFromKeyboard) zOrder++;
+                    b.style(me, styles.zDepthShadows[zOrder - 1]);
+                }
+                break;
+            case ButtonType.Floating:
+                if (featD === FeatureWithDisabled.Default) featD = FeatureWithDisabled.Primary;
+                b.style(me, floatingStyle, floatingButtonStyles[featD]);
+                if (!d.disabled) {
+                    let zOrder = 2;
                     if (ctx.down !== ctx.focusFromKeyboard) zOrder++;
                     b.style(me, styles.zDepthShadows[zOrder - 1]);
                 }
