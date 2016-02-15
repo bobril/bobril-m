@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "module": "commonjs",
+        "moduleResolution": "node"
+    },
+    "compileOnSave": false,
+    "files": [
+        "example.ts",
+        "index.ts",
+        "src/button.ts",
+        "src/colorUtils.ts",
+        "src/colors.ts",
+        "src/fonts.ts",
+        "src/paper.ts",
+        "src/ripple.ts",
+        "src/styles.ts",
+        "src/transitions.ts"
+    ]
+}
