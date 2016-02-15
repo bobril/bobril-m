@@ -22,6 +22,7 @@ export interface IButtonData {
     type?: ButtonType;
     disabled?: boolean;
     feature?: Feature;
+    tabindex?: number;
 }
 
 interface IButtonCtx extends b.IBobrilCtx {
@@ -149,7 +150,7 @@ export const Button = b.createComponent<IButtonData>({
                 }
                 break;
         }
-        me.attrs = { role: "button", "aria-disabled": d.disabled ? "true" : "false", tabindex: d.disabled ? undefined : 0 };
+        me.attrs = { role: "button", "aria-disabled": d.disabled ? "true" : "false", tabindex: d.disabled ? undefined : (d.tabindex || 0) };
     },
     onPointerUp(ctx: IButtonCtx): boolean {
         ctx.down = false;
