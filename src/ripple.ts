@@ -7,6 +7,7 @@ export interface IRippleData {
     pointerDown?: () => void;
     style?: b.IBobrilStyles;
     pulse?: boolean;
+    disabled?: boolean;
 }
 
 interface IRippleCtx extends b.IBobrilCtx {
@@ -109,6 +110,7 @@ export const Ripple = b.createComponent<IRippleData>({
         ctx.height = r.height;
     },
     onPointerDown(ctx: IRippleCtx, ev: b.IBobrilPointerEvent): boolean {
+        if (ctx.data.disabled) return true;
         let pos = nodePagePos(ctx.me);
         ctx.ripples.push(ev.x - pos[0], ev.y - pos[1], b.now());
         let cb = ctx.data.pointerDown;

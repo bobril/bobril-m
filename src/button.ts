@@ -128,6 +128,7 @@ export const Button = b.createComponent<IButtonData>({
         me.children = ripple.Ripple({
             pulse: ctx.focusFromKeyboard && !d.disabled,
             pointerDown: ctx.pointerDown,
+            disabled: d.disabled,
             style: [{ padding: 8, backgroundColor: showHover ? (ctx.focusFromKeyboard ? styles.keyboardFocusColor : styles.hoverColor) : undefined }]
         }, ctx.data.children);
         b.style(me, paper.paperStyle);
