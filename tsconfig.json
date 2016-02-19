@@ -17,6 +17,7 @@
         "src/normalize.ts",
         "src/paper.ts",
         "src/ripple.ts",
+        "src/styleConsts.ts",
         "src/styles.ts",
         "src/transitions.ts"
     ]
