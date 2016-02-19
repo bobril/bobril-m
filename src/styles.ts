@@ -9,6 +9,7 @@ export let accent1Color = Colors.pinkA200;
 export let accent2Color = Colors.grey100;
 export let accent3Color = Colors.grey500;
 export let textColor = withTransparency(Colors.black, 0.87);
+export let checkboxOffColor = withTransparency(Colors.black, 0.54);
 export let alternateTextColor = Colors.white;
 export let canvasColor = Colors.white;
 export let borderColor = Colors.grey300;

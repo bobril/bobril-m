@@ -6,4 +6,5 @@ export * from "./src/button";
 export * from "./src/divider";
 export * from "./src/fonts";
 export * from "./src/normalize";
+export * from "./src/checkbox";
 

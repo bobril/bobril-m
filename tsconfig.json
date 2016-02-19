@@ -9,6 +9,7 @@
         "example.ts",
         "index.ts",
         "src/button.ts",
+        "src/checkbox.ts",
         "src/colorUtils.ts",
         "src/colors.ts",
         "src/divider.ts",
