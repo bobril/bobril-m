@@ -104,6 +104,22 @@ let checkDisabled = b.styleDef([c.positionAbsolute, {
     fill: styles.disabledColor
 }]);
 
+let wrapStyle = b.styleDef([paper.paperStyle, {
+    padding: 4, width: "100%"
+}]);
+
+let textStyle = b.styleDef({
+    display: "inline-block",
+    marginLeft: 8,
+    verticalAlign: "top",
+    marginTop: 4
+});
+
+let disabledTextStyle = b.styleDef({
+    color: styles.disabledColor,
+    fontWeight: 500
+});
+
 export const Checkbox = b.createComponent<ICheckboxData>({
     init(ctx: ICheckboxCtx) {
         ctx.focusFromKeyboard = false;
@@ -157,13 +173,18 @@ export const Checkbox = b.createComponent<ICheckboxData>({
             ro = 0.2;
         }
         b.style(me, disabled ? disabledStyle : enabledStyle);
-        b.style(me, rootSwitchStyle);
-        me.children = [
+        let checkDiv = d.children != null ? { tag: "div" } : me;
+        b.style(checkDiv, rootSwitchStyle);
+        checkDiv.children = [
             rr != 0 && b.withKey(b.styledDiv("", showFocus ? focusFromKeyStyle : rippleStyle, { left: 12 - rr, top: 12 - rr, width: 2 * rr, height: 2 * rr, opacity: ro, background: checked ? styles.primary1Color : styles.checkboxOffColor }), "r"),
             b.styledDiv(ics.off({ color: "inherit" }), disabled ? ((checked || indeterminate) ? hiddenStyle : checkDisabled) : (checked ? boxWhenSwitchedStyle : boxStyle)),
             indeterminate != null && b.withKey(b.styledDiv(ics.indeterminate({ color: "inherit" }), disabled ? (indeterminate ? checkDisabled : hiddenStyle) : (indeterminate ? checkWhenSwitchedStyle : checkStyle)), "i"),
             b.styledDiv(ics.on({ color: "inherit" }), disabled ? (checked ? checkDisabled : hiddenStyle) : (checked ? checkWhenSwitchedStyle : checkStyle))
         ];
+        if (checkDiv !== me) {
+            me.children = [checkDiv, b.styledDiv(d.children, textStyle, disabled && disabledTextStyle)];
+            b.style(me, wrapStyle);
+        }
         me.attrs = {
             role: ctx.radio ? "radio" : "checkbox",
             "aria-checked": indeterminate ? "mixed" : checked ? "true" : "false",

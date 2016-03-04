@@ -146,6 +146,7 @@ export const RadioButtonGroup = b.createComponent<IRadioButtonGroupData>({
                     if (i != shouldBeFocused) {
                         b.focus(list[shouldBeFocused].me);
                     }
+                    ctx.forceFocus = false;
                     return;
                 }
             }
@@ -153,5 +154,6 @@ export const RadioButtonGroup = b.createComponent<IRadioButtonGroupData>({
         if (ctx.forceFocus) {
             b.focus(ctx.list[shouldBeFocused].me);
         }
+        ctx.forceFocus = false;
     }
 });
