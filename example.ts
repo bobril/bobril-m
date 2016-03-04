@@ -59,10 +59,10 @@ b.init(() => {
             m.Checkbox({ checked: ch3 == 1, indeterminate: ch3 == 2, disabled: true }, "Disabled three state")
         ]),
         m.Paper({ style: { margin: 16, padding: 8 } }, [
-            m.RadioButtonGroup({ value: rb1, unselectedValue: -1, onChange: (v) => { rb1 = v; b.invalidate(); } }, [
+            m.RadioButtonGroup({ value: rb1, unselectedValue: -1, onChange: (v) => { rb1 = <number>v; b.invalidate(); } }, [
                 m.RadioButton({ value: 0 }, "Option A"),
                 m.RadioButton({ value: 1 }, "Option B"),
-                m.RadioButton({ value: 2 }, "Option C")
+                m.RadioButton({ value: 2 }, "Option C"),
                 m.RadioButton({ value: 3, disabled: true }, "Disabled Option")
             ])
         ])

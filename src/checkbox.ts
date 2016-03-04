@@ -173,7 +173,7 @@ export const Checkbox = b.createComponent<ICheckboxData>({
             ro = 0.2;
         }
         b.style(me, disabled ? disabledStyle : enabledStyle);
-        let checkDiv = d.children != null ? { tag: "div" } : me;
+        let checkDiv: b.IBobrilNode = d.children != null ? { tag: "div" } : me;
         b.style(checkDiv, rootSwitchStyle);
         checkDiv.children = [
             rr != 0 && b.withKey(b.styledDiv("", showFocus ? focusFromKeyStyle : rippleStyle, { left: 12 - rr, top: 12 - rr, width: 2 * rr, height: 2 * rr, opacity: ro, background: checked ? styles.primary1Color : styles.checkboxOffColor }), "r"),
