@@ -11,6 +11,7 @@ export type CheckBoxLikeIcons = {
     off(data: { color: string }): b.IBobrilNode;
     on(data: { color: string }): b.IBobrilNode;
     indeterminate?(data: { color: string }): b.IBobrilNode;
+    radioButtonLike?: boolean;
 };
 
 export interface ICheckboxData {
@@ -32,17 +33,13 @@ interface ICheckboxCtx extends b.IBobrilCtx {
     switched: boolean;
     rippleStart: number;
     rippleReq: boolean;
+    radio: boolean;
 }
 
 let checkBoxIcons: CheckBoxLikeIcons = {
     off: icons.toggleCheckBoxOutlineBlank,
     on: icons.toggleCheckBox,
     indeterminate: icons.toggleIndeterminateCheckBox
-};
-
-let radioButtonIcons: CheckBoxLikeIcons = {
-    off: icons.toggleRadioButtonUnchecked,
-    on: icons.toggleRadioButtonChecked
 };
 
 let enabledStyle = b.styleDef({
@@ -117,6 +114,7 @@ export const Checkbox = b.createComponent<ICheckboxData>({
     render(ctx: ICheckboxCtx, me: b.IBobrilNode) {
         let d = ctx.data;
         let ics = d.icons || checkBoxIcons;
+        ctx.radio = !!ics.radioButtonLike;
         let disabled = d.disabled;
         let checked = d.checked;
         let indeterminate = d.indeterminate;
@@ -166,7 +164,13 @@ export const Checkbox = b.createComponent<ICheckboxData>({
             indeterminate != null && b.withKey(b.styledDiv(ics.indeterminate({ color: "inherit" }), disabled ? (indeterminate ? checkDisabled : hiddenStyle) : (indeterminate ? checkWhenSwitchedStyle : checkStyle)), "i"),
             b.styledDiv(ics.on({ color: "inherit" }), disabled ? (checked ? checkDisabled : hiddenStyle) : (checked ? checkWhenSwitchedStyle : checkStyle))
         ];
-        me.attrs = { role: "checkbox", "aria-checked": indeterminate ? "mixed" : checked ? "true" : "false", "aria-disabled": disabled ? "true" : "false", tabindex: disabled ? undefined : (d.tabindex || 0) };
+        me.attrs = {
+            role: ctx.radio ? "radio" : "checkbox",
+            "aria-checked": indeterminate ? "mixed" : checked ? "true" : "false",
+            "aria-disabled": disabled ? "true" : "false"
+        };
+        if (!(disabled || ctx.radio && d.tabindex == null))
+            me.attrs.tabindex = d.tabindex || 0;
     },
     onPointerDown(ctx: ICheckboxCtx): boolean {
         if (ctx.data.disabled) return;
@@ -222,8 +226,3 @@ export const Checkbox = b.createComponent<ICheckboxData>({
         b.invalidate(ctx);
     }
 });
-
-export const RadioButton = (data: ICheckboxData, children?: b.IBobrilChildren) => {
-    data.icons = radioButtonIcons;
-    return Checkbox(data, children);
-};

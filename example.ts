@@ -46,10 +46,16 @@ b.init(() => {
             m.Checkbox({ checked: ch1, action: ()=>{ ch1=!ch1; b.invalidate(); } }),
             m.Checkbox({ checked: ch1, disabled: true }),
             m.Checkbox({ checked: ch3==1, indeterminate: ch3==2, action: ()=>{ ch3=(ch3+1)%3; b.invalidate(); } }),
-            m.Checkbox({ checked: ch3==1, indeterminate: ch3==2, disabled: true }),
-            m.RadioButton({ checked: rb1==0, action: ()=>{ rb1=0; b.invalidate(); }}),
-            m.RadioButton({ checked: rb1==1, action: ()=>{ rb1=1; b.invalidate(); }}),
-            m.RadioButton({ checked: rb1==2, action: ()=>{ rb1=2; b.invalidate(); }}),
+            m.Checkbox({ checked: ch3==1, indeterminate: ch3==2, disabled: true })
+        ]},
+        spacer,
+        { tag: "div", children: [
+            spacer,
+            m.RadioButtonGroup({ value: rb1, unselectedValue:-1, onChange: (v)=>{ rb1=v; b.invalidate(); } },[
+                m.RadioButton({ value: 0}),
+                m.RadioButton({ value: 1}),
+                m.RadioButton({ value: 2})
+            ])
         ]}
     ];
 });
