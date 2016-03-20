@@ -14,6 +14,7 @@ export let alternateTextColor = Colors.white;
 export let canvasColor = Colors.white;
 export let borderColor = Colors.grey300;
 export let disabledColor = withTransparency(Colors.black, 0.3);
+export let sliderColor = withTransparency(Colors.black, 0.54);
 export let alternateDisabledColor = Colors.grey50;
 export let pickerHeaderColor = Colors.cyan500;
 export let clockCircleColor = withTransparency(Colors.black, 0.07);

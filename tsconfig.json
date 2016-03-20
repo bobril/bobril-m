@@ -21,6 +21,7 @@
         "src/paper.ts",
         "src/radiobutton.ts",
         "src/ripple.ts",
+        "src/slider.ts",
         "src/styleConsts.ts",
         "src/styles.ts",
         "src/transitions.ts"

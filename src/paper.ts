@@ -17,7 +17,6 @@ interface IPaperCtx extends b.IBobrilCtx {
 
 export let paperStyle = b.styleDef({
     backgroundColor: () => styles.canvasColor,
-    transition: transitions.easeOut(),
     boxSizing: 'border-box',
     fontFamily: () => styles.fontFamily,
     tapHighlightColor: colors.transparent
