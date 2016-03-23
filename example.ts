@@ -10,15 +10,15 @@ let examplePaper = b.styleDef({ width: 100, height: 100, margin: 16, padding: 34
 let ch1 = false;
 let ch3 = 0;
 let rb1 = 0;
-let slider1 = 0;
-let slider2 = 10;
+let slider1 = b.propi(0);
+let slider2 = b.propi(10);
 
 b.init(() => {
     return [
         m.Paper({ zDepth: 1, style: { margin: 16, padding: 8 } }, [
-            m.Slider({ value: slider1, onChange: (v) => { slider1 = v; b.invalidate(); } }),
+            m.Slider({ value: slider1 }),
             m.Slider({ value: slider1, disabled: true }),
-            m.Slider({ value: slider2, min: 5, max: 15, step: 1, onChange: (v) => { slider2 = v; b.invalidate(); } }),
+            m.Slider({ value: slider2, min: 5, max: 15, step: 1}),
             m.Slider({ value: slider2, min: 5, max: 15, step: 1, disabled: true }),
         ]),
         m.Paper({ zDepth: 0, style: { margin: 16, padding: 8 } }, [
