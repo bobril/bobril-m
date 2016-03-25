@@ -9,7 +9,7 @@ let spacer = { tag: "span", style: { display: "inline-block", width: 8, height: 
 let examplePaper = b.styleDef({ width: 100, height: 100, margin: 16, padding: 34, textAlign: "center", display: "inline-block" });
 let ch1 = false;
 let ch3 = 0;
-let rb1 = 0;
+let rb1 = b.propi(0);
 let slider1 = b.propi(0);
 let slider2 = b.propi(10);
 
@@ -67,7 +67,7 @@ b.init(() => {
             m.Checkbox({ checked: ch3 == 1, indeterminate: ch3 == 2, disabled: true }, "Disabled three state")
         ]),
         m.Paper({ style: { margin: 16, padding: 8 } }, [
-            m.RadioButtonGroup({ value: rb1, unselectedValue: -1, onChange: (v) => { rb1 = <number>v; b.invalidate(); } }, [
+            m.RadioButtonGroup({ value: rb1, unselectedValue: -1 }, [
                 m.RadioButton({ value: 0 }, "Option A"),
                 m.RadioButton({ value: 1 }, "Option B"),
                 m.RadioButton({ value: 2 }, "Option C"),

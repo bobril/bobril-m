@@ -4,10 +4,7 @@ import * as styles from "./styles";
 import * as colors from "./colors";
 import * as c from "./styleConsts";
 
-export interface ISliderData {
-    children?: b.IBobrilChildren;
-    value: number | b.IProp<number>;
-    onChange?: (value: number) => void;
+export interface ISliderData extends b.IValueData<number> {
     min?: number;
     max?: number;
     step?: number;
@@ -28,22 +25,6 @@ interface ISliderCtx extends b.IBobrilCtx {
     radius: number;
     radiush: number;
     pointerId: number;
-}
-
-function getValue(value: number | b.IProp<number>): number {
-    if (typeof value==="function") {
-        return value();
-    }
-    return <number>value;
-}
-
-function emitChange(data: ISliderData, value: number) {
-    if (typeof data.value === "function") {
-        (<b.IProp<number>>data.value)(value);
-    }
-    if (data.onChange !== undefined) {
-        data.onChange(value);
-    }
 }
 
 const rootStyle = b.styleDef([c.userSelectNone, {
@@ -106,7 +87,7 @@ function setByPos(ctx: ISliderCtx, x: number) {
     if (step != null)
         pos = Math.round(pos / step) * step;
     pos += min;
-    emitChange(d,pos);
+    b.emitChange(d, pos);
 };
 
 export const Slider = b.createComponent<ISliderData>({
@@ -122,7 +103,7 @@ export const Slider = b.createComponent<ISliderData>({
     render(ctx: ISliderCtx, me: b.IBobrilNode) {
         let d = ctx.data;
         let width = ctx.width;
-        let value = getValue(d.value);
+        let value = b.getValue(d.value);
         let min = d.min || 0;
         let max = d.max;
         if (max == null) max = 1;
@@ -130,7 +111,7 @@ export const Slider = b.createComponent<ISliderData>({
             max = min + 1;
             if (value != min) {
                 value = min;
-                emitChange(d,value);
+                b.emitChange(d, value);
             }
         }
         let step = d.step;
@@ -216,7 +197,7 @@ export const Slider = b.createComponent<ISliderData>({
         } else return false;
         if (event.shift) delta *= 10;
         let d = ctx.data;
-        let value = getValue(d.value);
+        let value = b.getValue(d.value);
         let min = d.min || 0;
         let max = d.max;
         if (max == null) max = 1;
@@ -228,16 +209,16 @@ export const Slider = b.createComponent<ISliderData>({
         value += delta * step;
         if (value > max) value = max;
         if (value < min) value = min;
-        if (d.onChange)
-            d.onChange(value);
+        b.emitChange(d, value);
         return true;
     },
     onPointerDown(ctx: ISliderCtx, event: b.IBobrilPointerEvent): boolean {
-        if (ctx.data.disabled) return false;
+        let d = ctx.data;
+        if (d.disabled) return false;
         let np = b.nodePagePos(ctx.me);
         if (!ctx.down && Math.pow(event.x - np[0] - ctx.pos, 2) + Math.pow(event.y - np[1] - 24, 2) < 24 * 24) {
             ctx.down = true;
-            ctx.revertValue = getValue(ctx.data.value);
+            ctx.revertValue = b.getValue(d.value);
             ctx.pointerId = event.id;
             b.invalidate(ctx);
             b.registerMouseOwner(ctx);
@@ -267,8 +248,8 @@ export const Slider = b.createComponent<ISliderData>({
         if (ctx.down && ctx.pointerId == event.id) {
             ctx.down = false;
             b.invalidate(ctx);
-            if (ctx.data.value != ctx.revertValue && ctx.data.onChange) {
-                ctx.data.onChange(ctx.revertValue);
+            if (ctx.data.value != ctx.revertValue) {
+                b.emitChange(ctx.data, ctx.revertValue);
             }
             b.releaseMouseOwner();
         }

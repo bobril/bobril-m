@@ -25,7 +25,7 @@ export const RadioButton = b.createVirtualComponent<IRadioButtonData>({
     init(ctx: IRadioButtonCtx) {
         ctx.action = () => {
             ctx.group.forceFocus = true;
-            ctx.group.data.onChange(ctx.data.value);
+            b.emitChange(ctx.group.data, ctx.data.value);
         }
     },
     render(ctx: IRadioButtonCtx, me: b.IBobrilNode) {
@@ -44,7 +44,7 @@ export const RadioButton = b.createVirtualComponent<IRadioButtonData>({
         }
         ctx.idx = idx;
         let checked = false;
-        if (group.data.value === data.value) {
+        if (b.getValue(group.data.value) === data.value) {
             if (group.selIdx !== -2) throw new Error("Duplicate value in RadioButton");
             group.selIdx = idx;
             checked = true;
@@ -92,11 +92,9 @@ export const RadioButton = b.createVirtualComponent<IRadioButtonData>({
 
 });
 
-export interface IRadioButtonGroupData {
+export interface IRadioButtonGroupData extends b.IValueData<number | string> {
     children?: b.IBobrilChildren;
-    value?: number | string;
     unselectedValue?: number | string;
-    onChange?: (value: number | string) => void;
     tabindex?: number;
     style?: b.IBobrilStyle;
 }
@@ -115,19 +113,20 @@ export const RadioButtonGroup = b.createComponent<IRadioButtonGroupData>({
         ctx.forceFocus = false;
     },
     render(ctx: IRadioButtonGroupCtx, me: b.IBobrilNode) {
+        let d = ctx.data;
         me.attrs = { role: "radiogroup" };
-        me.children = ctx.data.children;
-        b.style(me, ctx.data.style);
+        me.children = d.children;
+        b.style(me, d.style);
         ctx.list = [];
         let cfg = ctx.cfg || {};
         cfg[radioButtonCfgName] = ctx;
         ctx.cfg = cfg;
-        ctx.selIdx = (ctx.data.value === ctx.data.unselectedValue) ? -1 : -2;
+        ctx.selIdx = (b.getValue(d.value) === d.unselectedValue) ? -1 : -2;
         ctx.firstEnabled = -1;
     },
     postRender(ctx: IRadioButtonGroupCtx, me: b.IBobrilCacheNode) {
         if (ctx.selIdx === -2) {
-            ctx.data.onChange(ctx.data.unselectedValue);
+            b.emitChange(ctx.data, ctx.data.unselectedValue);
         }
     },
     postUpdateDom(ctx: IRadioButtonGroupCtx) {
