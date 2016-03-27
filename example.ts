@@ -12,10 +12,14 @@ let ch3 = 0;
 let rb1 = b.propi(0);
 let slider1 = b.propi(0);
 let slider2 = b.propi(10);
+let str1 = b.propi("");
 
 b.init(() => {
     return [
         m.Paper({ zDepth: 1, style: { margin: 16, padding: 8 } }, [
+            m.EnhancedTextarea({ value: str1, disabled: true, rows:5 })
+        ]),
+        m.Paper({ zDepth: 0, style: { margin: 16, padding: 8 } }, [
             m.Slider({ value: slider1 }),
             m.Slider({ value: slider1, disabled: true }),
             m.Slider({ value: slider2, min: 5, max: 15, step: 1}),

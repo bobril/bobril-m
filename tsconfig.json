@@ -16,6 +16,7 @@
         "src/colorUtils.ts",
         "src/colors.ts",
         "src/divider.ts",
+        "src/enhancedTextArea.ts",
         "src/fonts.ts",
         "src/normalize.ts",
         "src/paper.ts",
