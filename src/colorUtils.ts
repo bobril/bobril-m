@@ -33,3 +33,9 @@ export function withTransparency(color: string, alpha: number) {
     c[3]*=alpha;
     return toString(c); 
 }
+
+export function setTransparency(color: string, alpha: number) {
+    let c = toRgba(color);
+    c[3]=alpha;
+    return toString(c); 
+}

@@ -13,10 +13,17 @@ var textAreaStyle = b.styleDef({
     width: '100%',
     resize: 'none',
     font: 'inherit',
-    padding: 0
-});
+    color: 'inherit',
+    backgroundColor: colors.transparent,
+    padding: 0,
+    border: 0
+}, {
+        focus: {
+            outline: 0
+        }
+    });
 
-var textAreaShadowStyle = b.styleDef({
+var textAreaShadowStyle = b.styleDef([c.positionAbsolute, {
     width: '100%',
     resize: 'none',
     // Overflow also needed to here to remove the extra row
@@ -26,8 +33,8 @@ var textAreaShadowStyle = b.styleDef({
     visibility: 'hidden',
     font: 'inherit',
     padding: 0,
-    position: 'absolute'
-});
+    border: 0
+}]);
 
 export interface IEnhancedTextAreaData extends b.IValueData<string> {
     disabled?: boolean;
@@ -36,6 +43,7 @@ export interface IEnhancedTextAreaData extends b.IValueData<string> {
     rowsMax?: number;
     tabindex?: number;
     style?: b.IBobrilStyles;
+    id?: string;
 }
 
 interface IEnhancedTextAreaCtx extends b.IBobrilCtx {
@@ -45,15 +53,14 @@ interface IEnhancedTextAreaCtx extends b.IBobrilCtx {
 
 function syncShadow(ctx: IEnhancedTextAreaCtx, newValue?: string) {
     const shadowEl = <HTMLTextAreaElement>(<b.IBobrilCacheNode[]>ctx.me.children)[0].element;
-
+    const d = ctx.data;
     if (newValue !== undefined) {
         shadowEl.value = newValue;
     }
 
     let newHeight = shadowEl.scrollHeight;
-
-    if (ctx.data.rowsMax >= ctx.data.rows || 1) {
-        newHeight = Math.min(ctx.data.rowsMax * rowsHeight, newHeight);
+    if (d.rowsMax != null && d.rowsMax >= (ctx.data.rows || 1)) {
+        newHeight = Math.min(d.rowsMax * rowsHeight, newHeight);
     }
 
     newHeight = Math.max(newHeight, rowsHeight);
@@ -93,7 +100,7 @@ export const EnhancedTextarea = b.createComponent<IEnhancedTextAreaData>({
             b.style({ tag: "textarea", attrs: { readOnly: true, tabIndex: "-1", rows: rowStr } }, textAreaShadowStyle),
             b.style({
                 tag: "textarea",
-                attrs: { readOnly: d.disabled, tabindex: d.tabindex || 0, value: b.getValue(d.value), rows: rowStr },
+                attrs: { disabled: d.disabled, tabindex: d.disabled ? -1 : (d.tabindex || 0), value: b.getValue(d.value), rows: rowStr, id: d.id },
                 component: realTextAreaComponent
             }, textAreaStyle, { height: ctx.height })
         ];

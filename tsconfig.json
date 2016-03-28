@@ -25,6 +25,11 @@
         "src/slider.ts",
         "src/styleConsts.ts",
         "src/styles.ts",
-        "src/transitions.ts"
+        "src/textField.ts",
+        "src/textFieldHint.ts",
+        "src/textFieldLabel.ts",
+        "src/textFieldUnderline.ts",
+        "src/transitions.ts",
+        "src/uniqueId.ts"
     ]
 }

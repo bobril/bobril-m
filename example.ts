@@ -13,16 +13,26 @@ let rb1 = b.propi(0);
 let slider1 = b.propi(0);
 let slider2 = b.propi(10);
 let str1 = b.propi("");
+let str2 = b.propi("");
+let str3 = b.propi("");
+let str4 = b.propi("");
+let str5 = b.propi("");
 
 b.init(() => {
     return [
-        m.Paper({ zDepth: 1, style: { margin: 16, padding: 8 } }, [
-            m.EnhancedTextarea({ value: str1, disabled: true, rows:5 })
+        m.Paper({ zDepth: 0, style: { margin: 16, padding: 8 } }, [
+            m.TextField({ value: str1, labelText: "First Name" }),
+            m.TextField({ value: str2, labelText: "Last Name", errorText: str2() == "" ? "This field is required" : null }),
+            m.TextField({ value: str5, labelText: "Password", inputType: "password" }),
+            m.TextField({ value: str3, hintText: "Hint text and no label" }),
+            m.TextField({ value: str3, labelText: "Disabled with label", disabled: true }),
+            m.TextField({ value: str4, rows: 2, rowsMax: 4, hintText: "Multiline 2-4 rows, Hint text and no label" }),
+            m.TextField({ value: str4, rows: 2, rowsMax: 4, labelText: "Multiline 2-4 rows, Disabled with label", disabled: true }),
         ]),
         m.Paper({ zDepth: 0, style: { margin: 16, padding: 8 } }, [
             m.Slider({ value: slider1 }),
             m.Slider({ value: slider1, disabled: true }),
-            m.Slider({ value: slider2, min: 5, max: 15, step: 1}),
+            m.Slider({ value: slider2, min: 5, max: 15, step: 1 }),
             m.Slider({ value: slider2, min: 5, max: 15, step: 1, disabled: true }),
         ]),
         m.Paper({ zDepth: 0, style: { margin: 16, padding: 8 } }, [

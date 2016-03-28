@@ -21,6 +21,7 @@ export let clockCircleColor = withTransparency(Colors.black, 0.07);
 export let shadowColor = Colors.black;
 export let hoverColor = withTransparency("#999", 0.3);
 export let keyboardFocusColor = withTransparency("#777", 0.3);
+export let errorColor = Colors.red500;
 
 export let fontFamily = 'Roboto, sans-serif';
 
