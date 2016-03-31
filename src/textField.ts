@@ -66,7 +66,10 @@ const inputStyle = b.styleDef([c.positionRelative, {
     backgroundColor: colors.transparent,
     color: () => styles.textColor,
     font: 'inherit'
-}]);
+}], { "-webkit-autofill": { 
+    // workaround for Chrome bug
+    boxShadow: "0 0 0 99px white inset" 
+} });
 
 const inputDisabledStyle = b.styleDefEx(inputStyle, {
     color: () => styles.disabledColor

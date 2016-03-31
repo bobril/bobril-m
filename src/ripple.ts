@@ -18,14 +18,6 @@ interface IRippleCtx extends b.IBobrilCtx {
     ripples: number[]; // tripples x,y,start time
 }
 
-function nodePagePos(node: b.IBobrilCacheNode): [number, number] {
-    let rect = (<Element>b.getDomNode(node)).getBoundingClientRect();
-    let res = b.getWindowScroll();
-    res[0] += rect.left;
-    res[1] += rect.top;
-    return res;
-}
-
 const oneRippleStyle = b.styleDef({
     position: "absolute",
     borderRadius: "50%",
@@ -111,8 +103,8 @@ export const Ripple = b.createComponent<IRippleData>({
     },
     onPointerDown(ctx: IRippleCtx, ev: b.IBobrilPointerEvent): boolean {
         if (ctx.data.disabled) return true;
-        let pos = nodePagePos(ctx.me);
-        ctx.ripples.push(ev.x - pos[0], ev.y - pos[1], b.now());
+        let r = (<Element>ctx.me.element).getBoundingClientRect();
+        ctx.ripples.push(ev.x - r.left, ev.y - r.top, b.now());
         let cb = ctx.data.pointerDown;
         if (cb) cb();
         b.invalidate(ctx);
