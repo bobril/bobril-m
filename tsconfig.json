@@ -11,6 +11,7 @@
         "example.ts",
         "index.ts",
         "node_modules/bobril/jsx.d.ts",
+        "src/badge.ts",
         "src/button.ts",
         "src/checkbox.ts",
         "src/colorUtils.ts",

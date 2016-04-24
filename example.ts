@@ -1,6 +1,7 @@
 import * as b from "bobril";
 import * as m from "./index";
 import * as icons from "bobril-m-icons";
+import "bobril-flex-ie10";
 
 m.initNormalize();
 m.initRobotoFonts();
@@ -20,6 +21,11 @@ let str5 = b.propi("");
 
 b.init(() => {
     return [
+        m.Paper({ zDepth: 0, style: { margin: 16, padding: 8 } }, [
+            m.Badge({ badgeContent: "0" }, "Normal Badge"),
+            m.Badge({ badgeContent: "1", primary:true }, "Primary"),
+            m.Badge({ badgeContent: "99+", secondary:true }, "Secondary")
+        ]),
         m.Paper({ zDepth: 0, style: { margin: 16, padding: 8 } }, [
             m.TextField({ value: str1, labelText: "First Name" }),
             m.TextField({ value: str2, labelText: "Last Name", errorText: str2() == "" ? "This field is required" : null }),

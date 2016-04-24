@@ -1,8 +1,9 @@
 {
   "name": "bobril-m",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "dependencies": {
     "bobril": "^4.34.2",
+    "bobril-flex-ie10": "^0.1.0",
     "bobril-m-icons": "^1.0.0",
     "webfontloader": "^1.6.21"
   },
