@@ -22,9 +22,13 @@ let str5 = b.propi("");
 b.init(() => {
     return [
         m.Paper({ zDepth: 0, style: { margin: 16, padding: 8 } }, [
+            m.Toggle({ checked: ch1, action: () => { ch1 = !ch1; b.invalidate() } }),
+            m.Toggle({ checked: ch1, disabled: true }),
+        ]),
+        m.Paper({ zDepth: 0, style: { margin: 16, padding: 8 } }, [
             m.Badge({ badgeContent: "0" }, "Normal Badge"),
-            m.Badge({ badgeContent: "1", primary:true }, "Primary"),
-            m.Badge({ badgeContent: "99+", secondary:true }, "Secondary")
+            m.Badge({ badgeContent: "1", primary: true }, "Primary"),
+            m.Badge({ badgeContent: "99+", secondary: true }, "Secondary")
         ]),
         m.Paper({ zDepth: 0, style: { margin: 16, padding: 8 } }, [
             m.TextField({ value: str1, labelText: "First Name" }),

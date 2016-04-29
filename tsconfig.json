@@ -30,6 +30,7 @@
         "src/textFieldHint.ts",
         "src/textFieldLabel.ts",
         "src/textFieldUnderline.ts",
+        "src/toggle.ts",
         "src/transitions.ts",
         "src/uniqueId.ts"
     ]
