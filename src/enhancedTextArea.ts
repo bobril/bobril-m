@@ -1,10 +1,6 @@
 import * as b from "bobril";
-import * as paper from "./paper";
-import * as ripple from "./ripple";
 import * as styles from "./styles";
 import * as colors from "./colors";
-import * as transitions from "./transitions";
-import * as icons from "bobril-m-icons";
 import * as c from "./styleConsts";
 
 const rowsHeight = 24;

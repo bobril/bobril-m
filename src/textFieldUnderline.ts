@@ -12,7 +12,7 @@ export interface ITextFieldUnderline {
 const rootStyle = b.styleDef([c.positionAbsolute, {
     border: 'none',
     borderBottom: 'solid 1px',
-    borderColor: () => styles.borderColor,
+    borderColor: styles.borderColor,
     bottom: 8,
     boxSizing: 'content-box',
     margin: 0,
@@ -21,18 +21,18 @@ const rootStyle = b.styleDef([c.positionAbsolute, {
 
 const disabledStyle = b.styleDef({
     borderBottom: 'dotted 2px',
-    borderColor: () => styles.disabledColor
+    borderColor: styles.disabledColor
 });
 
 const focusStyle = b.styleDef({
     borderBottom: 'solid 2px',
-    borderColor: () => styles.primary1Color,
+    borderColor: styles.primary1Color,
     transform: 'scaleX(0)',
     transition: transitions.easeOut()
 });
 
 const errorStyle = b.styleDef({
-    borderColor: () => styles.errorColor,
+    borderColor: styles.errorColor,
     transform: 'scaleX(1)'
 });
 

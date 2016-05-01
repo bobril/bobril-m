@@ -1,8 +1,7 @@
 import * as b from "bobril";
-import * as paper from "./paper";
 import * as styles from "./styles";
-import * as colors from "./colors";
 import * as c from "./styleConsts";
+import * as colors from "./colors";
 
 export interface ISliderData extends b.IValueData<number> {
     min?: number;
@@ -33,33 +32,33 @@ const rootStyle = b.styleDef([c.userSelectNone, {
 }], { focus: { outline: "none" } });
 
 const strokeDisabledStyle = b.styleDef({
-    fill: "transparent",
-    stroke: () => styles.disabledColor,
+    fill: colors.transparent,
+    stroke: styles.disabledColor,
     strokeWidth: 2
 });
 
 const strokeSliderStyle = b.styleDef({
-    fill: "transparent",
-    stroke: () => styles.sliderColor,
+    fill: colors.transparent,
+    stroke: styles.sliderColor,
     strokeWidth: 2
 });
 
 const strokeEnabledStyle = b.styleDef({
-    fill: "transparent",
-    stroke: () => styles.primary1Color,
+    fill: colors.transparent,
+    stroke: styles.primary1Color,
     strokeWidth: 2
 });
 
 const fillDisabledStyle = b.styleDef({
-    fill: () => styles.disabledColor
+    fill: styles.disabledColor
 });
 
 const fillSliderStyle = b.styleDef({
-    fill: () => styles.sliderColor
+    fill: styles.sliderColor
 });
 
 const fillEnabledStyle = b.styleDef({
-    fill: () => styles.primary1Color
+    fill: styles.primary1Color
 });
 
 const downRadius = 7;

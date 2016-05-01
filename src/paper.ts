@@ -17,9 +17,9 @@ interface IPaperCtx extends b.IBobrilCtx {
 }
 
 export let paperStyle = b.styleDef([c.noTapHighlight, {
-    backgroundColor: () => styles.canvasColor,
+    backgroundColor: styles.canvasColor,
     boxSizing: 'border-box',
-    fontFamily: () => styles.fontFamily,
+    fontFamily: styles.fontFamily,
 }]);
 
 export let circleStyle = b.styleDef(c.circle);

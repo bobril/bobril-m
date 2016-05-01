@@ -9,7 +9,7 @@ export interface ITextFieldHint {
 }
 
 const rootStyle = b.styleDef([c.positionAbsolute, {
-    color: () => styles.disabledColor,
+    color: styles.disabledColor,
     transition: transitions.easeOut(),
     opacity: 0,
     bottom: 12

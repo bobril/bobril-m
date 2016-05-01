@@ -43,7 +43,7 @@ const rootStyle = b.styleDef([c.positionRelative, {
     width: '100%',
     display: 'inline-block',
     backgroundColor: colors.transparent,
-    fontFamily: () => styles.fontFamily,
+    fontFamily: styles.fontFamily,
     transition: transitions.easeOut('200ms', 'height')
 }]);
 
@@ -52,7 +52,7 @@ const errorStyle = b.styleDef([c.positionRelative, {
     bottom: 2,
     fontSize: errorFontSize,
     lineHeight: '12px',
-    color: () => styles.errorColor,
+    color: styles.errorColor,
     transition: transitions.easeOut()
 }]);
 
@@ -61,7 +61,7 @@ const inputStyle = b.styleDef([c.positionRelative, c.widthHeight100p, c.noTapHig
     border: 'none',
     outline: 'none',
     backgroundColor: colors.transparent,
-    color: () => styles.textColor,
+    color: styles.textColor,
     font: 'inherit'
 }], { "-webkit-autofill": { 
     // workaround for Chrome bug
@@ -69,7 +69,7 @@ const inputStyle = b.styleDef([c.positionRelative, c.widthHeight100p, c.noTapHig
 } });
 
 const inputDisabledStyle = b.styleDefEx(inputStyle, {
-    color: () => styles.disabledColor
+    color: styles.disabledColor
 });
 
 const realInputComponent: b.IBobrilComponent = {
@@ -115,7 +115,7 @@ export const TextField = b.createComponent<ITextFieldData>({
     },
     render(ctx: ITextFieldCtx, me: b.IBobrilNode) {
         const d = ctx.data;
-        let floatingLabelColor = styles.disabledColor;
+        let floatingLabelColor = styles.strDisabledColor;
         let stylesError: b.IBobrilStyle[] = [errorStyle];
         const value = b.getValue(d.value);
         const hasValue = isValid(value);
@@ -123,7 +123,7 @@ export const TextField = b.createComponent<ITextFieldData>({
             floatingLabelColor = colorUtils.setTransparency(floatingLabelColor, 0.5);
         }
         if (ctx.focused) {
-            floatingLabelColor = styles.primary1Color;
+            floatingLabelColor = styles.strPrimary1Color;
         }
         let stylesInput: b.IBobrilStyle[] = [inputStyle, d.disabled && inputDisabledStyle];
         let height = ctx.inputHeight + 24;
@@ -140,7 +140,7 @@ export const TextField = b.createComponent<ITextFieldData>({
             }
         }
         if (d.errorText != null && ctx.focused) {
-            floatingLabelColor = styles.errorColor;
+            floatingLabelColor = styles.strErrorColor;
         }
         let errorTextElement = d.errorText != null ? b.style({ tag: "div", key: "error", children: d.errorText }, stylesError) : null;
         let floatingLabelTextElement = d.labelText != null ? b.withKey(TextFieldLabel({ htmlFor: ctx.id, children: d.labelText, disabled: d.disabled, shrink: hasValue || ctx.focused, color: floatingLabelColor }), "label") : null;

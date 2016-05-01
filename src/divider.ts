@@ -6,7 +6,7 @@ export interface IDividerData {
 }
 
 export let dividerStyle = b.styleDef({
-    backgroundColor: () => styles.borderColor,
+    backgroundColor: styles.borderColor,
     marginTop: -1,
     height: 1
 });

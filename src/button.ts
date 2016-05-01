@@ -3,6 +3,7 @@ import * as paper from "./paper";
 import * as ripple from "./ripple";
 import * as styles from "./styles";
 import * as colors from "./colors";
+import * as c from "./styleConsts";
 
 export const enum Feature {
     /** ButtonType.Floating does not have Default style so Primary is used instead */
@@ -35,17 +36,15 @@ interface IButtonCtx extends b.IBobrilCtx {
     hover: boolean;
 }
 
-let enabledStyle = b.styleDef({
-    userSelect: "none",
+let enabledStyle = b.styleDef([c.userSelectNone, {
     overflow: "hidden",
     cursor: "pointer"
-}, { focus: { outline: "none" } });
+}], { focus: { outline: "none" } });
 
-let disabledStyle = b.styleDef({
-    userSelect: "none",
+let disabledStyle = b.styleDef([c.userSelectNone, {
     overflow: "hidden",
     cursor: "default"
-});
+}]);
 
 const enum FeatureWithDisabled {
     Default,
@@ -66,19 +65,19 @@ let flatStyle = b.styleDef({
 let flatButtonStyles = [
     b.styleDef({ // Default
         backgroundColor: colors.transparent,
-        color: () => styles.textColor
+        color: styles.textColor
     }),
     b.styleDef({ // Primary
         backgroundColor: colors.transparent,
-        color: () => styles.accent1Color
+        color: styles.accent1Color
     }),
     b.styleDef({ // Secondary
         backgroundColor: colors.transparent,
-        color: () => styles.primary1Color
+        color: styles.primary1Color
     }),
     b.styleDef({ // Disabled
         backgroundColor: colors.transparent,
-        color: () => styles.disabledColor
+        color: styles.disabledColor
     })
 ];
 
@@ -93,43 +92,42 @@ let raisedStyle = b.styleDef({
 
 let raisedButtonStyles = [
     b.styleDef({ // Default
-        backgroundColor: () => styles.alternateTextColor,
-        color: () => styles.textColor
+        backgroundColor: styles.alternateTextColor,
+        color: styles.textColor
     }),
     b.styleDef({ // Primary
-        backgroundColor: () => styles.accent1Color,
-        color: () => styles.alternateTextColor
+        backgroundColor: styles.accent1Color,
+        color: styles.alternateTextColor
     }),
     b.styleDef({ // Secondary
         backgroundColor: styles.primary1Color,
-        color: () => styles.alternateTextColor
+        color: styles.alternateTextColor
     }),
     b.styleDef({ // Disabled
-        backgroundColor: () => styles.alternateDisabledColor,
-        color: () => styles.disabledColor
+        backgroundColor: styles.alternateDisabledColor,
+        color: styles.disabledColor
     })
 ];
 
-let floatingStyle = b.styleDef({
+let floatingStyle = b.styleDef([c.circle, {
     display: "inline-block",
     width: 56,
     height: 56,
-    borderRadius: "50%"
-});
+}]);
 
 let floatingButtonStyles = [
     null, // no default
     b.styleDef({ // Primary
-        backgroundColor: () => styles.accent1Color,
-        color: () => styles.alternateTextColor
+        backgroundColor: styles.accent1Color,
+        color: styles.alternateTextColor
     }),
     b.styleDef({ // Secondary
         backgroundColor: styles.primary1Color,
-        color: () => styles.alternateTextColor
+        color: styles.alternateTextColor
     }),
     b.styleDef({ // Disabled
-        backgroundColor: () => styles.borderColor,
-        color: () => styles.alternateTextColor
+        backgroundColor: styles.borderColor,
+        color: styles.alternateTextColor
     })
 ];
 
@@ -154,7 +152,7 @@ export const Button = b.createComponent<IButtonData>({
         let type = d.type || ButtonType.Flat;
         let trueChildren = d.children;
         if (type === ButtonType.Floating) {
-            trueChildren = b.styledDiv(d.icon({ color: styles.alternateTextColor }), { padding: 8 });
+            trueChildren = b.styledDiv(d.icon({ color: styles.strAlternateTextColor }), { padding: 8 });
         }
         me.children = ripple.Ripple({
             pulse: (type < ButtonType.Floating) && ctx.focusFromKeyboard && !d.disabled,

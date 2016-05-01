@@ -45,7 +45,7 @@ let trackStyle = b.styleDef([c.positionAbsolute, c.noTapHighlight, {
     width: toggleTrackWidth + 14,
     height: 14,
     borderRadius: 30,
-    backgroundColor: () => styles.primary3Color,
+    backgroundColor: styles.primary3Color,
 }]);
 
 let thumbStyle = b.styleDef([c.positionAbsolute, c.noTapHighlight, styles.zDepthShadows[0], c.circle, {
@@ -55,7 +55,7 @@ let thumbStyle = b.styleDef([c.positionAbsolute, c.noTapHighlight, styles.zDepth
     width: toggleSize,
     height: toggleSize,
     lineHeight: '24px',
-    backgroundColor: () => styles.accent2Color,
+    backgroundColor: styles.accent2Color,
 }]);
 
 let rippleStyle = b.styleDef([c.positionAbsolute, c.noTapHighlight, c.circle, {
@@ -63,20 +63,20 @@ let rippleStyle = b.styleDef([c.positionAbsolute, c.noTapHighlight, c.circle, {
 }]);
 
 let trackToggledStyle = b.styleDefEx(trackStyle, {
-    backgroundColor: () => colorUtils.withTransparency(styles.primary1Color, 0.5)
+    backgroundColor: () => colorUtils.withTransparency(styles.strPrimary1Color, 0.5)
 });
 
 let thumbToggledStyle = b.styleDefEx(thumbStyle, {
-    backgroundColor: () => styles.primary1Color,
+    backgroundColor: styles.primary1Color,
     left: toggleTrackWidth,
 });
 
 let trackDisabledStyle = b.styleDefEx(trackStyle, {
-    backgroundColor: () => styles.primary3Color
+    backgroundColor: styles.primary3Color
 });
 
 let thumbDisabledStyle = b.styleDefEx(thumbStyle, {
-    backgroundColor: () => styles.borderColor,
+    backgroundColor: styles.borderColor,
 });
 
 export const Toggle = b.createComponent<IToggleData>({

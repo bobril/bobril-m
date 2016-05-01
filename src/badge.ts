@@ -24,7 +24,7 @@ const rootStyle = b.styleDef([c.positionRelative, {
   padding: [radius2x + 'px', radius2x + 'px', radius + 'px', radius + 'px'].join(' '),
 }]);
 
-const badgeStyle = b.styleDef([ c.positionAbsolute, c.circle, {
+const badgeStyle = b.styleDef([c.positionAbsolute, c.circle, {
   display: 'flex',
   flexDirection: 'row',
   flexWrap: 'wrap',
@@ -37,18 +37,18 @@ const badgeStyle = b.styleDef([ c.positionAbsolute, c.circle, {
   fontSize: radius,
   width: radius2x,
   height: radius2x,
-  backgroundColor: () => styles.alternateTextColor,
-  color: () => styles.textColor,
+  backgroundColor: styles.alternateTextColor,
+  color: styles.textColor,
 }]);
 
 const primaryStyle = b.styleDefEx(badgeStyle, {
-  backgroundColor: () => styles.accent1Color,
-  color: () => styles.alternateTextColor
+  backgroundColor: styles.accent1Color,
+  color: styles.alternateTextColor
 });
 
 const secondaryStyle = b.styleDefEx(badgeStyle, {
-  backgroundColor: () => styles.primary1Color,
-  color: () => styles.alternateTextColor
+  backgroundColor: styles.primary1Color,
+  color: styles.alternateTextColor
 });
 
 export const Badge = b.createComponent<IBadgeData>({
@@ -56,8 +56,8 @@ export const Badge = b.createComponent<IBadgeData>({
     const d = ctx.data;
     b.style(me, rootStyle);
     me.children = [
-       d.children,
-       b.styledDiv(d.badgeContent,badgeStyle,d.primary&&primaryStyle,d.secondary&&secondaryStyle)
+      d.children,
+      b.styledDiv(d.badgeContent, badgeStyle, d.primary && primaryStyle, d.secondary && secondaryStyle)
     ];
   }
 });
