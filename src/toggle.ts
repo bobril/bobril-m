@@ -18,6 +18,7 @@ interface IToggleCtx extends b.IBobrilCtx {
     data: IToggleData;
     focusFromKeyboard: boolean;
     down: boolean;
+    rippleStart: number;
 }
 
 let enabledStyle = b.styleDef({
@@ -33,21 +34,21 @@ const toggleTrackWidth = 20;
 
 let rootStyle = b.styleDef([c.userSelectNone, c.positionRelative, {
     display: "inline-block",
-    width: toggleTrackWidth+toggleSize,
+    width: toggleTrackWidth + toggleSize,
     height: 24
 }]);
 
-let trackStyle = b.styleDef([c.positionAbsolute, {
+let trackStyle = b.styleDef([c.positionAbsolute, c.noTapHighlight, {
     transition: transitions.easeOut(),
-    left: toggleSize*0.5-7,
+    left: toggleSize * 0.5 - 7,
     top: 5,
-    width: toggleTrackWidth+14,
+    width: toggleTrackWidth + 14,
     height: 14,
     borderRadius: 30,
-    backgroundColor: ()=>styles.primary3Color,
+    backgroundColor: () => styles.primary3Color,
 }]);
 
-let thumbStyle = b.styleDef([c.positionAbsolute, styles.zDepthShadows[0], {
+let thumbStyle = b.styleDef([c.positionAbsolute, c.noTapHighlight, styles.zDepthShadows[0], {
     transition: transitions.easeOut(),
     top: 1,
     left: 0,
@@ -55,40 +56,69 @@ let thumbStyle = b.styleDef([c.positionAbsolute, styles.zDepthShadows[0], {
     height: toggleSize,
     lineHeight: '24px',
     borderRadius: '50%',
-    backgroundColor: ()=>styles.accent2Color,
+    backgroundColor: () => styles.accent2Color,
+}]);
+
+let rippleStyle = b.styleDef([c.positionAbsolute, c.noTapHighlight, {
+    borderRadius: "50%",
+    backgroundColor: "#000",
 }]);
 
 let trackToggledStyle = b.styleDefEx(trackStyle, {
-    backgroundColor: ()=>colorUtils.withTransparency(styles.primary1Color, 0.5)
+    backgroundColor: () => colorUtils.withTransparency(styles.primary1Color, 0.5)
 });
 
 let thumbToggledStyle = b.styleDefEx(thumbStyle, {
-    backgroundColor: ()=>styles.primary1Color,
+    backgroundColor: () => styles.primary1Color,
     left: toggleTrackWidth,
 });
 
 let trackDisabledStyle = b.styleDefEx(trackStyle, {
-    backgroundColor: ()=>styles.primary3Color
+    backgroundColor: () => styles.primary3Color
 });
 
 let thumbDisabledStyle = b.styleDefEx(thumbStyle, {
-    backgroundColor: ()=>styles.borderColor,
+    backgroundColor: () => styles.borderColor,
 });
 
 export const Toggle = b.createComponent<IToggleData>({
     init(ctx: IToggleCtx) {
         ctx.focusFromKeyboard = false;
         ctx.down = false;
+        ctx.rippleStart = 0;
     },
     render(ctx: IToggleCtx, me: b.IBobrilNode) {
         let d = ctx.data;
         let disabled = d.disabled;
         let checked = d.checked;
         let focusFromKeyboard = ctx.focusFromKeyboard;
+        let hasRipple = ctx.rippleStart != 0;
+        let t: number;
+        let r: number;
+        if (hasRipple) {
+            t = (b.now() - ctx.rippleStart) * 0.004;
+            if (t > 2) {
+                hasRipple = false;
+                ctx.rippleStart = 0;
+            }
+            r = Math.min(t * toggleSize, toggleSize);
+            b.invalidate(ctx);
+        }
+        if (ctx.focusFromKeyboard){
+            hasRipple = true;
+            r = toggleSize;
+            t = 1;
+        }
         b.style(me, rootStyle, disabled ? disabledStyle : enabledStyle);
         me.children = [
-            b.styledDiv("", trackStyle, checked && trackToggledStyle, disabled && trackDisabledStyle),
-            b.styledDiv("", thumbStyle, checked && thumbToggledStyle, disabled && thumbDisabledStyle)
+            b.styledDiv(null, trackStyle, checked && trackToggledStyle, disabled && trackDisabledStyle),
+            b.styledDiv(hasRipple && b.styledDiv(null, rippleStyle, {
+                left: toggleSize * 0.5 - r,
+                top: toggleSize * 0.5 - r,
+                width: 2 * r,
+                height: 2 * r,
+                opacity: 0.16 - 0.08 * t
+            }), thumbStyle, checked && thumbToggledStyle, disabled && thumbDisabledStyle)
         ];
         me.attrs = {
             role: "checkbox",
@@ -113,6 +143,7 @@ export const Toggle = b.createComponent<IToggleData>({
         b.releaseMouseOwner();
         if (b.pointersDownCount() === 0 && !ctx.data.disabled) {
             let a = ctx.data.action;
+            ctx.rippleStart = b.now();
             if (a) a();
         }
         b.invalidate(ctx);
