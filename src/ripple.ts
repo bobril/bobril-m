@@ -1,5 +1,6 @@
 import * as b from "bobril";
 import * as colors from "./colors";
+import * as c from "./styleConsts";
 import { withTransparency } from "./colorUtils";
 
 export interface IRippleData {
@@ -18,31 +19,30 @@ interface IRippleCtx extends b.IBobrilCtx {
     ripples: number[]; // tripples x,y,start time
 }
 
-const oneRippleStyle = b.styleDef({
-    position: "absolute",
-    borderRadius: "50%",
+const oneRippleStyle = b.styleDef([
+    c.positionAbsolute, 
+    c.noTapHighlight, 
+    c.pointerEventsNone,
+    c.userSelectNone,
+    c.circle, {
     backgroundColor: "#000",
-    userSelect: "none",
-    pointerEvents: "none",
-    tapHighlightColor: colors.transparent
-});
+}]);
 
-const pulseRippleStyle = b.styleDef({
-    position: "absolute",
-    borderRadius: "50%",
+const pulseRippleStyle = b.styleDef([
+    c.positionAbsolute, 
+    c.noTapHighlight, 
+    c.pointerEventsNone,
+    c.userSelectNone,
+    c.circle, {
     backgroundColor: withTransparency("#fff", 0.3),
-    userSelect: "none",
-    pointerEvents: "none",
-    tapHighlightColor: colors.transparent
-});
+}]);
 
-const rippleStyle = b.styleDef({
-    width: "100%",
-    height: "100%",
-    position: "relative",
+const rippleStyle = b.styleDef([
+    c.positionRelative,
+    c.noTapHighlight,
+    c.widthHeight100p, {
     boxSizing: "border-box",
-    tapHighlightColor: colors.transparent
-});
+}]);
 
 export const Ripple = b.createComponent<IRippleData>({
     init(ctx: IRippleCtx) {

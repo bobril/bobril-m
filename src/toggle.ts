@@ -48,19 +48,17 @@ let trackStyle = b.styleDef([c.positionAbsolute, c.noTapHighlight, {
     backgroundColor: () => styles.primary3Color,
 }]);
 
-let thumbStyle = b.styleDef([c.positionAbsolute, c.noTapHighlight, styles.zDepthShadows[0], {
+let thumbStyle = b.styleDef([c.positionAbsolute, c.noTapHighlight, styles.zDepthShadows[0], c.circle, {
     transition: transitions.easeOut(),
     top: 1,
     left: 0,
     width: toggleSize,
     height: toggleSize,
     lineHeight: '24px',
-    borderRadius: '50%',
     backgroundColor: () => styles.accent2Color,
 }]);
 
-let rippleStyle = b.styleDef([c.positionAbsolute, c.noTapHighlight, {
-    borderRadius: "50%",
+let rippleStyle = b.styleDef([c.positionAbsolute, c.noTapHighlight, c.circle, {
     backgroundColor: "#000",
 }]);
 

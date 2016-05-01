@@ -23,6 +23,7 @@ b.init(() => {
     return [
         m.Paper({ zDepth: 0, style: { margin: 16, padding: 8 } }, [
             m.Toggle({ checked: ch1, action: () => { ch1 = !ch1; b.invalidate() } }),
+            spacer,
             m.Toggle({ checked: ch1, disabled: true }),
         ]),
         m.Paper({ zDepth: 0, style: { margin: 16, padding: 8 } }, [

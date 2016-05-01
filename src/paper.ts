@@ -1,6 +1,7 @@
 import * as b from "bobril";
 import * as styles from "./styles";
 import * as colors from "./colors";
+import * as c from "./styleConsts";
 import * as transitions from "./transitions";
 
 export interface IPaperData {
@@ -15,14 +16,13 @@ interface IPaperCtx extends b.IBobrilCtx {
     data: IPaperData;
 }
 
-export let paperStyle = b.styleDef({
+export let paperStyle = b.styleDef([c.noTapHighlight, {
     backgroundColor: () => styles.canvasColor,
     boxSizing: 'border-box',
     fontFamily: () => styles.fontFamily,
-    tapHighlightColor: colors.transparent
-});
+}]);
 
-export let circleStyle = b.styleDef({ borderRadius: "50%" });
+export let circleStyle = b.styleDef(c.circle);
 export let roundStyle = b.styleDef({ borderRadius: 2 });
 
 export const Paper = b.createComponent<IPaperData>({

@@ -56,11 +56,8 @@ const errorStyle = b.styleDef([c.positionRelative, {
     transition: transitions.easeOut()
 }]);
 
-const inputStyle = b.styleDef([c.positionRelative, {
-    tapHighlightColor: 'rgba(0,0,0,0)',
+const inputStyle = b.styleDef([c.positionRelative, c.widthHeight100p, c.noTapHighlight, {
     padding: 0,
-    width: '100%',
-    height: '100%',
     border: 'none',
     outline: 'none',
     backgroundColor: colors.transparent,
