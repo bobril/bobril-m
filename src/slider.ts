@@ -214,8 +214,8 @@ export const Slider = b.createComponent<ISliderData>({
     onPointerDown(ctx: ISliderCtx, event: b.IBobrilPointerEvent): boolean {
         let d = ctx.data;
         if (d.disabled) return false;
-        let np = b.nodePagePos(ctx.me);
-        if (!ctx.down && Math.pow(event.x - np[0] - ctx.pos, 2) + Math.pow(event.y - np[1] - 24, 2) < 24 * 24) {
+        let rect = (<Element>ctx.me.element).getBoundingClientRect();
+        if (!ctx.down && Math.pow(event.x - rect.left - ctx.pos, 2) + Math.pow(event.y - rect.top - 24, 2) < 24 * 24) {
             ctx.down = true;
             ctx.revertValue = b.getValue(d.value);
             ctx.pointerId = event.id;

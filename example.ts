@@ -25,6 +25,11 @@ b.init(() => {
             m.Toggle({ checked: ch1, action: () => { ch1 = !ch1; b.invalidate() } }),
             spacer,
             m.Toggle({ checked: ch1, disabled: true }),
+            spacer,
+            spacer,
+            m.Button({ type: m.ButtonType.Raised, action: () => m.lightTheme() }, "Light Theme"),
+            spacer,
+            m.Button({ type: m.ButtonType.Raised, action: () => m.darkTheme() }, "Dark Theme"),
         ]),
         m.Paper({ zDepth: 0, style: { margin: 16, padding: 8 } }, [
             m.Badge({ badgeContent: "0" }, "Normal Badge"),

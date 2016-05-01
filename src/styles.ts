@@ -57,3 +57,52 @@ export let zDepthShadows = [
 ].map((d, i) =>
     b.styleDef({ boxShadow: () => `0 ${d[0]}px ${d[1]}px ${withTransparency(strShadowColor, d[2])},0 ${d[3]}px ${d[4]}px ${withTransparency(strShadowColor, d[5])}` }, null, "zDepth" + (i + 1))
     );
+
+export function lightTheme() {
+    strPrimary1Color = Colors.cyan500;
+    strPrimary2Color = Colors.cyan700;
+    strPrimary3Color = Colors.grey400;
+    strAccent1Color = Colors.pinkA200;
+    strAccent2Color = Colors.grey100;
+    strAccent3Color = Colors.grey500;
+    strTextColor = withTransparency(Colors.black, 0.87);
+    strCheckboxOffColor = withTransparency(Colors.black, 0.54);
+    strAlternateTextColor = Colors.white;
+    strCanvasColor = Colors.white;
+    strBorderColor = Colors.grey300;
+    strDisabledColor = withTransparency(Colors.black, 0.3);
+    strSliderColor = withTransparency(Colors.black, 0.54);
+    strAlternateDisabledColor = Colors.grey50;
+    strPickerHeaderColor = Colors.cyan500;
+    strClockCircleColor = withTransparency(Colors.black, 0.07);
+    strShadowColor = Colors.black;
+    strHoverColor = withTransparency("#999", 0.3);
+    strKeyboardFocusColor = withTransparency("#777", 0.3);
+    strErrorColor = Colors.red500;
+    b.invalidateStyles();
+}
+
+export function darkTheme() {
+    strPrimary1Color = Colors.cyan700;
+    strPrimary2Color = Colors.cyan700;
+    strPrimary3Color = Colors.grey600;
+    strAccent1Color = Colors.pinkA200;
+    strAccent2Color = Colors.pinkA400;
+    strAccent3Color = Colors.pinkA100;
+    strTextColor = Colors.white;
+    strAlternateTextColor = '#303030';
+    strCanvasColor = '#303030';
+    strBorderColor = withTransparency(Colors.white, 0.3),
+    strDisabledColor = withTransparency(Colors.white, 0.3),
+
+    strCheckboxOffColor = withTransparency(Colors.black, 0.54);
+    strSliderColor = withTransparency(Colors.black, 0.54);
+    strAlternateDisabledColor = Colors.grey50;
+    strPickerHeaderColor = Colors.cyan500;
+    strClockCircleColor = withTransparency(Colors.black, 0.07);
+    strShadowColor = Colors.black;
+    strHoverColor = withTransparency("#999", 0.3);
+    strKeyboardFocusColor = withTransparency("#777", 0.3);
+    strErrorColor = Colors.red500;
+    b.invalidateStyles();
+}
