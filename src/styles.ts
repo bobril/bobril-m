@@ -94,10 +94,10 @@ export function darkTheme() {
     strCanvasColor = '#303030';
     strBorderColor = withTransparency(Colors.white, 0.3),
     strDisabledColor = withTransparency(Colors.white, 0.3),
+    strAlternateDisabledColor = Colors.grey800;
 
     strCheckboxOffColor = withTransparency(Colors.black, 0.54);
     strSliderColor = withTransparency(Colors.black, 0.54);
-    strAlternateDisabledColor = Colors.grey50;
     strPickerHeaderColor = Colors.cyan500;
     strClockCircleColor = withTransparency(Colors.black, 0.07);
     strShadowColor = Colors.black;

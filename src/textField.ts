@@ -63,10 +63,14 @@ const inputStyle = b.styleDef([c.positionRelative, c.widthHeight100p, c.noTapHig
     backgroundColor: colors.transparent,
     color: styles.textColor,
     font: 'inherit'
-}], { "-webkit-autofill": { 
-    // workaround for Chrome bug
-    boxShadow: "0 0 0 99px white inset" 
-} });
+}], {
+        "-webkit-autofill": {
+            // workaround for Chrome bug
+            color: styles.textColor,
+            textFillColor: styles.textColor,
+            boxShadow: () => "0 0 0 99px " + styles.strCanvasColor + " inset"
+        }
+    });
 
 const inputDisabledStyle = b.styleDefEx(inputStyle, {
     color: styles.disabledColor
@@ -106,7 +110,7 @@ export const TextField = b.createComponent<ITextFieldData>({
         ctx.focused = false;
         b.invalidate(ctx);
     },
-    onClick(ctx: ITextFieldCtx):boolean {
+    onClick(ctx: ITextFieldCtx): boolean {
         if (ctx.data.disabled) return false;
         if (!ctx.focused) {
             b.focus(ctx.me);
