@@ -1,5 +1,6 @@
 import * as b from "bobril";
 import * as Colors from "./colors";
+import * as c from "./styleConsts";
 import { withTransparency } from "./colorUtils";
 
 export let strPrimary1Color = Colors.cyan500;
@@ -58,6 +59,17 @@ export let zDepthShadows = [
     b.styleDef({ boxShadow: () => `0 ${d[0]}px ${d[1]}px ${withTransparency(strShadowColor, d[2])},0 ${d[3]}px ${d[4]}px ${withTransparency(strShadowColor, d[5])}` }, null, "zDepth" + (i + 1))
     );
 
+b.selectorStyleDef("html", [c.widthHeight100p, {
+    margin: 0
+}]);
+
+b.selectorStyleDef("body", [c.widthHeight100p, {
+    margin: 0,
+    backgroundColor: canvasColor,
+    fontFamily: fontFamily,
+    color: textColor    
+}]);
+
 export function lightTheme() {
     strPrimary1Color = Colors.cyan500;
     strPrimary2Color = Colors.cyan700;
@@ -93,8 +105,8 @@ export function darkTheme() {
     strAlternateTextColor = '#303030';
     strCanvasColor = '#303030';
     strBorderColor = withTransparency(Colors.white, 0.3),
-    strDisabledColor = withTransparency(Colors.white, 0.3),
-    strAlternateDisabledColor = Colors.grey800;
+        strDisabledColor = withTransparency(Colors.white, 0.3),
+        strAlternateDisabledColor = Colors.grey800;
 
     strCheckboxOffColor = withTransparency(Colors.black, 0.54);
     strSliderColor = withTransparency(Colors.black, 0.54);

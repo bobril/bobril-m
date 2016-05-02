@@ -19,7 +19,6 @@
         "src/divider.ts",
         "src/enhancedTextArea.ts",
         "src/fonts.ts",
-        "src/normalize.ts",
         "src/paper.ts",
         "src/radiobutton.ts",
         "src/ripple.ts",

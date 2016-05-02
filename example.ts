@@ -3,7 +3,6 @@ import * as m from "./index";
 import * as icons from "bobril-m-icons";
 import "bobril-flex-ie10";
 
-m.initNormalize();
 m.initRobotoFonts();
 
 let spacer = { tag: "span", style: { display: "inline-block", width: 8, height: 8 } };
