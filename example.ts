@@ -133,6 +133,8 @@ b.init(() => {
                 m.Divider(),
                 m.List({}, [
                     m.Subheader({ children: "Simple list" }),
+                    m.ListItem({ rightIcon: icons.actionInfo, primaryText: "All mail", secondaryText: "All mail", secondaryTextLines: m.SecondaryTextLines.Single }),
+                    m.ListItem({ rightIcon: icons.actionInfo, primaryText: "Trash", secondaryText: "Trash", secondaryTextLines: m.SecondaryTextLines.Single }),
                     m.ListItem({ rightIcon: icons.actionInfo, primaryText: "Spam" })
                 ])
             ]),
@@ -165,6 +167,7 @@ b.init(() => {
                     m.ListItem({
                         primaryText: "Notifications",
                         secondaryText: "Allow notifications",
+                        secondaryTextLines: m.SecondaryTextLines.Single,
                         leftCheckbox: m.Checkbox({ checked: ch1, action: () => { ch1 = !ch1; b.invalidate(); } }),
                         onTouchTap: () => { ch1 = !ch1; b.invalidate(); }
                     }),
@@ -172,6 +175,7 @@ b.init(() => {
                     m.ListItem({
                         primaryText: "Events and reminders",
                         secondaryText: "Events and reminders",
+                        secondaryTextLines: m.SecondaryTextLines.Single,
                         rightToggle: m.Toggle({ checked: ch1, action: () => { ch1 = !ch1; b.invalidate(); } }),
                         onTouchTap: () => { ch1 = !ch1; b.invalidate(); }
                     })
@@ -183,12 +187,14 @@ b.init(() => {
                     m.ListItem({
                         primaryText: "Subject",
                         secondaryText: "Text of message - Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas lorem.",
+                        secondaryTextLines: m.SecondaryTextLines.Double,
                         leftAvatar: createAvatar("A")
                     }),
                     m.Divider({ inset: true }),
                     m.ListItem({
                         primaryText: "Subject",
                         secondaryText: "Text of message - Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas lorem.",
+                        secondaryTextLines: m.SecondaryTextLines.Double,
                         leftAvatar: createAvatar("B")
                     })
                 ])
