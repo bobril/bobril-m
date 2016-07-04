@@ -124,112 +124,101 @@ b.init(() => {
         ]),
         createFlexLayout([
             m.Paper({ style: { margin: 16 } }, [
-                m.List({
-                    children: [
                         m.Subheader({ children: "Simple list" }),
                         m.ListItem({ leftIcon: icons.contentInbox, primaryText: "Inbox" }),
                         m.ListItem({ leftIcon: icons.actionGrade, primaryText: "Starred" }),
                         m.ListItem({ leftIcon: icons.contentSend, primaryText: "Send mail" })
                     ]
                 }),
+                ]),
                 m.Divider(),
-                m.List({
-                    children: [
-                        m.Subheader({ children: "Simple list" }),
-                        m.ListItem({ rightIcon: icons.actionInfo, primaryText: "All mail", secondaryText: "All mail", secondaryTextLines: m.ISecondaryTextLines.single }),
-                        m.ListItem({ rightIcon: icons.actionInfo, primaryText: "Trash", secondaryText: "Trash", secondaryTextLines: m.ISecondaryTextLines.single }),
-                        m.ListItem({ rightIcon: icons.actionInfo, primaryText: "Spam" })
-                    ]
-                })
+                m.List({}, [
+                    m.Subheader({ children: "Simple list" }),
+                    m.ListItem({ rightIcon: icons.actionInfo, primaryText: "All mail", secondaryText: "All mail", secondaryTextLines: m.ISecondaryTextLines.single }),
+                    m.ListItem({ rightIcon: icons.actionInfo, primaryText: "Trash", secondaryText: "Trash", secondaryTextLines: m.ISecondaryTextLines.single }),
+                    m.ListItem({ rightIcon: icons.actionInfo, primaryText: "Spam" })
+                ])
             ]),
             m.Paper({ style: { margin: 16 } }, [
-                m.List({
-                    children: [
-                        m.Subheader({ children: "Nested list" }),
-                        m.ListItem({
-                            leftIcon: icons.contentInbox,
-                            primaryText: "Inbox",
-                            nestedItems: [
-                                m.Subheader({ children: "Nested list", inset: true }),
-                                m.ListItem({ leftIcon: icons.actionGrade, primaryText: "Starred", }),
-                                m.ListItem({
-                                    leftIcon: icons.contentSend,
-                                    primaryText: "Send mail",
-                                    disabled: true,
-                                    nestedItems: [
-                                        m.ListItem({ leftIcon: icons.contentSend, primaryText: "Google" }),
-                                        m.Divider({ inset: true }),
-                                        m.ListItem({ leftIcon: icons.contentSend, primaryText: "Outlook" })
-                                    ]
-                                })
-                            ]
-                        })
-                    ]
-                })
+                m.List({}, [
+                    m.Subheader({ children: "Nested list" }),
+                    m.ListItem({
+                        leftIcon: icons.contentInbox,
+                        primaryText: "Inbox",
+                        nestedItems: [
+                            m.Subheader({ children: "Nested list", inset: true }),
+                            m.ListItem({ leftIcon: icons.actionGrade, primaryText: "Starred", }),
+                            m.ListItem({
+                                leftIcon: icons.contentSend,
+                                primaryText: "Send mail",
+                                disabled: true,
+                                nestedItems: [
+                                    m.ListItem({ leftIcon: icons.contentSend, primaryText: "Google" }),
+                                    m.Divider({ inset: true }),
+                                    m.ListItem({ leftIcon: icons.contentSend, primaryText: "Outlook" })
+                                ]
+                            })
+                        ]
+                    })
+                ])
             ]),
             m.Paper({ style: { margin: 16 } }, [
-                m.List({
-                    children: [
-                        m.Subheader({ children: "Settings list" }),
-                        m.ListItem({
-                            primaryText: "Notifications",
-                            secondaryText: "Allow notifications",
-                            secondaryTextLines: m.ISecondaryTextLines.single,
-                            leftCheckbox: m.Checkbox({ checked: ch1, action: () => { ch1 = !ch1; b.invalidate(); } }),
-                            onTouchTap: () => { ch1 = !ch1; b.invalidate(); }
-                        }),
-                        m.Divider(),
-                        m.ListItem({
-                            primaryText: "Events and reminders",
-                            secondaryText: "Events and reminders",
-                            secondaryTextLines: m.ISecondaryTextLines.single,
-                            rightToggle: m.Toggle({ checked: ch1, action: () => { ch1 = !ch1; b.invalidate(); } }),
-                            onTouchTap: () => { ch1 = !ch1; b.invalidate(); }
-                        })
-                    ]
-                })
+                m.List({}, [
+                    m.Subheader({ children: "Settings list" }),
+                    m.ListItem({
+                        primaryText: "Notifications",
+                        secondaryText: "Allow notifications",
+                        secondaryTextLines: m.ISecondaryTextLines.single,
+                        leftCheckbox: m.Checkbox({ checked: ch1, action: () => { ch1 = !ch1; b.invalidate(); } }),
+                        onTouchTap: () => { ch1 = !ch1; b.invalidate(); }
+                    }),
+                    m.Divider(),
+                    m.ListItem({
+                        primaryText: "Events and reminders",
+                        secondaryText: "Events and reminders",
+                        secondaryTextLines: m.ISecondaryTextLines.single,
+                        rightToggle: m.Toggle({ checked: ch1, action: () => { ch1 = !ch1; b.invalidate(); } }),
+                        onTouchTap: () => { ch1 = !ch1; b.invalidate(); }
+                    })
+                ])
             ]),
             m.Paper({ style: { margin: 16 } }, [
-                m.List({
-                    children: [
-                        m.Subheader({ children: "Messages list" }),
-                        m.ListItem({
-                            primaryText: "Subject",
-                            secondaryText: "Text of message - Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas lorem.",
-                            secondaryTextLines: m.ISecondaryTextLines.double,
-                            leftAvatar: createAvatar("A")
-                        }),
-                        m.Divider({ inset: true }),
-                        m.ListItem({
-                            primaryText: "Subject",
-                            secondaryText: "Text of message - Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas lorem.",
-                            secondaryTextLines: m.ISecondaryTextLines.double,
-                            leftAvatar: createAvatar("B")
-                        })
-                    ]
-                })
+                m.List({}, [
+                    m.Subheader({ children: "Messages list" }),
+                    m.ListItem({
+                        primaryText: "Subject",
+                        secondaryText: "Text of message - Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas lorem.",
+                        secondaryTextLines: m.ISecondaryTextLines.double,
+                        leftAvatar: createAvatar("A")
+                    }),
+                    m.Divider({ inset: true }),
+                    m.ListItem({
+                        primaryText: "Subject",
+                        secondaryText: "Text of message - Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas lorem.",
+                        secondaryTextLines: m.ISecondaryTextLines.double,
+                        leftAvatar: createAvatar("B")
+                    })
+                ])
             ]),
             m.Paper({ style: { margin: 16 } }, [
-                m.List({
-                    children: [
-                        m.Subheader({ children: "Selectable list" }),
-                        m.ListItem({
-                            primaryText: "Selectable Item 1",
-                            isSelect: s1,
-                            onTouchTap: () => { s1 = !s1; s2 = s3 = false; b.invalidate(); }
-                        }),
-                        m.ListItem({
-                            primaryText: "Selectable Item 2",
-                            isSelect: s2,
-                            onTouchTap: () => { s2 = !s2; s1 = s3 = false; b.invalidate(); }
-                        }),
-                        m.ListItem({
-                            primaryText: "Selectable Item 3",
-                            isSelect: s3,
-                            onTouchTap: () => { s3 = !s3; s1 = s2 = false; b.invalidate(); }
-                        })
-                    ]
-                })
+                m.List({}, [
+                    m.Subheader({ children: "Selectable list" }),
+                    m.ListItem({
+                        primaryText: "Selectable Item 1",
+                        isSelect: s1,
+                        onTouchTap: () => { s1 = !s1; s2 = s3 = false; b.invalidate(); }
+                    }),
+                    m.ListItem({
+                        primaryText: "Selectable Item 2",
+                        isSelect: s2,
+                        onTouchTap: () => { s2 = !s2; s1 = s3 = false; b.invalidate(); }
+                    }),
+                    m.ListItem({
+                        primaryText: "Selectable Item 3",
+                        isSelect: s3,
+                        onTouchTap: () => { s3 = !s3; s1 = s2 = false; b.invalidate(); }
+                    })
+                ])
             ])
         ])
     ];
