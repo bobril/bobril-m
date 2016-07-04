@@ -8,8 +8,8 @@ import * as c from './styleConsts';
 import * as styles from './styles';
 import * as transitions from './transitions';
 
-export enum ISecondaryTextLines {
-    single, double
+export enum SecondaryTextLines {
+    Single, Double
 }
 
 export interface IListItemData {
@@ -33,7 +33,7 @@ export interface IListItemData {
     rightIconButton?: b.IBobrilNode;
     rightToggle?: b.IBobrilNode;
     secondaryText?: string;
-    secondaryTextLines?: ISecondaryTextLines;
+    secondaryTextLines?: SecondaryTextLines;
     tabindex?: number;
 }
 
@@ -114,8 +114,8 @@ function createChildren(ctx: IItemHeaderCtx): b.IBobrilNode {
     let d = ctx.data;
     let children: b.IBobrilChildren[] = [];
     let singleAvatar = !d.secondaryText && (d.leftAvatar || d.rightAvatar);
-    let twoLine = d.secondaryText && d.secondaryTextLines === ISecondaryTextLines.single;
-    let threeLine = d.secondaryText && d.secondaryTextLines === ISecondaryTextLines.double;
+    let twoLine = d.secondaryText && d.secondaryTextLines === SecondaryTextLines.Single;
+    let threeLine = d.secondaryText && d.secondaryTextLines === SecondaryTextLines.Double;
     let hasNestListItems = d.nestedItems && d.nestedItems.length;
     let hasRightElement = d.rightAvatar || d.rightIcon || d.rightIconButton || d.rightToggle;
     let needsNestedIndicator = hasNestListItems && ctx.autoGenerateNestedIndicator && !hasRightElement;
@@ -198,7 +198,7 @@ const ItemHeader = b.createComponent<IListItemData>({
         let d = ctx.data;
         let showHover = (ctx.hover || ctx.focusFromKeyboard) && !d.disabled;
         let singleAvatar = !d.secondaryText && (d.leftAvatar || d.rightAvatar);
-        let twoLine = d.secondaryText && d.secondaryTextLines === ISecondaryTextLines.single;
+        let twoLine = d.secondaryText && d.secondaryTextLines === SecondaryTextLines.Single;
         let threeLine = d.secondaryText && d.secondaryTextLines > 1;
 
         me.attrs = {

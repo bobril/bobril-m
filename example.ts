@@ -124,18 +124,15 @@ b.init(() => {
         ]),
         createFlexLayout([
             m.Paper({ style: { margin: 16 } }, [
-                        m.Subheader({ children: "Simple list" }),
-                        m.ListItem({ leftIcon: icons.contentInbox, primaryText: "Inbox" }),
-                        m.ListItem({ leftIcon: icons.actionGrade, primaryText: "Starred" }),
-                        m.ListItem({ leftIcon: icons.contentSend, primaryText: "Send mail" })
-                    ]
-                }),
+                m.List({}, [
+                    m.Subheader({ children: "Simple list" }),
+                    m.ListItem({ leftIcon: icons.contentInbox, primaryText: "Inbox" }),
+                    m.ListItem({ leftIcon: icons.actionGrade, primaryText: "Starred" }),
+                    m.ListItem({ leftIcon: icons.contentSend, primaryText: "Send mail" })
                 ]),
                 m.Divider(),
                 m.List({}, [
                     m.Subheader({ children: "Simple list" }),
-                    m.ListItem({ rightIcon: icons.actionInfo, primaryText: "All mail", secondaryText: "All mail", secondaryTextLines: m.ISecondaryTextLines.single }),
-                    m.ListItem({ rightIcon: icons.actionInfo, primaryText: "Trash", secondaryText: "Trash", secondaryTextLines: m.ISecondaryTextLines.single }),
                     m.ListItem({ rightIcon: icons.actionInfo, primaryText: "Spam" })
                 ])
             ]),
@@ -168,7 +165,6 @@ b.init(() => {
                     m.ListItem({
                         primaryText: "Notifications",
                         secondaryText: "Allow notifications",
-                        secondaryTextLines: m.ISecondaryTextLines.single,
                         leftCheckbox: m.Checkbox({ checked: ch1, action: () => { ch1 = !ch1; b.invalidate(); } }),
                         onTouchTap: () => { ch1 = !ch1; b.invalidate(); }
                     }),
@@ -176,7 +172,6 @@ b.init(() => {
                     m.ListItem({
                         primaryText: "Events and reminders",
                         secondaryText: "Events and reminders",
-                        secondaryTextLines: m.ISecondaryTextLines.single,
                         rightToggle: m.Toggle({ checked: ch1, action: () => { ch1 = !ch1; b.invalidate(); } }),
                         onTouchTap: () => { ch1 = !ch1; b.invalidate(); }
                     })
@@ -188,14 +183,12 @@ b.init(() => {
                     m.ListItem({
                         primaryText: "Subject",
                         secondaryText: "Text of message - Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas lorem.",
-                        secondaryTextLines: m.ISecondaryTextLines.double,
                         leftAvatar: createAvatar("A")
                     }),
                     m.Divider({ inset: true }),
                     m.ListItem({
                         primaryText: "Subject",
                         secondaryText: "Text of message - Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas lorem.",
-                        secondaryTextLines: m.ISecondaryTextLines.double,
                         leftAvatar: createAvatar("B")
                     })
                 ])
