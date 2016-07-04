@@ -5,8 +5,8 @@ import * as c from './styleConsts';
 import * as transitions from './transitions';
 
 export interface IIconButtonData {
+    children?: b.IBobrilChildren;
     action?: () => void;
-    children?: b.IBobrilNode;
     disableTouchRipple?: boolean;
     disabled?: boolean;
     tooltip?: b.IBobrilNode;
@@ -22,8 +22,7 @@ interface IIconButtonCtx extends b.IBobrilCtx {
     focusFromKeyboard: boolean;
 }
 
-let rootStyle = b.styleDef({
-    position: 'relative',
+let rootStyle = b.styleDef([c.positionRelative, {
     boxSizing: 'border-box',
     overflow: 'visible',
     transition: transitions.easeOut(),
@@ -31,7 +30,7 @@ let rootStyle = b.styleDef({
     width: styles.iconSize * 2,
     height: styles.iconSize * 2,
     fontSize: 0
-});
+}]);
 
 let iconStyle = b.styleDef({
     color: styles.textColor,
@@ -42,13 +41,12 @@ let tooltipStyle = b.styleDef({
     boxSizing: 'border-box'
 });
 
-let overlayStyle = b.styleDef({
-    position: 'relative',
+let overlayStyle = b.styleDef([c.positionRelative, {
     top: 0,
     width: '100%',
     height: '100%',
     background: styles.disabledColor
-});
+}]);
 
 let enabledStyle = b.styleDef([c.userSelectNone, {
     overflow: 'hidden',

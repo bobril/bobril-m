@@ -48,22 +48,20 @@ interface IItemHeaderCtx extends b.IBobrilCtx {
     rightIconButtonKeyboardFocused: boolean;
 }
 
-let rootStyle = b.styleDef({
+let rootStyle = b.styleDef([c.positionRelative, {
     color: styles.textColor,
     display: 'block',
     fontSize: 16,
     lineHeight: '16px',
-    position: 'relative',
     transition: transitions.easeOut()
-});
+}]);
 
-let iconStyle = b.styleDef({
+let iconStyle = b.styleDef([c.positionAbsolute, {
     height: 24,
     width: 24,
     display: 'block',
-    position: 'absolute',
     margin: 12
-});
+}]);
 
 let innerDivStyle = b.styleDef({ position: 'relative' });
 let leftIconStyle = b.styleDef({ left: 4 });
@@ -94,11 +92,10 @@ let secondaryTextStyle = b.styleDef({
     textOverflow: 'ellipsis'
 });
 
-let rightIconButtonStyle = b.styleDef({
-    position: 'absolute',
+let rightIconButtonStyle = b.styleDef([c.positionAbsolute, {
     display: 'block',
     right: 4
-});
+}]);
 
 let enabledStyle = b.styleDef([c.userSelectNone, {
     overflow: 'hidden',
@@ -169,7 +166,7 @@ function createChildren(ctx: IItemHeaderCtx): b.IBobrilNode {
             lineHeight: threeLine ? '18px' : '16px',
             height: threeLine ? 36 : 16,
             whiteSpace: threeLine ? null : 'nowrap',
-            display: threeLine ? '-webkit-box' : null,
+            display: threeLine ? 'flex' : null,
             lineClamp: threeLine ? 2 : null,
             boxOrient: threeLine ? 'vertical' : null
         }));
@@ -285,7 +282,7 @@ export const ListItem = b.createComponent<IListItemData>({
         let d = ctx.data;
         let nestedItems: b.IBobrilNode;
         if (ctx.isOpen && d.nestedItems && d.nestedItems.length) {
-            nestedItems = list.List({ children: d.nestedItems, nestedLevel: d.nestedLevel + 1 });
+            nestedItems = list.List({ nestedLevel: d.nestedLevel + 1 }, d.nestedItems);
         }
         d.onNestedListToggle = () => {
             ctx.isOpen = !ctx.isOpen;

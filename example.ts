@@ -32,7 +32,7 @@ function createAvatar(content: string): b.IBobrilNode {
         tag: "svg", attrs: { width: 40, height: 40 },
         children: [
             { tag: "circle", attrs: { cx: "20", cy: "20", r: "18", stroke: m.primary2Color(), "stroke-width": "2", fill: m.transparent } },
-            { tag: "text", attrs: { "text-anchor": "middle", "dominant-baseline": "central", x: "20", y: "19", fill: m.primary2Color(), "font-size": 24 }, children: content }
+            { tag: "text", attrs: { "text-anchor": "middle", dy: ".4em", x: "20", y: "19", fill: m.primary2Color(), "font-size": 24 }, children: content }
         ]
     };
 }
