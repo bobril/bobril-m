@@ -11,6 +11,9 @@ export let strAccent2Color = Colors.grey100;
 export let strAccent3Color = Colors.grey500;
 export let strTextColor = withTransparency(Colors.black, 0.87);
 export let strCheckboxOffColor = withTransparency(Colors.black, 0.54);
+export let strSecondaryTextColor = Colors.grey500;
+export let strSelectColor = withTransparency(Colors.black, 0.2);
+export let strSubheaderColor = withTransparency(Colors.black, 0.54);
 export let strAlternateTextColor = Colors.white;
 export let strCanvasColor = Colors.white;
 export let strBorderColor = Colors.grey300;
@@ -32,6 +35,9 @@ export const accent2Color = () => strAccent2Color;
 export const accent3Color = () => strAccent3Color;
 export const textColor = () => strTextColor;
 export const checkboxOffColor = () => strCheckboxOffColor;
+export const subheaderColor = () => strSubheaderColor;
+export const secondaryTextColor = () => strSecondaryTextColor;
+export const selectColor = () => strSelectColor;
 export const alternateTextColor = () => strAlternateTextColor;
 export const canvasColor = () => strCanvasColor;
 export const borderColor = () => strBorderColor;
@@ -48,6 +54,9 @@ export const errorColor = () => strErrorColor;
 export let strFontFamily = 'Roboto, sans-serif';
 
 export const fontFamily = () => strFontFamily;
+
+export let nestedLevelDepth = 18;
+export let iconSize = 24;
 
 export let zDepthShadows = [
     [1, 6, 0.12, 1, 4, 0.12],
@@ -67,7 +76,7 @@ b.selectorStyleDef("body", [c.widthHeight100p, {
     margin: 0,
     backgroundColor: canvasColor,
     fontFamily: fontFamily,
-    color: textColor    
+    color: textColor
 }]);
 
 export function lightTheme() {
@@ -79,6 +88,9 @@ export function lightTheme() {
     strAccent3Color = Colors.grey500;
     strTextColor = withTransparency(Colors.black, 0.87);
     strCheckboxOffColor = withTransparency(Colors.black, 0.54);
+    strSecondaryTextColor = Colors.grey500;
+    strSelectColor = withTransparency(Colors.black, 0.2);
+    strSubheaderColor = withTransparency(Colors.black, 0.54);
     strAlternateTextColor = Colors.white;
     strCanvasColor = Colors.white;
     strBorderColor = Colors.grey300;
@@ -104,11 +116,13 @@ export function darkTheme() {
     strTextColor = Colors.white;
     strAlternateTextColor = '#303030';
     strCanvasColor = '#303030';
-    strBorderColor = withTransparency(Colors.white, 0.3),
-        strDisabledColor = withTransparency(Colors.white, 0.3),
-        strAlternateDisabledColor = Colors.grey800;
-
+    strBorderColor = withTransparency(Colors.white, 0.3);
+    strDisabledColor = withTransparency(Colors.white, 0.3);
+    strAlternateDisabledColor = Colors.grey800;
     strCheckboxOffColor = withTransparency(Colors.black, 0.54);
+    strSecondaryTextColor = Colors.grey500;
+    strSelectColor = withTransparency(Colors.black, 0.2);
+    strSubheaderColor = withTransparency(Colors.white, 0.3);
     strSliderColor = withTransparency(Colors.black, 0.54);
     strPickerHeaderColor = Colors.cyan500;
     strClockCircleColor = withTransparency(Colors.black, 0.07);

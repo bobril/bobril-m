@@ -12,3 +12,7 @@ export * from "./src/enhancedTextArea";
 export * from "./src/textField";
 export * from "./src/badge";
 export * from "./src/toggle";
+export * from "./src/listItem";
+export * from "./src/list";
+export * from "./src/subheader";
+export * from "./src/iconButton";
