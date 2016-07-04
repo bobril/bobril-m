@@ -8,6 +8,9 @@ m.initRobotoFonts();
 let spacer = { tag: "span", style: { display: "inline-block", width: 8, height: 8 } };
 let examplePaper = b.styleDef({ width: 100, height: 100, margin: 16, padding: 34, textAlign: "center", display: "inline-block" });
 let ch1 = false;
+let s1 = false;
+let s2 = true;
+let s3 = false;
 let ch3 = 0;
 let rb1 = b.propi(0);
 let slider1 = b.propi(0);
@@ -17,6 +20,22 @@ let str2 = b.propi("");
 let str3 = b.propi("");
 let str4 = b.propi("");
 let str5 = b.propi("");
+
+function createFlexLayout(children: b.IBobrilNode[]): b.IBobrilNode {
+    return b.styledDiv(children.map((child) => {
+        return b.styledDiv(child, { flex: 1 });
+    }), { display: "flex" });
+}
+
+function createAvatar(content: string): b.IBobrilNode {
+    return {
+        tag: "svg", attrs: { width: 40, height: 40 },
+        children: [
+            { tag: "circle", attrs: { cx: "20", cy: "20", r: "18", stroke: m.primary2Color(), "stroke-width": "2", fill: m.transparent } },
+            { tag: "text", attrs: { "text-anchor": "middle", "dominant-baseline": "central", x: "20", y: "19", fill: m.primary2Color(), "font-size": 24 }, children: content }
+        ]
+    };
+}
 
 b.init(() => {
     return [
@@ -101,6 +120,116 @@ b.init(() => {
                 m.RadioButton({ value: 1 }, "Option B"),
                 m.RadioButton({ value: 2 }, "Option C"),
                 m.RadioButton({ value: 3, disabled: true }, "Disabled Option")
+            ])
+        ]),
+        createFlexLayout([
+            m.Paper({ style: { margin: 16 } }, [
+                m.List({
+                    children: [
+                        m.Subheader({ children: "Simple list" }),
+                        m.ListItem({ leftIcon: icons.contentInbox, primaryText: "Inbox" }),
+                        m.ListItem({ leftIcon: icons.actionGrade, primaryText: "Starred" }),
+                        m.ListItem({ leftIcon: icons.contentSend, primaryText: "Send mail" })
+                    ]
+                }),
+                m.Divider(),
+                m.List({
+                    children: [
+                        m.Subheader({ children: "Simple list" }),
+                        m.ListItem({ rightIcon: icons.actionInfo, primaryText: "All mail", secondaryText: "All mail", secondaryTextLines: m.ISecondaryTextLines.single }),
+                        m.ListItem({ rightIcon: icons.actionInfo, primaryText: "Trash", secondaryText: "Trash", secondaryTextLines: m.ISecondaryTextLines.single }),
+                        m.ListItem({ rightIcon: icons.actionInfo, primaryText: "Spam" })
+                    ]
+                })
+            ]),
+            m.Paper({ style: { margin: 16 } }, [
+                m.List({
+                    children: [
+                        m.Subheader({ children: "Nested list" }),
+                        m.ListItem({
+                            leftIcon: icons.contentInbox,
+                            primaryText: "Inbox",
+                            nestedItems: [
+                                m.Subheader({ children: "Nested list", inset: true }),
+                                m.ListItem({ leftIcon: icons.actionGrade, primaryText: "Starred", }),
+                                m.ListItem({
+                                    leftIcon: icons.contentSend,
+                                    primaryText: "Send mail",
+                                    disabled: true,
+                                    nestedItems: [
+                                        m.ListItem({ leftIcon: icons.contentSend, primaryText: "Google" }),
+                                        m.Divider({ inset: true }),
+                                        m.ListItem({ leftIcon: icons.contentSend, primaryText: "Outlook" })
+                                    ]
+                                })
+                            ]
+                        })
+                    ]
+                })
+            ]),
+            m.Paper({ style: { margin: 16 } }, [
+                m.List({
+                    children: [
+                        m.Subheader({ children: "Settings list" }),
+                        m.ListItem({
+                            primaryText: "Notifications",
+                            secondaryText: "Allow notifications",
+                            secondaryTextLines: m.ISecondaryTextLines.single,
+                            leftCheckbox: m.Checkbox({ checked: ch1, action: () => { ch1 = !ch1; b.invalidate(); } }),
+                            onTouchTap: () => { ch1 = !ch1; b.invalidate(); }
+                        }),
+                        m.Divider(),
+                        m.ListItem({
+                            primaryText: "Events and reminders",
+                            secondaryText: "Events and reminders",
+                            secondaryTextLines: m.ISecondaryTextLines.single,
+                            rightToggle: m.Toggle({ checked: ch1, action: () => { ch1 = !ch1; b.invalidate(); } }),
+                            onTouchTap: () => { ch1 = !ch1; b.invalidate(); }
+                        })
+                    ]
+                })
+            ]),
+            m.Paper({ style: { margin: 16 } }, [
+                m.List({
+                    children: [
+                        m.Subheader({ children: "Messages list" }),
+                        m.ListItem({
+                            primaryText: "Subject",
+                            secondaryText: "Text of message - Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas lorem.",
+                            secondaryTextLines: m.ISecondaryTextLines.double,
+                            leftAvatar: createAvatar("A")
+                        }),
+                        m.Divider({ inset: true }),
+                        m.ListItem({
+                            primaryText: "Subject",
+                            secondaryText: "Text of message - Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas lorem.",
+                            secondaryTextLines: m.ISecondaryTextLines.double,
+                            leftAvatar: createAvatar("B")
+                        })
+                    ]
+                })
+            ]),
+            m.Paper({ style: { margin: 16 } }, [
+                m.List({
+                    children: [
+                        m.Subheader({ children: "Selectable list" }),
+                        m.ListItem({
+                            primaryText: "Selectable Item 1",
+                            isSelect: s1,
+                            onTouchTap: () => { s1 = !s1; s2 = s3 = false; b.invalidate(); }
+                        }),
+                        m.ListItem({
+                            primaryText: "Selectable Item 2",
+                            isSelect: s2,
+                            onTouchTap: () => { s2 = !s2; s1 = s3 = false; b.invalidate(); }
+                        }),
+                        m.ListItem({
+                            primaryText: "Selectable Item 3",
+                            isSelect: s3,
+                            onTouchTap: () => { s3 = !s3; s1 = s2 = false; b.invalidate(); }
+                        })
+                    ]
+                })
             ])
         ])
     ];
