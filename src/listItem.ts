@@ -63,46 +63,59 @@ let iconStyle = b.styleDef([c.positionAbsolute, {
     margin: 12
 }]);
 
-let innerDivStyle = b.styleDef({ position: 'relative' });
-let leftIconStyle = b.styleDef({ left: 4 });
-let rightIconStyle = b.styleDef({ right: 4 });
-let avatarStyle = b.styleDef({ position: 'absolute' });
-let leftAvatarStyle = b.styleDef({ left: 16 });
-let rightAvatarStyle = ({ right: 16 });
+const innerDivStyle = b.styleDef(c.positionRelative);
+const leftIconStyle = b.styleDef({ left: 4 });
+const rightIconStyle = b.styleDef({ right: 4 });
+const avatarStyle = b.styleDef(c.positionAbsolute);
+const leftAvatarStyle = b.styleDef({ left: 16 });
+const rightAvatarStyle = b.styleDef({ right: 16 });
 
-let leftCheckboxStyle = b.styleDef({
-    position: 'absolute',
+const leftCheckboxStyle = b.styleDef([c.positionAbsolute, {
     display: 'block',
     width: 24,
     left: 16
-});
+}]);
 
-let rightToggleStyle = b.styleDef({
-    position: 'absolute',
+const rightToggleStyle = b.styleDef([c.positionAbsolute, {
     display: 'block',
     width: 54,
     right: 8
-});
+}]);
 
-let secondaryTextStyle = b.styleDef({
+const secondaryTextCommonStyle = {
     fontSize: 14,
     margin: 0,
     marginTop: 4,
     overflow: 'hidden',
-    textOverflow: 'ellipsis'
-});
+    textOverflow: 'ellipsis',
+    color: styles.secondaryTextColor
+};
 
-let rightIconButtonStyle = b.styleDef([c.positionAbsolute, {
+const twoLineSecondaryStyle = b.styleDef([secondaryTextCommonStyle, {
+    lineHeight: '16px',
+    height: 16,
+    whiteSpace: 'nowrap'
+}]);
+
+const threeLineSecondaryStyle = b.styleDef([secondaryTextCommonStyle, {
+    lineHeight: '18px',
+    height: 36,
+    display: '-webkit-box',
+    lineClamp: 2,
+    boxOrient: 'vertical'
+}]);
+
+const rightIconButtonStyle = b.styleDef([c.positionAbsolute, {
     display: 'block',
     right: 4
 }]);
 
-let enabledStyle = b.styleDef([c.userSelectNone, {
+const enabledStyle = b.styleDef([c.userSelectNone, {
     overflow: 'hidden',
     cursor: 'pointer'
 }], { focus: { outline: 'none' } });
 
-let disabledStyle = b.styleDef([c.userSelectNone, {
+const disabledStyle = b.styleDef([c.userSelectNone, {
     overflow: 'hidden',
     cursor: 'default'
 }]);
@@ -161,15 +174,7 @@ function createChildren(ctx: IItemHeaderCtx): b.IBobrilNode {
     if (d.primaryText)
         children.push(d.primaryText);
     if (d.secondaryText)
-        children.push(b.styledDiv(d.secondaryText, secondaryTextStyle, {
-            color: styles.secondaryTextColor,
-            lineHeight: threeLine ? '18px' : '16px',
-            height: threeLine ? 36 : 16,
-            whiteSpace: threeLine ? null : 'nowrap',
-            display: threeLine ? 'flex' : null,
-            lineClamp: threeLine ? 2 : null,
-            boxOrient: threeLine ? 'vertical' : null
-        }));
+        children.push(b.styledDiv(d.secondaryText, threeLine ? threeLineSecondaryStyle : twoLineSecondaryStyle));
 
     let hasCheckbox = d.leftCheckbox || d.rightToggle;
 
@@ -211,7 +216,7 @@ const ItemHeader = b.createComponent<IListItemData>({
                 style: [{
                     backgroundColor: showHover && !ctx.rightIconButtonKeyboardFocused
                         ? (ctx.focusFromKeyboard ? styles.keyboardFocusColor : styles.hoverColor)
-                        : d.isSelect ? styles.selectColor :  undefined
+                        : d.isSelect ? styles.selectColor : undefined
                 }]
             }, createChildren(ctx))
             : createChildren(ctx);
