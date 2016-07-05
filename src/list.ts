@@ -2,7 +2,7 @@ import * as b from 'bobril';
 import { Subheader } from './subheader';
 
 export interface IListData {
-    children?: b.IBobrilNode[];
+    children?: b.IBobrilChildren;
     privateNested?: boolean;
 }
 
@@ -18,12 +18,15 @@ let listStyle = b.styleDef({
 export const List = b.createComponent<IListData>({
     id: "List",
     render(ctx: IListCtx, me: b.IBobrilNode) {
-        let d = ctx.data;
+        me.children = ctx.data.children;
+    },
+    postRender(ctx: IListCtx, me: b.IBobrilCacheNode) {
         let hasSubheader = true;
-        let firstChild = d.children[0];
-        if (firstChild.component) hasSubheader = false;
-
-        b.style(me, listStyle, { paddingTop: hasSubheader ? 0 : 8 });
-        me.children = d.children;
+        let ch = me.children;
+        if (typeof ch !== "string") {
+            let firstChild = (<b.IBobrilCacheNode[]>me.children)[0];
+            if (firstChild.component) hasSubheader = false;
+        }
+        b.style(me, listStyle, hasSubheader || { paddingTop: 8 });
     }
 });
