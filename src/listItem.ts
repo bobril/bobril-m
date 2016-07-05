@@ -25,7 +25,6 @@ export interface IListItemData {
     leftIcon?: (data: { color: string }) => b.IBobrilNode;
     onNestedListToggle?: () => void;
     onTouchTap?: () => void;
-    nestedLevel?: number;
     nestedItems?: b.IBobrilNode[];
     primaryText?: string;
     rightAvatar?: b.IBobrilNode;
@@ -194,7 +193,18 @@ const ItemHeader = b.createComponent<IListItemData>({
         ctx.autoGenerateNestedIndicator = d.autoGenerateNestedIndicator !== undefined
             ? d.autoGenerateNestedIndicator
             : true;
-        ctx.nestedLevel = d.nestedLevel ? d.nestedLevel : 0;
+        let level = 0;
+        let node = ctx.me;
+        while (node != null) {
+            if (node.component != null && node.component.id === "List") {
+                if ((<list.IListData>node.data).privateNested)
+                    level++;
+                else
+                    break;
+            }
+            node = node.parent;
+        }
+        ctx.nestedLevel = level;
     },
     render(ctx: IItemHeaderCtx, me: b.IBobrilNode) {
         let d = ctx.data;
@@ -287,7 +297,7 @@ export const ListItem = b.createComponent<IListItemData>({
         let d = ctx.data;
         let nestedItems: b.IBobrilNode;
         if (ctx.isOpen && d.nestedItems && d.nestedItems.length) {
-            nestedItems = list.List({ nestedLevel: d.nestedLevel + 1 }, d.nestedItems);
+            nestedItems = list.List({ privateNested: true }, d.nestedItems);
         }
         d.onNestedListToggle = () => {
             ctx.isOpen = !ctx.isOpen;

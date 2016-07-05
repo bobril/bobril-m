@@ -3,12 +3,11 @@ import { Subheader } from './subheader';
 
 export interface IListData {
     children?: b.IBobrilNode[];
-    nestedLevel?: number;
+    privateNested?: boolean;
 }
 
 interface IListCtx extends b.IBobrilCtx {
     data: IListData;
-    nestedLevel: number;
 }
 
 let listStyle = b.styleDef({
@@ -17,9 +16,7 @@ let listStyle = b.styleDef({
 });
 
 export const List = b.createComponent<IListData>({
-    init(ctx: IListCtx) {
-        ctx.nestedLevel = ctx.data.nestedLevel ? ctx.data.nestedLevel : 0;
-    },
+    id: "List",
     render(ctx: IListCtx, me: b.IBobrilNode) {
         let d = ctx.data;
         let hasSubheader = true;
@@ -27,10 +24,6 @@ export const List = b.createComponent<IListData>({
         if (firstChild.component) hasSubheader = false;
 
         b.style(me, listStyle, { paddingTop: hasSubheader ? 0 : 8 });
-        me.children = d.children.map(child => {
-            //material use React.cloneElement
-            if (child.data) child.data['nestedLevel'] = ctx.nestedLevel;
-            return child;
-        });
+        me.children = d.children;
     }
 });
