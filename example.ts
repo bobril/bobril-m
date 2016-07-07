@@ -169,7 +169,7 @@ b.init(() => {
                         secondaryText: "Allow notifications",
                         secondaryTextLines: m.SecondaryTextLines.Single,
                         leftCheckbox: m.Checkbox({ checked: ch1, action: () => { ch1 = !ch1; b.invalidate(); } }),
-                        onTouchTap: () => { ch1 = !ch1; b.invalidate(); }
+                        action: () => { ch1 = !ch1; b.invalidate(); }
                     }),
                     m.Divider(),
                     m.ListItem({
@@ -177,7 +177,7 @@ b.init(() => {
                         secondaryText: "Events and reminders",
                         secondaryTextLines: m.SecondaryTextLines.Single,
                         rightToggle: m.Toggle({ checked: ch1, action: () => { ch1 = !ch1; b.invalidate(); } }),
-                        onTouchTap: () => { ch1 = !ch1; b.invalidate(); }
+                        action: () => { ch1 = !ch1; b.invalidate(); }
                     })
                 ])
             ]),
@@ -204,18 +204,18 @@ b.init(() => {
                     m.Subheader({}, "Selectable list"),
                     m.ListItem({
                         primaryText: "Selectable Item 1",
-                        isSelect: s1,
-                        onTouchTap: () => { s1 = !s1; s2 = s3 = false; b.invalidate(); }
+                        selected: s1,
+                        action: () => { s1 = !s1; s2 = s3 = false; b.invalidate(); }
                     }),
                     m.ListItem({
                         primaryText: "Selectable Item 2",
-                        isSelect: s2,
-                        onTouchTap: () => { s2 = !s2; s1 = s3 = false; b.invalidate(); }
+                        selected: s2,
+                        action: () => { s2 = !s2; s1 = s3 = false; b.invalidate(); }
                     }),
                     m.ListItem({
                         primaryText: "Selectable Item 3",
-                        isSelect: s3,
-                        onTouchTap: () => { s3 = !s3; s1 = s2 = false; b.invalidate(); }
+                        selected: s3,
+                        action: () => { s3 = !s3; s1 = s2 = false; b.invalidate(); }
                     })
                 ])
             ])

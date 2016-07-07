@@ -17,12 +17,12 @@ export interface IListItemData {
     children?: b.IBobrilChildren;
     disabled?: boolean;
     insetChildren?: boolean;
-    isSelect?: boolean;
+    selected?: boolean;
     open?: b.IProp<boolean>;
     leftAvatar?: b.IBobrilNode;
     leftCheckbox?: b.IBobrilNode;
     leftIcon?: (data: { color: string }) => b.IBobrilNode;
-    onTouchTap?: () => void;
+    action?: () => void;
     primaryText?: string;
     rightAvatar?: b.IBobrilNode;
     rightIcon?: (data: { color: string }) => b.IBobrilNode;
@@ -225,7 +225,7 @@ const ItemHeader = b.createComponent<IListItemCtx>({
                 style: [{
                     backgroundColor: showHover && !ctx.rightIconButtonKeyboardFocused
                         ? (ctx.focusFromKeyboard ? styles.keyboardFocusColor : styles.hoverColor)
-                        : d.isSelect ? styles.selectColor : undefined
+                        : d.selected ? styles.selectColor : undefined
                 }]
             }, createChildren(ctx))
             : createChildren(ctx);
@@ -233,7 +233,7 @@ const ItemHeader = b.createComponent<IListItemCtx>({
     onPointerUp(ctx: IItemHeaderCtx, ev: b.IBobrilPointerEvent): boolean {
         let d = ctx.data.data;
         if (d.disabled) return false;
-        if (d.onTouchTap) d.onTouchTap();
+        if (d.action) d.action();
         return true;
     },
     onKeyDown(ctx: IItemHeaderCtx, ev: b.IKeyDownUpEvent): boolean {
@@ -244,7 +244,7 @@ const ItemHeader = b.createComponent<IListItemCtx>({
             return true;
         }
         if (ev.which === 13 && !d.disabled && ctx.focusFromKeyboard) {
-            let a = d.onTouchTap;
+            let a = d.action;
             if (a) a();
             return true;
         }
@@ -255,7 +255,7 @@ const ItemHeader = b.createComponent<IListItemCtx>({
         if (ev.which === 32 && !d.disabled && ctx.focusFromKeyboard) {
             ctx.down = false;
             b.invalidate(ctx);
-            let a = d.onTouchTap;
+            let a = d.action;
             if (a) a();
             return true;
         }
