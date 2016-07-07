@@ -15,6 +15,7 @@ let subheaderStyle = {
     width: '100%'
 };
 
-export const Subheader = (data: ISubheaderData) => {
-    return b.styledDiv(data.children, subheaderStyle, { paddingLeft: data.inset ? 72 : 16 });
+export const Subheader = (data: ISubheaderData, children?: b.IBobrilCacheChildren) => {
+    if (data == null) data = {};
+    return b.styledDiv(data.children || children, subheaderStyle, { paddingLeft: data.inset ? 72 : 16 });
 }

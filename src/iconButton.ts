@@ -78,7 +78,7 @@ export const IconButton = b.createComponent<IIconButtonData>({
         }, d.children);
     },
     onKeyDown(ctx: IIconButtonCtx, ev: b.IKeyDownUpEvent): boolean {
-        if (ev.which === 13 && !ctx.data.disabled && ctx.focusFromKeyboard) {
+        if ((ev.which === 13 || ev.which === 32) && !ctx.data.disabled && ctx.focusFromKeyboard) {
             if (ctx.data.action) ctx.data.action();
             return true;
         }

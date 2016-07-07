@@ -125,14 +125,14 @@ b.init(() => {
         createFlexLayout([
             m.Paper({ style: { margin: 16 } }, [
                 m.List({}, [
-                    m.Subheader({ children: "Simple list" }),
+                    m.Subheader({}, "Simple list"),
                     m.ListItem({ leftIcon: icons.contentInbox, primaryText: "Inbox" }),
                     m.ListItem({ leftIcon: icons.actionGrade, primaryText: "Starred" }),
                     m.ListItem({ leftIcon: icons.contentSend, primaryText: "Send mail" })
                 ]),
                 m.Divider(),
                 m.List({}, [
-                    m.Subheader({ children: "Simple list" }),
+                    m.Subheader({}, "Simple list"),
                     m.ListItem({ rightIcon: icons.actionInfo, primaryText: "All mail", secondaryText: "All mail", secondaryTextLines: m.SecondaryTextLines.Single }),
                     m.ListItem({ rightIcon: icons.actionInfo, primaryText: "Trash", secondaryText: "Trash", secondaryTextLines: m.SecondaryTextLines.Single }),
                     m.ListItem({ rightIcon: icons.actionInfo, primaryText: "Spam" })
@@ -140,30 +140,30 @@ b.init(() => {
             ]),
             m.Paper({ style: { margin: 16 } }, [
                 m.List({}, [
-                    m.Subheader({ children: "Nested list" }),
+                    m.Subheader({}, "Nested list"),
                     m.ListItem({
                         leftIcon: icons.contentInbox,
-                        primaryText: "Inbox",
-                        nestedItems: [
-                            m.Subheader({ children: "Nested list", inset: true }),
+                        primaryText: "Inbox"},
+                        [
+                            m.Subheader({ inset: true }, "Nested list"),
                             m.ListItem({ leftIcon: icons.actionGrade, primaryText: "Starred", }),
                             m.ListItem({
                                 leftIcon: icons.contentSend,
                                 primaryText: "Send mail",
-                                disabled: true,
-                                nestedItems: [
+                                disabled: true },
+                                [
                                     m.ListItem({ leftIcon: icons.contentSend, primaryText: "Google" }),
                                     m.Divider({ inset: true }),
                                     m.ListItem({ leftIcon: icons.contentSend, primaryText: "Outlook" })
                                 ]
-                            })
+                            )
                         ]
-                    })
+                    )
                 ])
             ]),
             m.Paper({ style: { margin: 16 } }, [
                 m.List({}, [
-                    m.Subheader({ children: "Settings list" }),
+                    m.Subheader({}, "Settings list"),
                     m.ListItem({
                         primaryText: "Notifications",
                         secondaryText: "Allow notifications",
@@ -183,7 +183,7 @@ b.init(() => {
             ]),
             m.Paper({ style: { margin: 16 } }, [
                 m.List({}, [
-                    m.Subheader({ children: "Messages list" }),
+                    m.Subheader({}, "Messages list"),
                     m.ListItem({
                         primaryText: "Subject",
                         secondaryText: "Text of message - Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas lorem.",
@@ -201,7 +201,7 @@ b.init(() => {
             ]),
             m.Paper({ style: { margin: 16 } }, [
                 m.List({}, [
-                    m.Subheader({ children: "Selectable list" }),
+                    m.Subheader({}, "Selectable list"),
                     m.ListItem({
                         primaryText: "Selectable Item 1",
                         isSelect: s1,

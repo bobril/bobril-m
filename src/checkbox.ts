@@ -216,10 +216,12 @@ export const Checkbox = b.createComponent<ICheckboxData>({
     onKeyDown(ctx: ICheckboxCtx, ev: b.IKeyDownUpEvent): boolean {
         if (ev.which === 32 && !ctx.data.disabled && ctx.focusFromKeyboard) {
             ctx.down = true;
+            ctx.focusFromKeyboard = true;
             b.invalidate(ctx);
             return true;
         }
         if (ev.which === 13 && !ctx.data.disabled && ctx.focusFromKeyboard) {
+            ctx.focusFromKeyboard = true;
             let a = ctx.data.action;
             if (a) a();
             return true;
