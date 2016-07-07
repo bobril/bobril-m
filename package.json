@@ -1,6 +1,6 @@
 {
   "name": "bobril-m",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "dependencies": {
     "bobril": "^4.39.0",
     "bobril-flex-ie10": "^0.1.0",
