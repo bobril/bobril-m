@@ -13,16 +13,17 @@ export enum SecondaryTextLines {
 }
 
 export interface IListItemData {
+    action?: () => void;
     autoGenerateNestedIndicator?: boolean;
     children?: b.IBobrilChildren;
     disabled?: boolean;
+    innerDivStyle?: b.IBobrilStyles;
     insetChildren?: boolean;
     selected?: boolean;
     open?: b.IProp<boolean>;
     leftAvatar?: b.IBobrilNode;
     leftCheckbox?: b.IBobrilNode;
     leftIcon?: (data: { color: string }) => b.IBobrilNode;
-    action?: () => void;
     primaryText?: string;
     rightAvatar?: b.IBobrilNode;
     rightIcon?: (data: { color: string }) => b.IBobrilNode;
@@ -30,6 +31,7 @@ export interface IListItemData {
     rightToggle?: b.IBobrilNode;
     secondaryText?: string;
     secondaryTextLines?: SecondaryTextLines;
+    style?: b.IBobrilStyles;
     tabindex?: number;
 }
 
@@ -45,7 +47,7 @@ interface IItemHeaderCtx extends b.IBobrilCtx {
     rightIconButtonKeyboardFocused: boolean;
 }
 
-let rootStyle = b.styleDef([c.positionRelative, {
+const rootStyle = b.styleDef([c.positionRelative, {
     color: styles.textColor,
     display: 'block',
     fontSize: 16,
@@ -53,7 +55,7 @@ let rootStyle = b.styleDef([c.positionRelative, {
     transition: transitions.easeOut()
 }]);
 
-let iconStyle = b.styleDef([c.positionAbsolute, {
+const iconStyle = b.styleDef([c.positionAbsolute, {
     height: 24,
     width: 24,
     display: 'block',
@@ -181,7 +183,7 @@ function createChildren(ctx: IItemHeaderCtx): b.IBobrilNode {
         paddingRight: d.rightIcon || d.rightAvatar || d.rightIconButton ? 56 : d.rightToggle ? 72 : 16,
         paddingBottom: singleAvatar ? 20 : 16,
         paddingTop: !singleAvatar || threeLine ? 16 : 20
-    });
+    }, d.innerDivStyle, d.style);
 }
 
 const ItemHeader = b.createComponent<IListItemCtx>({
@@ -289,13 +291,13 @@ interface IListItemCtx extends b.IBobrilCtx {
     data: IListItemData;
     hasNested: boolean;
     open: b.IProp<boolean>;
-    toggleOpen: ()=>void;
+    toggleOpen: () => void;
 }
 
 export const ListItem = b.createComponent<IListItemData>({
     init(ctx: IListItemCtx) {
         ctx.open = ctx.data.open || b.prop(false);
-        ctx.toggleOpen = ()=> {
+        ctx.toggleOpen = () => {
             ctx.open(!ctx.open());
             b.invalidate(ctx);
         };
