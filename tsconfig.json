@@ -23,6 +23,8 @@
         "src/list.ts",
         "src/listItem.ts",
         "src/paper.ts",
+        "src/popoverAnimationDefault.ts",
+        "src/popoverOrigin.ts",
         "src/radiobutton.ts",
         "src/ripple.ts",
         "src/slider.ts",
