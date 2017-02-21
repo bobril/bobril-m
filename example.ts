@@ -2,7 +2,6 @@ import * as b from 'bobril';
 import * as m from './index';
 import * as icons from 'bobril-m-icons';
 import 'bobril-flex-ie10';
-import { PopoverAnimationDefault } from './src/popoverAnimationDefault';
 
 m.initRobotoFonts();
 
@@ -65,9 +64,9 @@ function getButtonPreview(): b.IBobrilChildren {
             m.Button({ type: m.ButtonType.Raised, disabled: true }, 'Disabled')
         ]),
         m.Paper({ style: { margin: 16, padding: 8 } }, [
-            m.Button({ type: m.ButtonType.Floating, icon: icons.contentAdd }), spacer,
-            m.Button({ type: m.ButtonType.Floating, feature: m.Feature.Secondary, icon: icons.toggleStar }), spacer,
-            m.Button({ type: m.ButtonType.Floating, disabled: true, icon: icons.toggleStarHalf })
+            m.Button({ type: m.ButtonType.Floating, icon: icons.contentAdd() }), spacer,
+            m.Button({ type: m.ButtonType.Floating, feature: m.Feature.Secondary, icon: icons.toggleStar() }), spacer,
+            m.Button({ type: m.ButtonType.Floating, disabled: true, icon: icons.toggleStarHalf() })
         ])
     ];
 }
@@ -87,35 +86,35 @@ function getListPreview(): b.IBobrilChildren {
         m.Paper({ style: { margin: 16 } }, [
             m.List({}, [
                 m.Subheader({}, 'Simple list'),
-                m.ListItem({ leftIcon: icons.contentInbox, primaryText: 'Inbox' }),
-                m.ListItem({ leftIcon: icons.actionGrade, primaryText: 'Starred' }),
-                m.ListItem({ leftIcon: icons.contentSend, primaryText: 'Send mail' })
+                m.ListItem({ leftIcon: icons.contentInbox(), primaryText: 'Inbox' }),
+                m.ListItem({ leftIcon: icons.actionGrade(), primaryText: 'Starred' }),
+                m.ListItem({ leftIcon: icons.contentSend(), primaryText: 'Send mail' })
             ]),
             m.Divider(),
             m.List({}, [
                 m.Subheader({}, 'Simple list'),
-                m.ListItem({ rightIcon: icons.actionInfo, primaryText: 'All mail', secondaryText: 'All mail', secondaryTextLines: m.SecondaryTextLines.Single }),
-                m.ListItem({ rightIcon: icons.actionInfo, primaryText: 'Trash', secondaryText: 'Trash', secondaryTextLines: m.SecondaryTextLines.Single }),
-                m.ListItem({ rightIcon: icons.actionInfo, primaryText: 'Spam' })
+                m.ListItem({ rightIcon: icons.actionInfo(), primaryText: 'All mail', secondaryText: 'All mail', secondaryTextLines: m.SecondaryTextLines.Single }),
+                m.ListItem({ rightIcon: icons.actionInfo(), primaryText: 'Trash', secondaryText: 'Trash', secondaryTextLines: m.SecondaryTextLines.Single }),
+                m.ListItem({ rightIcon: icons.actionInfo(), primaryText: 'Spam' })
             ])
         ]),
         m.Paper({ style: { margin: 16 } }, [
             m.List({}, [
                 m.Subheader({}, 'Nested list'),
                 m.ListItem({
-                    leftIcon: icons.contentInbox,
+                    leftIcon: icons.contentInbox(),
                     primaryText: 'Inbox',
                     nestedItems: [
                         m.Subheader({ inset: true }, 'Nested list'),
-                        m.ListItem({ leftIcon: icons.actionGrade, primaryText: 'Starred', }),
+                        m.ListItem({ leftIcon: icons.actionGrade(), primaryText: 'Starred', }),
                         m.ListItem({
-                            leftIcon: icons.contentSend,
+                            leftIcon: icons.contentSend(),
                             primaryText: 'Send mail',
                             disabled: true,
                             nestedItems: [
-                                m.ListItem({ leftIcon: icons.contentSend, primaryText: 'Google' }),
+                                m.ListItem({ leftIcon: icons.contentSend(), primaryText: 'Google' }),
                                 m.Divider({ inset: true }),
-                                m.ListItem({ leftIcon: icons.contentSend, primaryText: 'Outlook' })
+                                m.ListItem({ leftIcon: icons.contentSend(), primaryText: 'Outlook' })
                             ]
                         })
                     ]
@@ -196,11 +195,11 @@ function getMenuPreview(): b.IBobrilChildren {
         ]),
         m.Paper({ style: { margin: 16 } }, [
             m.Menu({}, [
-                m.MenuItem({ primaryText: 'Maps', leftIcon: icons.mapsDirections }),
-                m.MenuItem({ primaryText: 'Bookmarks', disabled: true, leftIcon: icons.actionBookmark }),
+                m.MenuItem({ primaryText: 'Maps', leftIcon: icons.mapsDirections() }),
+                m.MenuItem({ primaryText: 'Bookmarks', disabled: true, leftIcon: icons.actionBookmark() }),
                 m.Divider(),
-                m.MenuItem({ primaryText: 'Flights', rightIcon: icons.mapsFlight }),
-                m.MenuItem({ primaryText: 'Apps', rightIcon: icons.actionAlarm })
+                m.MenuItem({ primaryText: 'Flights', rightIcon: icons.mapsFlight() }),
+                m.MenuItem({ primaryText: 'Apps', rightIcon: icons.actionAlarm() })
             ])
         ]),
         m.Paper({ style: { display: 'inline-block', margin: 16 } }, [
@@ -208,11 +207,11 @@ function getMenuPreview(): b.IBobrilChildren {
                 m.MenuItem({
                     primaryText: 'Books',
                     insetChildren: true,
-                    rightIcon: icons.navigationChevronRight,
+                    rightIcon: icons.navigationChevronRight(),
                     menuItems: [
                         m.MenuItem({
                             primaryText: 'Programming',
-                            rightIcon: icons.navigationChevronRight,
+                            rightIcon: icons.navigationChevronRight(),
                             menuItems: [
                                 m.MenuItem({
                                     primaryText: 'TypeScript',
@@ -242,11 +241,11 @@ function getMenuPreview(): b.IBobrilChildren {
         ]),
         m.Paper({ style: { margin: 16 } }, [
             m.Menu({ desktop: true }, [
-                m.MenuItem({ primaryText: 'Maps', leftIcon: icons.mapsDirections, desktop: true }),
-                m.MenuItem({ primaryText: 'Bookmarks', disabled: true, leftIcon: icons.actionBookmark }),
+                m.MenuItem({ primaryText: 'Maps', leftIcon: icons.mapsDirections(), desktop: true }),
+                m.MenuItem({ primaryText: 'Bookmarks', disabled: true, leftIcon: icons.actionBookmark() }),
                 m.Divider(),
-                m.MenuItem({ primaryText: 'Flights', rightIcon: icons.mapsFlight }),
-                m.MenuItem({ primaryText: 'Apps', rightIcon: icons.actionAlarm })
+                m.MenuItem({ primaryText: 'Flights', rightIcon: icons.mapsFlight() }),
+                m.MenuItem({ primaryText: 'Apps', rightIcon: icons.actionAlarm() })
             ])
         ]),
         m.Paper({ style: { margin: 16 } }, [

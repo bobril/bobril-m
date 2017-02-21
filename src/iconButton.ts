@@ -37,17 +37,6 @@ let iconStyle = b.styleDef({
     fill: styles.textColor
 });
 
-let tooltipStyle = b.styleDef({
-    boxSizing: 'border-box'
-});
-
-let overlayStyle = b.styleDef([c.positionRelative, {
-    top: 0,
-    width: '100%',
-    height: '100%',
-    background: styles.disabledColor
-}]);
-
 let enabledStyle = b.styleDef([c.userSelectNone, {
     overflow: 'hidden',
     cursor: 'pointer'
@@ -86,12 +75,12 @@ export const IconButton = b.createComponent<IIconButtonData>({
     },
     onFocus(ctx: IIconButtonCtx) {
         ctx.focusFromKeyboard = true;
-        ctx.data.onFocus();
+        if (ctx.data.onFocus) ctx.data.onFocus();
         b.invalidate(ctx);
     },
     onBlur(ctx: IIconButtonCtx) {
         ctx.focusFromKeyboard = false;
-        ctx.data.onBlur();
+        if (ctx.data.onBlur) ctx.data.onBlur();
         b.invalidate(ctx);
     }
 });

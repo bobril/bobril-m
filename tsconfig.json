@@ -15,7 +15,14 @@
         "removeComments": false,
         "noLib": false,
         "preserveConstEnums": false,
-        "experimentalDecorators": true
+        "experimentalDecorators": true,
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "strictNullChecks": true
     },
     "compileOnSave": false,
     "files": [

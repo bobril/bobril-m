@@ -3,8 +3,8 @@ import * as icons from "bobril-m-icons";
 import * as checkbox from './checkbox';
 
 let radioButtonIcons: checkbox.CheckBoxLikeIcons = {
-    off: icons.toggleRadioButtonUnchecked,
-    on: icons.toggleRadioButtonChecked,
+    off: icons.toggleRadioButtonUnchecked(),
+    on: icons.toggleRadioButtonChecked(),
     radioButtonLike: true
 };
 
@@ -50,12 +50,12 @@ export const RadioButton = b.createVirtualComponent<IRadioButtonData>({
             checked = true;
         }
         const disabled = data.disabled;
-        let tabindex = group.data.tabindex || 0;
+        let tabindex: number | undefined = group.data.tabindex || 0;
         if (group.firstEnabled === -1 && !disabled) {
             group.firstEnabled = idx;
-            if (!checked) tabindex = null;
+            if (!checked) tabindex = undefined;
         } else {
-            if (group.selIdx === -1 || !checked) tabindex = null;
+            if (group.selIdx === -1 || !checked) tabindex = undefined;
         }
         me.children = checkbox.Checkbox({
             checked,
@@ -124,7 +124,7 @@ export const RadioButtonGroup = b.createComponent<IRadioButtonGroupData>({
         ctx.selIdx = (b.getValue(d.value) === d.unselectedValue) ? -1 : -2;
         ctx.firstEnabled = -1;
     },
-    postRender(ctx: IRadioButtonGroupCtx, me: b.IBobrilCacheNode) {
+    postRender(ctx: IRadioButtonGroupCtx, _me: b.IBobrilCacheNode) {
         if (ctx.selIdx === -2) {
             b.emitChange(ctx.data, ctx.data.unselectedValue);
         }

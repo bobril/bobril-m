@@ -1,16 +1,14 @@
 import * as b from "bobril";
 import * as paper from "./paper";
-import * as ripple from "./ripple";
 import * as styles from "./styles";
-import * as colors from "./colors";
 import * as transitions from "./transitions";
 import * as icons from "bobril-m-icons";
 import * as c from "./styleConsts";
 
 export type CheckBoxLikeIcons = {
-    off(data: { color: string }): b.IBobrilNode;
-    on(data: { color: string }): b.IBobrilNode;
-    indeterminate?(data: { color: string }): b.IBobrilNode;
+    off: b.IBobrilNode;
+    on: b.IBobrilNode;
+    indeterminate?: b.IBobrilNode;
     radioButtonLike?: boolean;
 };
 
@@ -37,9 +35,9 @@ interface ICheckboxCtx extends b.IBobrilCtx {
 }
 
 let checkBoxIcons: CheckBoxLikeIcons = {
-    off: icons.toggleCheckBoxOutlineBlank,
-    on: icons.toggleCheckBox,
-    indeterminate: icons.toggleIndeterminateCheckBox
+    off: icons.toggleCheckBoxOutlineBlank(),
+    on: icons.toggleCheckBox(),
+    indeterminate: icons.toggleIndeterminateCheckBox()
 };
 
 let enabledStyle = b.styleDef({
@@ -56,12 +54,6 @@ let rootSwitchStyle = b.styleDef([c.userSelectNone, c.positionRelative, {
     height: 24
 }]);
 
-let labelStyle = b.styleDef({
-    display: "inline-block",
-    fontSize: "14px",
-    fontWeight: 500
-});
-
 let checkStyle = b.styleDef([c.positionAbsolute, {
     opacity: 0,
     transform: 'scale(0)',
@@ -72,7 +64,7 @@ let checkStyle = b.styleDef([c.positionAbsolute, {
 
 let boxStyle = b.styleDef([c.positionAbsolute, {
     fill: styles.checkboxOffColor,
-    transition: transitions.easeOut('2s', null, '200ms')
+    transition: transitions.easeOut('2s', undefined, '200ms')
 }]);
 
 let checkWhenSwitchedStyle = b.styleDef([c.positionAbsolute, {
@@ -177,9 +169,9 @@ export const Checkbox = b.createComponent<ICheckboxData>({
         b.style(checkDiv, rootSwitchStyle);
         checkDiv.children = [
             rr != 0 && b.withKey(b.styledDiv("", showFocus ? focusFromKeyStyle : rippleStyle, { left: 12 - rr, top: 12 - rr, width: 2 * rr, height: 2 * rr, opacity: ro, background: checked ? styles.primary1Color : styles.checkboxOffColor }), "r"),
-            b.styledDiv(ics.off({ color: "inherit" }), disabled ? ((checked || indeterminate) ? hiddenStyle : checkDisabled) : (checked ? boxWhenSwitchedStyle : boxStyle)),
-            indeterminate != null && b.withKey(b.styledDiv(ics.indeterminate({ color: "inherit" }), disabled ? (indeterminate ? checkDisabled : hiddenStyle) : (indeterminate ? checkWhenSwitchedStyle : checkStyle)), "i"),
-            b.styledDiv(ics.on({ color: "inherit" }), disabled ? (checked ? checkDisabled : hiddenStyle) : (checked ? checkWhenSwitchedStyle : checkStyle))
+            b.styledDiv(ics.off, disabled ? ((checked || indeterminate) ? hiddenStyle : checkDisabled) : (checked ? boxWhenSwitchedStyle : boxStyle)),
+            indeterminate != null && b.withKey(b.styledDiv(ics.indeterminate!, disabled ? (indeterminate ? checkDisabled : hiddenStyle) : (indeterminate ? checkWhenSwitchedStyle : checkStyle)), "i"),
+            b.styledDiv(ics.on, disabled ? (checked ? checkDisabled : hiddenStyle) : (checked ? checkWhenSwitchedStyle : checkStyle))
         ];
         if (checkDiv !== me) {
             me.children = [checkDiv, b.styledDiv(d.children, textStyle, disabled && disabledTextStyle)];
@@ -194,7 +186,7 @@ export const Checkbox = b.createComponent<ICheckboxData>({
             me.attrs.tabindex = d.tabindex || 0;
     },
     onPointerDown(ctx: ICheckboxCtx): boolean {
-        if (ctx.data.disabled) return;
+        if (ctx.data.disabled) return false;
         ctx.focusFromKeyboard = false;
         if (b.pointersDownCount() === 1) {
             ctx.down = true;
@@ -202,6 +194,7 @@ export const Checkbox = b.createComponent<ICheckboxData>({
             b.focus(ctx.me);
         }
         b.invalidate(ctx);
+        return true;
     },
     onPointerUp(ctx: ICheckboxCtx): boolean {
         ctx.down = false;

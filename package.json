@@ -1,6 +1,6 @@
 {
   "name": "bobril-m",
-  "version": "0.8.0",
+  "version": "0.10.0",
   "dependencies": {
     "bobril": "*",
     "bobril-flex-ie10": "*",
@@ -13,7 +13,16 @@
   },
   "bobril": {
     "title": "Bobril Material",
-    "example": "example.ts"
+    "example": "example.ts",
+    "compilerOptions": {
+      "noImplicitAny": true,
+      "noImplicitThis": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "noImplicitReturns": true,
+      "noFallthroughCasesInSwitch": true,
+      "strictNullChecks": true
+    }
   },
   "repository": {
     "type": "git",

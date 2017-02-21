@@ -1,8 +1,5 @@
 import * as b from "bobril";
-import * as paper from "./paper";
-import * as ripple from "./ripple";
 import * as styles from "./styles";
-import * as colors from "./colors";
 import * as colorUtils from "./colorUtils";
 import * as transitions from "./transitions";
 import * as c from "./styleConsts";
@@ -91,8 +88,8 @@ export const Toggle = b.createComponent<IToggleData>({
         let checked = d.checked;
         let focusFromKeyboard = ctx.focusFromKeyboard;
         let hasRipple = ctx.rippleStart != 0;
-        let t: number;
-        let r: number;
+        let t: number = 0;
+        let r: number = 0;
         if (hasRipple) {
             t = (b.now() - ctx.rippleStart) * 0.004;
             if (t > 2) {
@@ -102,7 +99,7 @@ export const Toggle = b.createComponent<IToggleData>({
             r = Math.min(t * toggleSize, toggleSize);
             b.invalidate(ctx);
         }
-        if (ctx.focusFromKeyboard){
+        if (focusFromKeyboard) {
             hasRipple = true;
             r = toggleSize;
             t = 1;
@@ -127,7 +124,7 @@ export const Toggle = b.createComponent<IToggleData>({
             me.attrs.tabindex = d.tabindex || 0;
     },
     onPointerDown(ctx: IToggleCtx): boolean {
-        if (ctx.data.disabled) return;
+        if (ctx.data.disabled) return false;
         ctx.focusFromKeyboard = false;
         if (b.pointersDownCount() === 1) {
             ctx.down = true;
@@ -135,6 +132,7 @@ export const Toggle = b.createComponent<IToggleData>({
             b.focus(ctx.me);
         }
         b.invalidate(ctx);
+        return true;
     },
     onPointerUp(ctx: IToggleCtx): boolean {
         ctx.down = false;

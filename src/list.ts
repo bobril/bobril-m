@@ -1,5 +1,4 @@
 import * as b from 'bobril';
-import { Subheader } from './subheader';
 
 export interface IListData {
     children?: b.IBobrilChildren;
@@ -20,7 +19,7 @@ export const List = b.createComponent<IListData>({
     render(ctx: IListCtx, me: b.IBobrilNode) {
         me.children = ctx.data.children;
     },
-    postRender(ctx: IListCtx, me: b.IBobrilCacheNode) {
+    postRender(_ctx: IListCtx, me: b.IBobrilCacheNode) {
         let hasSubheader = true;
         let ch = me.children;
         if (typeof ch !== "string") {

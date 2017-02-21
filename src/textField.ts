@@ -78,7 +78,7 @@ const inputDisabledStyle = b.styleDefEx(inputStyle, {
 
 const realInputComponent: b.IBobrilComponent = {
     onChange(ctx: b.IBobrilCtx, value: string) {
-        const ctxOfEnhanced = <ITextFieldCtx>ctx.me.parent.ctx;
+        const ctxOfEnhanced = <ITextFieldCtx>ctx.me.parent!.ctx;
         b.emitChange(ctxOfEnhanced.data, value);
         b.invalidate(ctxOfEnhanced);
     }
@@ -97,7 +97,7 @@ function createLazyMultilineCallbacks(ctx: ITextFieldCtx) {
 }
 
 export const TextField = b.createComponent<ITextFieldData>({
-    init(ctx: ITextFieldCtx, me: b.IBobrilNode) {
+    init(ctx: ITextFieldCtx, _me: b.IBobrilNode) {
         ctx.focused = false;
         ctx.id = uniqueId.generateUniqueId();
         ctx.inputHeight = 24 * (ctx.data.rows || 1);
@@ -116,6 +116,7 @@ export const TextField = b.createComponent<ITextFieldData>({
             b.focus(ctx.me);
             return true;
         }
+        return false;
     },
     render(ctx: ITextFieldCtx, me: b.IBobrilNode) {
         const d = ctx.data;

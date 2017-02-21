@@ -1,5 +1,4 @@
 import * as b from "bobril";
-import * as colors from "./colors";
 import * as c from "./styleConsts";
 import { withTransparency } from "./colorUtils";
 
@@ -20,29 +19,29 @@ interface IRippleCtx extends b.IBobrilCtx {
 }
 
 const oneRippleStyle = b.styleDef([
-    c.positionAbsolute, 
-    c.noTapHighlight, 
+    c.positionAbsolute,
+    c.noTapHighlight,
     c.pointerEventsNone,
     c.userSelectNone,
     c.circle, {
-    backgroundColor: "#000",
-}]);
+        backgroundColor: "#000",
+    }]);
 
 const pulseRippleStyle = b.styleDef([
-    c.positionAbsolute, 
-    c.noTapHighlight, 
+    c.positionAbsolute,
+    c.noTapHighlight,
     c.pointerEventsNone,
     c.userSelectNone,
     c.circle, {
-    backgroundColor: withTransparency("#fff", 0.3),
-}]);
+        backgroundColor: withTransparency("#fff", 0.3),
+    }]);
 
 const rippleStyle = b.styleDef([
     c.positionRelative,
     c.noTapHighlight,
     c.widthHeight100p, {
-    boxSizing: "border-box",
-}]);
+        boxSizing: "border-box",
+    }]);
 
 export const Ripple = b.createComponent<IRippleData>({
     init(ctx: IRippleCtx) {
@@ -93,7 +92,7 @@ export const Ripple = b.createComponent<IRippleData>({
         }
         if (ripples.length > 0 || ctx.data.pulse) b.invalidate(ctx);
     },
-    postInitDom(ctx: IRippleCtx) {
+    postInitDom(this: any, ctx: IRippleCtx) {
         this.postUpdateDom(ctx);
     },
     postUpdateDom(ctx: IRippleCtx) {

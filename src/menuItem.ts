@@ -6,6 +6,7 @@ import { Menu } from './menu';
 import { Popover } from './popover';
 import { IPopoverOrigin } from './popoverOrigin';
 import * as styles from './styles';
+import { IPopoverAnimationDefaultData } from "./popoverAnimationDefault";
 
 export const enum IFocusState {
     None,
@@ -15,18 +16,18 @@ export const enum IFocusState {
 
 export interface IMenuItemData {
     anchorOrigin?: IPopoverOrigin,
-    animation?: b.IComponentFactory<b.IBobrilComponent>,
+    animation?: b.IComponentFactory<IPopoverAnimationDefaultData>,
     checked?: boolean,
     children?: b.IBobrilChildren,
     desktop?: boolean,
     disabled?: boolean,
     innerDivStyle?: b.IBobrilStyleDef,
     insetChildren?: boolean,
-    leftIcon?: (data: { color: string }) => b.IBobrilNode,
+    leftIcon?: b.IBobrilNode,
     menuItems?: b.IBobrilChildren,
     onTouchTap?: () => void,
     primaryText?: string,
-    rightIcon?: (data: { color: string }) => b.IBobrilNode,
+    rightIcon?: b.IBobrilNode,
     secondaryText?: string,
     style?: b.IBobrilStyleDef,
     targetOrigin?: IPopoverOrigin
@@ -34,7 +35,7 @@ export interface IMenuItemData {
 
 interface IMenuItemCtx extends b.IBobrilCtx {
     data: IMenuItemData;
-    anchorNode: b.IBobrilCacheNode;
+    anchorNode: b.IBobrilCacheNode | undefined;
     open: boolean;
 }
 
@@ -47,7 +48,7 @@ const secondaryTextStyle = b.styleDef({ cssFloat: 'right' });
 const leftIconDesktopStyle = b.styleDef({ left: 24, top: 4 });
 const rightIconDesktopStyle = b.styleDef({ right: 24, top: 4 });
 
-function handleTouchTap(ctx: IMenuItemCtx, event) {
+function handleTouchTap(ctx: IMenuItemCtx) {
     if (!ctx.data.menuItems) {
         ctx.open = false;
         ctx.anchorNode = undefined;
@@ -72,20 +73,20 @@ export const MenuItem = b.createComponent<IMenuItemData>({
     },
     render(ctx: IMenuItemCtx, me: b.IBobrilNode) {
         const d = ctx.data;
-        let leftIconElement
+        let leftIconElement: b.IBobrilNode | undefined;
         if (d.leftIcon) {
-            leftIconElement = d.leftIcon({ color: d.disabled ? styles.strDisabledColor : styles.strTextColor });
+            leftIconElement = b.style(d.leftIcon, { color: d.disabled ? styles.strDisabledColor : styles.strTextColor });
         } else if (d.checked) {
             leftIconElement = icons.navigationCheck();
         }
 
         if (leftIconElement)
-            leftIconElement = b.styledDiv(<b.IBobrilNode>leftIconElement,
+            leftIconElement = b.styledDiv(leftIconElement,
                 leftIconDesktopStyle, { marginTop: d.desktop ? -8 : -4 });
 
-        let rightIconElement;
+        let rightIconElement: b.IBobrilNode | undefined;
         if (d.rightIcon)
-            rightIconElement = b.styledDiv(d.rightIcon({ color: d.disabled ? styles.strDisabledColor : styles.strTextColor }),
+            rightIconElement = b.styledDiv(d.rightIcon, { color: d.disabled ? styles.strDisabledColor : styles.strTextColor },
                 rightIconDesktopStyle, { marginTop: d.desktop ? -8 : -4 });
 
         let secondaryTextElement;
@@ -107,7 +108,7 @@ export const MenuItem = b.createComponent<IMenuItemData>({
                         style: nestedMenuStyle
                     }, d.menuItems),
                     ClickAwayListener({
-                        id: d.primaryText,
+                        id: d.primaryText || "",
                         onClick: () => handleRequestClose(ctx)
                     }, undefined)
                 ]
@@ -118,7 +119,7 @@ export const MenuItem = b.createComponent<IMenuItemData>({
         const sidePadding = d.desktop ? 24 : 16;
 
         me.children = ListItem({
-            action: () => handleTouchTap(ctx, undefined),
+            action: () => handleTouchTap(ctx),
             primaryText: d.primaryText,
             disabled: d.disabled,
             innerDivStyle: [innerDivStyle, {
@@ -126,8 +127,8 @@ export const MenuItem = b.createComponent<IMenuItemData>({
                 paddingRight: d.rightIcon ? indent : sidePadding,
             }, d.innerDivStyle],
             insetChildren: d.insetChildren,
-            leftIcon: () => leftIconElement,
-            rightIcon: () => rightIconElement,
+            leftIcon: leftIconElement,
+            rightIcon: rightIconElement,
             style: [rootStyle, {
                 color: d.disabled ? styles.strDisabledColor : styles.strTextColor,
                 cursor: d.disabled ? 'default' : 'pointer',
@@ -137,10 +138,10 @@ export const MenuItem = b.createComponent<IMenuItemData>({
             }, d.style]
         }, [d.children, secondaryTextElement, childMenuPopover]);
     },
-    postInitDom(ctx: IMenuItemCtx, me: b.IBobrilCacheNode, element: HTMLElement) {
+    postInitDom(ctx: IMenuItemCtx, me: b.IBobrilCacheNode) {
         ctx.anchorNode = me;
     },
-    postUpdateDom(ctx: IMenuItemCtx, me: b.IBobrilCacheNode, element: HTMLElement) {
+    postUpdateDom(ctx: IMenuItemCtx, me: b.IBobrilCacheNode) {
         ctx.anchorNode = me;
     }
 });

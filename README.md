@@ -6,3 +6,9 @@ Bobril Material UI
 [Demo](http://bobril.com/bobril-m/)
 
 Heavily inspired by www.material-ui.com
+
+Changes:
+
+- Icons are now passed directly as IBobrilNode instead of function
+
+

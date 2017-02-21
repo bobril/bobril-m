@@ -26,6 +26,7 @@ export let strShadowColor = Colors.black;
 export let strHoverColor = withTransparency("#999", 0.3);
 export let strKeyboardFocusColor = withTransparency("#777", 0.3);
 export let strErrorColor = Colors.red500;
+export let strRightIconDesktopFillColor = Colors.grey600;
 
 export const primary1Color = () => strPrimary1Color;
 export const primary2Color = () => strPrimary2Color;
@@ -58,6 +59,10 @@ export const fontFamily = () => strFontFamily;
 export let nestedLevelDepth = 18;
 export let iconSize = 24;
 
+export function isDesktop() {
+    return b.getMedia().deviceCategory >= b.BobrilDeviceCategory.Desktop;
+}
+
 export let zDepthShadows = [
     [1, 6, 0.12, 1, 4, 0.12],
     [3, 10, 0.16, 3, 10, 0.23],
@@ -65,7 +70,7 @@ export let zDepthShadows = [
     [14, 45, 0.25, 10, 18, 0.22],
     [19, 60, 0.30, 15, 20, 0.22],
 ].map((d, i) =>
-    b.styleDef({ boxShadow: () => `0 ${d[0]}px ${d[1]}px ${withTransparency(strShadowColor, d[2])},0 ${d[3]}px ${d[4]}px ${withTransparency(strShadowColor, d[5])}` }, null, "zDepth" + (i + 1))
+    b.styleDef({ boxShadow: () => `0 ${d[0]}px ${d[1]}px ${withTransparency(strShadowColor, d[2])},0 ${d[3]}px ${d[4]}px ${withTransparency(strShadowColor, d[5])}` }, undefined, "zDepth" + (i + 1))
     );
 
 export let zIndex = {

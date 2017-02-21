@@ -1,8 +1,6 @@
 import * as b from "bobril";
 import * as styles from "./styles";
-import * as colors from "./colors";
 import * as c from "./styleConsts";
-import * as transitions from "./transitions";
 
 export interface IPaperData {
     children?: b.IBobrilChildren;

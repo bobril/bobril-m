@@ -1,6 +1,5 @@
 import * as b from 'bobril';
 import * as icons from 'bobril-m-icons';
-import * as button from './button';
 import * as iconButton from './iconButton';
 import * as list from './list';
 import * as ripple from './ripple';
@@ -23,11 +22,11 @@ export interface IListItemData {
     open?: b.IProp<boolean>;
     leftAvatar?: b.IBobrilNode;
     leftCheckbox?: b.IBobrilNode;
-    leftIcon?: (data: { color: string }) => b.IBobrilNode;
+    leftIcon?: b.IBobrilNode;
     nestedItems?: b.IBobrilChildren;
     primaryText?: string;
     rightAvatar?: b.IBobrilNode;
-    rightIcon?: (data: { color: string }) => b.IBobrilNode;
+    rightIcon?: b.IBobrilNode;
     rightIconButton?: b.IBobrilNode;
     rightToggle?: b.IBobrilNode;
     secondaryText?: string;
@@ -131,11 +130,11 @@ function createChildren(ctx: IItemHeaderCtx): b.IBobrilNode {
     const needsNestedIndicator = hasNestListItems && ctx.autoGenerateNestedIndicator && !hasRightElement;
 
     if (d.leftIcon)
-        children.push(b.styledDiv(d.leftIcon({ color: styles.strPrimary1Color }),
+        children.push(b.styledDiv(d.leftIcon, { color: styles.strPrimary1Color },
             iconStyle, leftIconStyle, { top: twoLine ? 12 : singleAvatar ? 4 : 0 })
         );
     if (d.rightIcon)
-        children.push(b.styledDiv(d.rightIcon({ color: styles.strPrimary1Color }),
+        children.push(b.styledDiv(d.rightIcon, { color: styles.strPrimary1Color },
             iconStyle, rightIconStyle, { top: twoLine ? 12 : singleAvatar ? 4 : 0 })
         );
     if (d.leftAvatar)
@@ -176,8 +175,6 @@ function createChildren(ctx: IItemHeaderCtx): b.IBobrilNode {
     if (d.secondaryText)
         children.push(b.styledDiv(d.secondaryText, threeLine ? threeLineSecondaryStyle : twoLineSecondaryStyle));
 
-    const hasCheckbox = d.leftCheckbox || d.rightToggle;
-
     return b.styledDiv(children, rootStyle, innerDivStyle, {
         marginLeft: ctx.nestedLevel * styles.nestedLevelDepth,
         paddingLeft: d.leftIcon || d.leftAvatar || d.leftCheckbox || d.insetChildren ? 72 : 16,
@@ -196,7 +193,7 @@ const ItemHeader = b.createComponent<IListItemCtx>({
             ? d.autoGenerateNestedIndicator
             : true;
         let level = 0;
-        let node = ctx.me;
+        let node: b.IBobrilCacheNode | undefined = ctx.me;
         while (node != null) {
             if (node.component != null && node.component.id === "List") {
                 if ((<list.IListData>node.data).privateNested)
@@ -230,7 +227,7 @@ const ItemHeader = b.createComponent<IListItemCtx>({
             }, createChildren(ctx))
             : createChildren(ctx);
     },
-    onPointerUp(ctx: IItemHeaderCtx, ev: b.IBobrilPointerEvent): boolean {
+    onPointerUp(ctx: IItemHeaderCtx, _ev: b.IBobrilPointerEvent): boolean {
         const d = ctx.data.data;
         if (d.disabled) return false;
         if (d.action) d.action();
@@ -302,7 +299,7 @@ export const ListItem = b.createComponent<IListItemData>({
         const d = ctx.data;
         if (d.open) ctx.open = d.open;
         ctx.hasNested = d.nestedItems != null && d.nestedItems != [];
-        let nestedItems: b.IBobrilNode;
+        let nestedItems: b.IBobrilNode | undefined;
         if (ctx.open() && ctx.hasNested) {
             nestedItems = list.List({ privateNested: true }, d.nestedItems);
         }

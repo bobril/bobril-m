@@ -53,10 +53,6 @@ const fillDisabledStyle = b.styleDef({
     fill: styles.disabledColor
 });
 
-const fillSliderStyle = b.styleDef({
-    fill: styles.sliderColor
-});
-
 const fillEnabledStyle = b.styleDef({
     fill: styles.primary1Color
 });
@@ -276,7 +272,7 @@ export const Slider = b.createComponent<ISliderData>({
         ctx.focus = false;
         b.invalidate(ctx);
     },
-    postInitDom(ctx: ISliderCtx, me: b.IBobrilCacheNode) {
+    postInitDom(this: any, ctx: ISliderCtx, me: b.IBobrilCacheNode) {
         this.postUpdateDom(ctx, me);
     },
     postUpdateDom(ctx: ISliderCtx, me: b.IBobrilCacheNode) {

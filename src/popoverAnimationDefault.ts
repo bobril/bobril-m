@@ -32,18 +32,16 @@ const verticalStyle = b.styleDef({
 });
 
 export const PopoverAnimationDefault = b.createComponent<IPopoverAnimationDefaultData>({
-    init(ctx: IPopoverAnimationDefaultCtx) {
-    },
     render(ctx: IPopoverAnimationDefaultCtx, me: b.IBobrilNode) {
         const d = ctx.data;
-        const horizontal = d.targetOrigin.horizontal === 'middle' ? 'vertical' : d.targetOrigin.horizontal;
+        const horizontal = d.targetOrigin!.horizontal === 'middle' ? 'vertical' : d.targetOrigin!.horizontal;
         me.children = paper.Paper({
             style: [
                 rootStyle,
                 {
                     opacity: d.open ? 1 : 0,
                     transform: d.open ? 'scale(1, 1)' : 'scale(0, 0)',
-                    transformOrigin: horizontal + ' ' + d.targetOrigin.vertical
+                    transformOrigin: horizontal + ' ' + d.targetOrigin!.vertical
                 },
                 d.style
             ],
@@ -53,14 +51,14 @@ export const PopoverAnimationDefault = b.createComponent<IPopoverAnimationDefaul
             {
                 opacity: d.open ? 1 : 0,
                 transform: d.open ? 'scaleY(1)' : 'scaleY(0)',
-                transformOrigin: horizontal + ' ' + d.targetOrigin.vertical
+                transformOrigin: horizontal + ' ' + d.targetOrigin!.vertical
             }
         ]), [
                 horizontalStyle,
                 {
                     opacity: d.open ? 1 : 0,
                     transform: d.open ? 'scaleX(1)' : 'scaleX(0)',
-                    transformOrigin: horizontal + ' ' + d.targetOrigin.vertical
+                    transformOrigin: horizontal + ' ' + d.targetOrigin!.vertical
                 }
             ])
         );

@@ -1,6 +1,6 @@
 import * as b from 'bobril';
 
-let layerId: string;
+let layerId: string | undefined;
 let onClicks: { [id: string]: () => void } = {};
 
 export interface IClickAwayListenerLayerData { }
@@ -10,15 +10,15 @@ interface IClickAwayListenerLayerCtx extends b.IBobrilCtx {
 }
 
 const clickAwayListenerLayer = b.createComponent<IClickAwayListenerLayerData>({
-    render(ctx: IClickAwayListenerLayerCtx, me: b.IBobrilNode) {
-        me.children = b.styledDiv(undefined, {
+    render(_ctx: IClickAwayListenerLayerCtx, me: b.IBobrilNode) {
+        b.style(me, {
             position: 'absolute',
             top: 0,
             width: '100%',
             height: '100%'
         });
     },
-    onPointerUp(ctx: IClickAwayListenerLayerCtx, event: b.IBobrilPointerEvent): boolean {
+    onPointerUp(_ctx: IClickAwayListenerLayerCtx, _event: b.IBobrilPointerEvent): boolean {
         for (var id in onClicks)
             onClicks[id]();
 

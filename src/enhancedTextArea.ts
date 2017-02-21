@@ -1,5 +1,4 @@
 import * as b from "bobril";
-import * as styles from "./styles";
 import * as colors from "./colors";
 import * as c from "./styleConsts";
 
@@ -72,20 +71,20 @@ function syncShadow(ctx: IEnhancedTextAreaCtx, newValue?: string) {
 
 const realTextAreaComponent: b.IBobrilComponent = {
     onChange(ctx: b.IBobrilCtx, value: string) {
-        const ctxOfEnhanced = <IEnhancedTextAreaCtx>ctx.me.parent.ctx;
+        const ctxOfEnhanced = <IEnhancedTextAreaCtx>ctx.me.parent!.ctx;
         syncShadow(ctxOfEnhanced, value);
         b.emitChange(ctxOfEnhanced.data, value);
     }
 };
 
 export const EnhancedTextarea = b.createComponent<IEnhancedTextAreaData>({
-    init(ctx: IEnhancedTextAreaCtx, me: b.IBobrilNode) {
+    init(ctx: IEnhancedTextAreaCtx, _me: b.IBobrilNode) {
         ctx.height = rowsHeight * (ctx.data.rows || 1);
     },
-    postInitDom(ctx: IEnhancedTextAreaCtx, me: b.IBobrilCacheNode) {
+    postInitDom(this: any, ctx: IEnhancedTextAreaCtx, me: b.IBobrilCacheNode) {
         this.postUpdateDom(ctx, me);
     },
-    postUpdateDom(ctx: IEnhancedTextAreaCtx, me: b.IBobrilCacheNode) {
+    postUpdateDom(ctx: IEnhancedTextAreaCtx, _me: b.IBobrilCacheNode) {
         syncShadow(ctx, b.getValue(ctx.data.value));
     },
     render(ctx: IEnhancedTextAreaCtx, me: b.IBobrilNode) {

@@ -25,7 +25,7 @@ export interface IButtonData {
     disabled?: boolean;
     feature?: Feature;
     tabindex?: number;
-    icon?: (data: { color: string }) => b.IBobrilNode;
+    icon?: b.IBobrilNode;
 }
 
 interface IButtonCtx extends b.IBobrilCtx {
@@ -116,7 +116,7 @@ let floatingStyle = b.styleDef([c.circle, {
 }]);
 
 let floatingButtonStyles = [
-    null, // no default
+    false, // no default
     b.styleDef({ // Primary
         backgroundColor: styles.accent1Color,
         color: styles.alternateTextColor
@@ -152,7 +152,7 @@ export const Button = b.createComponent<IButtonData>({
         let type = d.type || ButtonType.Flat;
         let trueChildren = d.children;
         if (type === ButtonType.Floating) {
-            trueChildren = b.styledDiv(d.icon({ color: styles.strAlternateTextColor }), { padding: 8 });
+            trueChildren = b.styledDiv(d.icon, { padding: 8, color: styles.strAlternateTextColor });
         }
         me.children = ripple.Ripple({
             pulse: (type < ButtonType.Floating) && ctx.focusFromKeyboard && !d.disabled,

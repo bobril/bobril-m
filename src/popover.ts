@@ -19,7 +19,7 @@ interface IPositionRect extends IPosition {
 }
 
 export interface IPopoverAnimationData {
-    animation?: (data: Object) => b.IBobrilNode;
+    animation?: b.IComponentFactory<IPopoverAnimationDefaultData>;
     children?: b.IBobrilChildren;
     targetOrigin?: IPopoverOrigin;
 }
@@ -43,7 +43,7 @@ export const PopoverAnimation = b.createComponent<IPopoverAnimationData>({
             children: d.children
         });
     },
-    postInitDom(ctx: IPopoverAnimationCtx, me: b.IBobrilCacheNode, element: HTMLElement) {
+    postInitDom(ctx: IPopoverAnimationCtx, _me: b.IBobrilCacheNode, _element: HTMLElement) {
         if (!ctx.shouldRender) {
             ctx.shouldRender = true;
             b.invalidate(ctx);
@@ -55,7 +55,7 @@ export interface IPopoverData {
     anchorNode?: b.IBobrilCacheNode;
     anchorOrigin?: IPopoverOrigin;
     animated?: boolean;
-    animation?: b.IComponentFactory<b.IBobrilComponent>;
+    animation?: b.IComponentFactory<IPopoverAnimationDefaultData>;
     autoCloseWhenOffScreen?: boolean;
     children?: b.IBobrilChildren;
     onRequestClose?: (reason: string) => void;
@@ -66,7 +66,7 @@ export interface IPopoverData {
 
 interface IPopoverCtx extends b.IBobrilCtx {
     data: IPopoverData;
-    id: string;
+    id: string | undefined;
 }
 
 function createPopover(ctx: IPopoverCtx): b.IBobrilChildren {
@@ -93,10 +93,10 @@ function getAnchorPositionRect(node: b.IBobrilCacheNode): IPositionRect {
         top: pos[1],
         width: el.offsetWidth,
         height: el.offsetHeight,
-        right: undefined,
-        bottom: undefined,
-        middle: undefined,
-        center: undefined
+        right: 0,
+        bottom: 0,
+        middle: 0,
+        center: 0
     };
 
     anchorRect.bottom = anchorRect.top + anchorRect.height;
@@ -144,12 +144,12 @@ function setPlacement(ctx: IPopoverCtx, targetEl: HTMLElement, scrolling: boolea
     let target = getTargetPosition(targetEl);
 
     let targetPosition: IPosition = {
-        top: anchorRect[d.anchorOrigin.vertical] - target[d.targetOrigin.vertical],
-        left: anchorRect[d.anchorOrigin.horizontal] - target[d.targetOrigin.horizontal],
-        center: undefined,
-        bottom: undefined,
-        middle: undefined,
-        right: undefined
+        top: (anchorRect as any)[d.anchorOrigin!.vertical] - (target as any)[d.targetOrigin!.vertical],
+        left: (anchorRect as any)[d.anchorOrigin!.horizontal] - (target as any)[d.targetOrigin!.horizontal],
+        center: 0,
+        bottom: 0,
+        middle: 0,
+        right: 0
     };
 
     if (scrolling && d.autoCloseWhenOffScreen)
@@ -163,6 +163,12 @@ function setPlacement(ctx: IPopoverCtx, targetEl: HTMLElement, scrolling: boolea
 };
 
 export const Popover = b.createComponent<IPopoverData>({
+    init(ctx: IPopoverCtx) {
+        b.addOnScroll(() => {
+            b.invalidate(ctx); b.deferSyncUpdate();
+        });
+    },
+
     render(ctx: IPopoverCtx) {
         const d = ctx.data;
         if (d.open && !ctx.id)
@@ -173,15 +179,12 @@ export const Popover = b.createComponent<IPopoverData>({
             ctx.id = undefined;
         }
     },
-    postInitDom(ctx: IPopoverCtx, me: b.IBobrilCacheNode, element: HTMLElement) {
-        b.addOnScroll(() => {
-            setPlacement(ctx, element, true);
-        })
-    },
-    postUpdateDom(ctx: IPopoverCtx, me: b.IBobrilCacheNode, element: HTMLElement) {
-        const popover = b.getRoots()[ctx.id];
-        if (popover && popover.c[0])
-            setPlacement(ctx, <HTMLElement>popover.c[0].element);
+    postUpdateDomEverytime(ctx: IPopoverCtx) {
+        if (ctx.id) {
+            const popover = b.getRoots()[ctx.id];
+            if (popover && popover.c![0])
+                setPlacement(ctx, <HTMLElement>(popover.c![0] as any).element);
+        }
     },
     destroy(ctx: IPopoverCtx) {
         if (ctx.id)
