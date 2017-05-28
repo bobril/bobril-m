@@ -24,6 +24,7 @@ export interface IListItemData {
     leftAvatar?: b.IBobrilNode;
     leftCheckbox?: b.IBobrilNode;
     leftIcon?: (data: { color: string }) => b.IBobrilNode;
+    nestedItems?: b.IBobrilChildren;
     primaryText?: string;
     rightAvatar?: b.IBobrilNode;
     rightIcon?: (data: { color: string }) => b.IBobrilNode;
@@ -121,11 +122,11 @@ const disabledStyle = b.styleDef([c.userSelectNone, {
 
 function createChildren(ctx: IItemHeaderCtx): b.IBobrilNode {
     let d = ctx.data.data;
-    let children: b.IBobrilChildren[] = [];
+    let children: b.IBobrilChildren[] = [d.children];
     let singleAvatar = !d.secondaryText && (d.leftAvatar || d.rightAvatar);
     let twoLine = d.secondaryText && d.secondaryTextLines === SecondaryTextLines.Single;
     let threeLine = d.secondaryText && d.secondaryTextLines === SecondaryTextLines.Double;
-    let hasNestListItems = d.children != null && d.children != [];
+    let hasNestListItems = d.nestedItems != null && d.nestedItems != [];
     let hasRightElement = d.rightAvatar || d.rightIcon || d.rightIconButton || d.rightToggle;
     let needsNestedIndicator = hasNestListItems && ctx.autoGenerateNestedIndicator && !hasRightElement;
 
@@ -305,10 +306,10 @@ export const ListItem = b.createComponent<IListItemData>({
     render(ctx: IListItemCtx, me: b.IBobrilNode) {
         let d = ctx.data;
         if (d.open) ctx.open = d.open;
-        ctx.hasNested = d.children != null && d.children != [];
+        ctx.hasNested = d.nestedItems != null && d.nestedItems != [];
         let nestedItems: b.IBobrilNode;
         if (ctx.open() && ctx.hasNested) {
-            nestedItems = list.List({ privateNested: true }, d.children);
+            nestedItems = list.List({ privateNested: true }, d.nestedItems);
         }
         me.children = [
             ItemHeader(ctx),
