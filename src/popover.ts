@@ -95,6 +95,7 @@ function getAnchorPosition(node: b.IBobrilCacheNode): IPosition {
         center: undefined
     };
 
+    anchorRect.bottom = anchorRect.top + anchorRect.height;
     anchorRect.right = anchorRect.left + anchorRect.width;
     anchorRect.middle = anchorRect.left + ((anchorRect.right - anchorRect.left) / 2);
     anchorRect.center = anchorRect.top + ((anchorRect.bottom - anchorRect.top) / 2);
