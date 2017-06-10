@@ -13,6 +13,11 @@ interface IPosition {
     right: number;
 }
 
+interface IPositionRect extends IPosition {
+    width: number;
+    height: number;
+}
+
 export interface IPopoverAnimationData {
     animation?: b.IComponentFactory<b.IBobrilComponent>;
     children?: b.IBobrilChildren;
@@ -33,7 +38,8 @@ export const PopoverAnimation = b.createComponent<IPopoverAnimationData>({
         const animation: b.IComponentFactory<IPopoverAnimationDefaultData> = d.animation || PopoverAnimationDefault;
         me.children = animation({
             targetOrigin: d.targetOrigin,
-            open: ctx.shouldRender
+            open: ctx.shouldRender,
+            style: { position: 'sticky' }
         }, d.children);
     },
     postInitDom(ctx: IPopoverAnimationCtx, me: b.IBobrilCacheNode, element: HTMLElement) {
@@ -81,7 +87,7 @@ function createPopover(ctx: IPopoverCtx): b.IBobrilChildren {
     }, d.children);
 };
 
-function getAnchorPosition(node: b.IBobrilCacheNode): IPosition {
+function getAnchorPositionRect(node: b.IBobrilCacheNode): IPositionRect {
     const pos = b.nodePagePos(node);
     const el = <HTMLElement>node.element;
     const anchorRect = {
@@ -121,11 +127,12 @@ function requestClose(ctx: IPopoverCtx, reason: string) {
     }
 }
 
-function autoCloseWhenOffScreen(ctx: IPopoverCtx, anchorPosition: IPosition) {
-    if (anchorPosition.top < 0 ||
-        anchorPosition.top > window.innerHeight ||
-        anchorPosition.left < 0 ||
-        anchorPosition.left > window.innerWidth) {
+function autoCloseWhenOffScreen(ctx: IPopoverCtx, anchorPositionRect: IPositionRect) {
+    const windowScroll = b.getWindowScroll();
+    if (windowScroll[1] > anchorPositionRect.top + anchorPositionRect.height ||
+        windowScroll[1] + window.innerHeight < anchorPositionRect.top ||
+        windowScroll[0] > anchorPositionRect.left + anchorPositionRect.width ||
+        windowScroll[0] + window.innerWidth < anchorPositionRect.left) {
         requestClose(ctx, 'offScreen');
     }
 }
@@ -140,8 +147,8 @@ function getPositions(anchor: IPopoverOrigin, target: IPopoverOrigin) {
     };
 
     const overlap = {
-        x: this.getOverlapMode(a.horizontal, t.horizontal, 'middle'),
-        y: this.getOverlapMode(a.vertical, t.vertical, 'center')
+        x: getOverlapMode(a.horizontal, t.horizontal, 'middle'),
+        y: getOverlapMode(a.vertical, t.vertical, 'center')
     };
 
     positions.x.splice(overlap.x === 'auto' ? 0 : 1, 0, 'middle');
@@ -209,12 +216,12 @@ function setPlacement(ctx: IPopoverCtx, targetEl: HTMLElement, scrolling: boolea
     if (!d.open || !d.anchorNode)
         return;
 
-    const anchor = getAnchorPosition(d.anchorNode);
+    const anchorRect = getAnchorPositionRect(d.anchorNode);
     let target = getTargetPosition(targetEl);
 
     let targetPosition: IPosition = {
-        top: anchor[d.anchorOrigin.vertical] - target[d.targetOrigin.vertical],
-        left: anchor[d.anchorOrigin.horizontal] - target[d.targetOrigin.horizontal],
+        top: anchorRect[d.anchorOrigin.vertical] - target[d.targetOrigin.vertical],
+        left: anchorRect[d.anchorOrigin.horizontal] - target[d.targetOrigin.horizontal],
         center: undefined,
         bottom: undefined,
         middle: undefined,
@@ -222,11 +229,11 @@ function setPlacement(ctx: IPopoverCtx, targetEl: HTMLElement, scrolling: boolea
     };
 
     if (scrolling && d.autoCloseWhenOffScreen)
-        autoCloseWhenOffScreen(ctx, anchor);
+        autoCloseWhenOffScreen(ctx, anchorRect);
 
     if (d.canAutoPosition) {
         target = getTargetPosition(targetEl);
-        targetPosition = applyAutoPositionIfNeeded(anchor, target, d.targetOrigin, d.anchorOrigin, targetPosition);
+        targetPosition = applyAutoPositionIfNeeded(anchorRect, target, d.targetOrigin, d.anchorOrigin, targetPosition);
     }
 
     targetEl.style.top = `${Math.max(0, targetPosition.top)}px`;
@@ -240,20 +247,9 @@ export const Popover = b.createComponent<IPopoverData>({
     init(ctx: IPopoverCtx) {
         const d = ctx.data;
         //     static defaultProps = {
-        //     anchorOrigin: {
-        //         vertical: 'bottom',
-        //         horizontal: 'left',
-        //     },
-        //     autoCloseWhenOffScreen: true,
         //     canAutoPosition: true,
-        //     onRequestClose: () => { },
-        //     open: false,
         //     style: {
         //         overflowY: 'auto',
-        //     },
-        //     targetOrigin: {
-        //         vertical: 'top',
-        //         horizontal: 'left',
         //     },
         //     zDepth: 1,
         // };
@@ -272,7 +268,9 @@ export const Popover = b.createComponent<IPopoverData>({
         }
     },
     postInitDom(ctx: IPopoverCtx, me: b.IBobrilCacheNode, element: HTMLElement) {
-        setPlacement(ctx, element);
+        b.addOnScroll(() => {
+            setPlacement(ctx, element, true);
+        })
     },
     postUpdateDom(ctx: IPopoverCtx, me: b.IBobrilCacheNode, element: HTMLElement) {
         const popover = b.getRoots()[ctx.id];
@@ -284,35 +282,3 @@ export const Popover = b.createComponent<IPopoverData>({
             b.removeRoot(ctx.id);
     }
 });
-
-// componentWillReceiveProps(nextProps) {
-//     if (nextProps.open === this.props.open) {
-//         return;
-//     }
-
-//     if (nextProps.open) {
-//         clearTimeout(this.timeout);
-//         this.timeout = null;
-//         this.anchorEl = nextProps.anchorEl || this.props.anchorEl;
-//         this.setState({
-//             open: true,
-//             closing: false,
-//         });
-//     } else {
-//         if (nextProps.animated) {
-//             if (this.timeout !== null) return;
-//             this.setState({ closing: true });
-//             this.timeout = setTimeout(() => {
-//                 this.setState({
-//                     open: false,
-//                 }, () => {
-//                     this.timeout = null;
-//                 });
-//             }, 500);
-//         } else {
-//             this.setState({
-//                 open: false,
-//             });
-//         }
-//     }
-// }
