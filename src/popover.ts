@@ -56,7 +56,6 @@ export interface IPopoverData {
     animated?: boolean;
     animation?: b.IComponentFactory<b.IBobrilComponent>;
     autoCloseWhenOffScreen?: boolean;
-    canAutoPosition?: boolean;
     children?: b.IBobrilChildren;
     onRequestClose?: (reason: string) => void;
     open?: boolean;
@@ -67,8 +66,6 @@ export interface IPopoverData {
 interface IPopoverCtx extends b.IBobrilCtx {
     data: IPopoverData;
     id: string;
-    open: boolean;
-    closing: boolean;
 }
 
 function createPopover(ctx: IPopoverCtx): b.IBobrilChildren {
@@ -137,80 +134,6 @@ function autoCloseWhenOffScreen(ctx: IPopoverCtx, anchorPositionRect: IPositionR
     }
 }
 
-function getPositions(anchor: IPopoverOrigin, target: IPopoverOrigin) {
-    const a = { ...anchor };
-    const t = { ...target };
-
-    const positions = {
-        x: ['left', 'right'].filter((p) => p !== t.horizontal),
-        y: ['top', 'bottom'].filter((p) => p !== t.vertical)
-    };
-
-    const overlap = {
-        x: getOverlapMode(a.horizontal, t.horizontal, 'middle'),
-        y: getOverlapMode(a.vertical, t.vertical, 'center')
-    };
-
-    positions.x.splice(overlap.x === 'auto' ? 0 : 1, 0, 'middle');
-    positions.y.splice(overlap.y === 'auto' ? 0 : 1, 0, 'center');
-
-    if (overlap.y !== 'auto') {
-        a.vertical = a.vertical === 'top' ? 'bottom' : 'top';
-        if (overlap.y === 'inclusive') {
-            t.vertical = t.vertical;
-        }
-    }
-
-    if (overlap.x !== 'auto') {
-        a.horizontal = a.horizontal === 'left' ? 'right' : 'left';
-        if (overlap.y === 'inclusive') {
-            t.horizontal = t.horizontal;
-        }
-    }
-
-    return {
-        positions: positions,
-        anchorPos: a
-    };
-}
-
-function getOverlapMode(anchor: string, target: string, median: string): string {
-    if ([anchor, target].indexOf(median) >= 0) return 'auto';
-    if (anchor === target) return 'inclusive';
-    return 'exclusive';
-}
-
-function applyAutoPositionIfNeeded(anchor: IPosition, target: IPosition, targetOrigin: IPopoverOrigin,
-    anchorOrigin: IPopoverOrigin, targetPosition: IPosition): IPosition {
-    const { positions, anchorPos } = getPositions(anchorOrigin, targetOrigin);
-
-    if (targetPosition.top < 0 || targetPosition.top + target.bottom > window.innerHeight) {
-        let newTop = anchor[anchorPos.vertical] - target[positions.y[0]];
-        if (newTop + target.bottom <= window.innerHeight) {
-            targetPosition.top = Math.max(0, newTop);
-        } else {
-            newTop = anchor[anchorPos.vertical] - target[positions.y[1]];
-            if (newTop + target.bottom <= window.innerHeight) {
-                targetPosition.top = Math.max(0, newTop);
-            }
-        }
-    }
-
-    if (targetPosition.left < 0 || targetPosition.left + target.right > window.innerWidth) {
-        let newLeft = anchor[anchorPos.horizontal] - target[positions.x[0]];
-        if (newLeft + target.right <= window.innerWidth) {
-            targetPosition.left = Math.max(0, newLeft);
-        } else {
-            newLeft = anchor[anchorPos.horizontal] - target[positions.x[1]];
-            if (newLeft + target.right <= window.innerWidth) {
-                targetPosition.left = Math.max(0, newLeft);
-            }
-        }
-    }
-
-    return targetPosition;
-}
-
 function setPlacement(ctx: IPopoverCtx, targetEl: HTMLElement, scrolling: boolean = false) {
     const d = ctx.data;
     if (!d.open || !d.anchorNode)
@@ -231,11 +154,6 @@ function setPlacement(ctx: IPopoverCtx, targetEl: HTMLElement, scrolling: boolea
     if (scrolling && d.autoCloseWhenOffScreen)
         autoCloseWhenOffScreen(ctx, anchorRect);
 
-    if (d.canAutoPosition) {
-        target = getTargetPosition(targetEl);
-        targetPosition = applyAutoPositionIfNeeded(anchorRect, target, d.targetOrigin, d.anchorOrigin, targetPosition);
-    }
-
     targetEl.style.top = `${Math.max(0, targetPosition.top)}px`;
     targetEl.style.left = `${Math.max(0, targetPosition.left)}px`;
     targetEl.style.maxHeight = `${window.innerHeight}px`;
@@ -244,19 +162,6 @@ function setPlacement(ctx: IPopoverCtx, targetEl: HTMLElement, scrolling: boolea
 };
 
 export const Popover = b.createComponent<IPopoverData>({
-    init(ctx: IPopoverCtx) {
-        const d = ctx.data;
-        //     static defaultProps = {
-        //     canAutoPosition: true,
-        //     style: {
-        //         overflowY: 'auto',
-        //     },
-        //     zDepth: 1,
-        // };
-
-        ctx.open = false;
-        ctx.closing = false;
-    },
     render(ctx: IPopoverCtx) {
         const d = ctx.data;
         if (d.open && !ctx.id)
