@@ -36,7 +36,7 @@ export const PopoverAnimationDefault = b.createComponent<IPopoverAnimationDefaul
     },
     render(ctx: IPopoverAnimationDefaultCtx, me: b.IBobrilNode) {
         const d = ctx.data;
-        const horizontal = d.targetOrigin.horizontal.replace('middle', 'vertical');
+        const horizontal = d.targetOrigin.horizontal === 'middle' ? 'vertical' : d.targetOrigin.horizontal;
         me.children = paper.Paper({
             style: [
                 rootStyle,

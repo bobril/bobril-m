@@ -19,7 +19,7 @@ interface IPositionRect extends IPosition {
 }
 
 export interface IPopoverAnimationData {
-    animation?: b.IComponentFactory<b.IBobrilComponent>;
+    animation?: (data: Object) => b.IBobrilNode;
     children?: b.IBobrilChildren;
     targetOrigin?: IPopoverOrigin;
 }
@@ -35,12 +35,13 @@ export const PopoverAnimation = b.createComponent<IPopoverAnimationData>({
     },
     render(ctx: IPopoverAnimationCtx, me: b.IBobrilNode) {
         const d = ctx.data;
-        const animation: b.IComponentFactory<IPopoverAnimationDefaultData> = d.animation || PopoverAnimationDefault;
+        const animation = d.animation || PopoverAnimationDefault;
         me.children = animation({
             targetOrigin: d.targetOrigin,
             open: ctx.shouldRender,
-            style: { position: 'sticky' }
-        }, d.children);
+            style: { position: 'sticky' },
+            children: d.children
+        });
     },
     postInitDom(ctx: IPopoverAnimationCtx, me: b.IBobrilCacheNode, element: HTMLElement) {
         if (!ctx.shouldRender) {
