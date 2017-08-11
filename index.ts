@@ -14,5 +14,8 @@ export * from "./src/badge";
 export * from "./src/toggle";
 export * from "./src/listItem";
 export * from "./src/list";
+export * from "./src/menu";
+export * from "./src/menuItem";
+export * from "./src/popover";
 export * from "./src/subheader";
 export * from "./src/iconButton";
