@@ -190,7 +190,7 @@ function createChildren(ctx: IItemHeaderCtx): b.IBobrilNode {
 const ItemHeader = b.createComponent<IListItemCtx>({
     init(ctx: IItemHeaderCtx) {
         const d = ctx.data.data;
-        ctx.open = d.open;
+        ctx.open = d.open || b.prop(false);
         ctx.focusFromKeyboard = false;
         ctx.autoGenerateNestedIndicator = d.autoGenerateNestedIndicator !== undefined
             ? d.autoGenerateNestedIndicator
