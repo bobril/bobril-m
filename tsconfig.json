@@ -1,40 +1,27 @@
 {
     "compilerOptions": {
-        "target": "es6",
+        "target": "es5",
         "module": "commonjs",
         "moduleResolution": "node",
         "jsx": "react",
-        "reactNamespace": "b"
+        "reactNamespace": "b",
+        "declaration": false,
+        "lib": [
+            "es5",
+            "dom",
+            "es2015.core",
+            "es2015.promise"
+        ],
+        "removeComments": false,
+        "noLib": false,
+        "preserveConstEnums": false,
+        "experimentalDecorators": true
     },
     "compileOnSave": false,
     "files": [
-        "example.ts",
-        "index.ts",
-        "node_modules/bobril/jsx.d.ts",
-        "src/badge.ts",
-        "src/button.ts",
-        "src/checkbox.ts",
-        "src/colorUtils.ts",
-        "src/colors.ts",
-        "src/divider.ts",
-        "src/enhancedTextArea.ts",
-        "src/fonts.ts",
-        "src/iconButton.ts",
-        "src/list.ts",
-        "src/listItem.ts",
-        "src/paper.ts",
-        "src/radiobutton.ts",
-        "src/ripple.ts",
-        "src/slider.ts",
-        "src/styleConsts.ts",
-        "src/styles.ts",
-        "src/subheader.ts",
-        "src/textField.ts",
-        "src/textFieldHint.ts",
-        "src/textFieldLabel.ts",
-        "src/textFieldUnderline.ts",
-        "src/toggle.ts",
-        "src/transitions.ts",
-        "src/uniqueId.ts"
+        "node_modules/bobril/jsx.d.ts"
+    ],
+    "include": [
+        "**/*"
     ]
 }

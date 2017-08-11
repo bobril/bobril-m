@@ -15,4 +15,7 @@ export let dividerInsetStyle = b.styleDef({
     marginLeft: 72
 });
 
-export const Divider = (data?: IDividerData) => b.style({ tag: "div" }, dividerStyle, data && data.inset && dividerInsetStyle);
+export const Divider = (data?: IDividerData) => b.style({
+    component: { id: 'divider' },
+    tag: 'div'
+}, dividerStyle, data && data.inset && dividerInsetStyle);

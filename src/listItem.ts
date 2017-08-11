@@ -13,16 +13,18 @@ export enum SecondaryTextLines {
 }
 
 export interface IListItemData {
+    action?: () => void;
     autoGenerateNestedIndicator?: boolean;
     children?: b.IBobrilChildren;
     disabled?: boolean;
+    innerDivStyle?: b.IBobrilStyles;
     insetChildren?: boolean;
     selected?: boolean;
     open?: b.IProp<boolean>;
     leftAvatar?: b.IBobrilNode;
     leftCheckbox?: b.IBobrilNode;
     leftIcon?: (data: { color: string }) => b.IBobrilNode;
-    action?: () => void;
+    nestedItems?: b.IBobrilChildren;
     primaryText?: string;
     rightAvatar?: b.IBobrilNode;
     rightIcon?: (data: { color: string }) => b.IBobrilNode;
@@ -30,6 +32,7 @@ export interface IListItemData {
     rightToggle?: b.IBobrilNode;
     secondaryText?: string;
     secondaryTextLines?: SecondaryTextLines;
+    style?: b.IBobrilStyles;
     tabindex?: number;
 }
 
@@ -45,7 +48,7 @@ interface IItemHeaderCtx extends b.IBobrilCtx {
     rightIconButtonKeyboardFocused: boolean;
 }
 
-let rootStyle = b.styleDef([c.positionRelative, {
+const rootStyle = b.styleDef([c.positionRelative, {
     color: styles.textColor,
     display: 'block',
     fontSize: 16,
@@ -53,7 +56,7 @@ let rootStyle = b.styleDef([c.positionRelative, {
     transition: transitions.easeOut()
 }]);
 
-let iconStyle = b.styleDef([c.positionAbsolute, {
+const iconStyle = b.styleDef([c.positionAbsolute, {
     height: 24,
     width: 24,
     display: 'block',
@@ -118,14 +121,14 @@ const disabledStyle = b.styleDef([c.userSelectNone, {
 }]);
 
 function createChildren(ctx: IItemHeaderCtx): b.IBobrilNode {
-    let d = ctx.data.data;
-    let children: b.IBobrilChildren[] = [];
-    let singleAvatar = !d.secondaryText && (d.leftAvatar || d.rightAvatar);
-    let twoLine = d.secondaryText && d.secondaryTextLines === SecondaryTextLines.Single;
-    let threeLine = d.secondaryText && d.secondaryTextLines === SecondaryTextLines.Double;
-    let hasNestListItems = d.children != null && d.children != [];
-    let hasRightElement = d.rightAvatar || d.rightIcon || d.rightIconButton || d.rightToggle;
-    let needsNestedIndicator = hasNestListItems && ctx.autoGenerateNestedIndicator && !hasRightElement;
+    const d = ctx.data.data;
+    const children: b.IBobrilChildren[] = [d.children];
+    const singleAvatar = !d.secondaryText && (d.leftAvatar || d.rightAvatar);
+    const twoLine = d.secondaryText && d.secondaryTextLines === SecondaryTextLines.Single;
+    const threeLine = d.secondaryText && d.secondaryTextLines === SecondaryTextLines.Double;
+    const hasNestListItems = d.nestedItems != null && d.nestedItems != [];
+    const hasRightElement = d.rightAvatar || d.rightIcon || d.rightIconButton || d.rightToggle;
+    const needsNestedIndicator = hasNestListItems && ctx.autoGenerateNestedIndicator && !hasRightElement;
 
     if (d.leftIcon)
         children.push(b.styledDiv(d.leftIcon({ color: styles.strPrimary1Color }),
@@ -173,7 +176,7 @@ function createChildren(ctx: IItemHeaderCtx): b.IBobrilNode {
     if (d.secondaryText)
         children.push(b.styledDiv(d.secondaryText, threeLine ? threeLineSecondaryStyle : twoLineSecondaryStyle));
 
-    let hasCheckbox = d.leftCheckbox || d.rightToggle;
+    const hasCheckbox = d.leftCheckbox || d.rightToggle;
 
     return b.styledDiv(children, rootStyle, innerDivStyle, {
         marginLeft: ctx.nestedLevel * styles.nestedLevelDepth,
@@ -181,13 +184,13 @@ function createChildren(ctx: IItemHeaderCtx): b.IBobrilNode {
         paddingRight: d.rightIcon || d.rightAvatar || d.rightIconButton ? 56 : d.rightToggle ? 72 : 16,
         paddingBottom: singleAvatar ? 20 : 16,
         paddingTop: !singleAvatar || threeLine ? 16 : 20
-    });
+    }, d.innerDivStyle, d.style);
 }
 
 const ItemHeader = b.createComponent<IListItemCtx>({
     init(ctx: IItemHeaderCtx) {
-        let d = ctx.data.data;
-        ctx.open = ctx.data.open;
+        const d = ctx.data.data;
+        ctx.open = d.open || b.prop(false);
         ctx.focusFromKeyboard = false;
         ctx.autoGenerateNestedIndicator = d.autoGenerateNestedIndicator !== undefined
             ? d.autoGenerateNestedIndicator
@@ -206,11 +209,8 @@ const ItemHeader = b.createComponent<IListItemCtx>({
         ctx.nestedLevel = level;
     },
     render(ctx: IItemHeaderCtx, me: b.IBobrilNode) {
-        let d = ctx.data.data;
-        let showHover = (ctx.hover || ctx.focusFromKeyboard) && !d.disabled;
-        let singleAvatar = !d.secondaryText && (d.leftAvatar || d.rightAvatar);
-        let twoLine = d.secondaryText && d.secondaryTextLines === SecondaryTextLines.Single;
-        let threeLine = d.secondaryText && d.secondaryTextLines === SecondaryTextLines.Double;
+        const d = ctx.data.data;
+        const showHover = (ctx.hover || ctx.focusFromKeyboard) && !d.disabled;
 
         me.attrs = {
             'aria-disabled': d.disabled ? 'true' : 'false',
@@ -231,32 +231,30 @@ const ItemHeader = b.createComponent<IListItemCtx>({
             : createChildren(ctx);
     },
     onPointerUp(ctx: IItemHeaderCtx, ev: b.IBobrilPointerEvent): boolean {
-        let d = ctx.data.data;
+        const d = ctx.data.data;
         if (d.disabled) return false;
         if (d.action) d.action();
-        return true;
+        return false;
     },
     onKeyDown(ctx: IItemHeaderCtx, ev: b.IKeyDownUpEvent): boolean {
-        let d = ctx.data.data;
+        const d = ctx.data.data;
         if (ev.which === 32 && !d.disabled && ctx.focusFromKeyboard) {
             ctx.down = true;
             b.invalidate(ctx);
             return true;
         }
         if (ev.which === 13 && !d.disabled && ctx.focusFromKeyboard) {
-            let a = d.action;
-            if (a) a();
+            if (d.action) d.action();
             return true;
         }
         return false;
     },
     onKeyUp(ctx: IItemHeaderCtx, ev: b.IKeyDownUpEvent): boolean {
-        let d = ctx.data.data;
+        const d = ctx.data.data;
         if (ev.which === 32 && !d.disabled && ctx.focusFromKeyboard) {
             ctx.down = false;
             b.invalidate(ctx);
-            let a = d.action;
-            if (a) a();
+            if (d.action) d.action();
             return true;
         }
         return false;
@@ -289,24 +287,24 @@ interface IListItemCtx extends b.IBobrilCtx {
     data: IListItemData;
     hasNested: boolean;
     open: b.IProp<boolean>;
-    toggleOpen: ()=>void;
+    toggleOpen: () => void;
 }
 
 export const ListItem = b.createComponent<IListItemData>({
     init(ctx: IListItemCtx) {
         ctx.open = ctx.data.open || b.prop(false);
-        ctx.toggleOpen = ()=> {
+        ctx.toggleOpen = () => {
             ctx.open(!ctx.open());
             b.invalidate(ctx);
         };
     },
     render(ctx: IListItemCtx, me: b.IBobrilNode) {
-        let d = ctx.data;
+        const d = ctx.data;
         if (d.open) ctx.open = d.open;
-        ctx.hasNested = d.children != null && d.children != [];
+        ctx.hasNested = d.nestedItems != null && d.nestedItems != [];
         let nestedItems: b.IBobrilNode;
         if (ctx.open() && ctx.hasNested) {
-            nestedItems = list.List({ privateNested: true }, d.children);
+            nestedItems = list.List({ privateNested: true }, d.nestedItems);
         }
         me.children = [
             ItemHeader(ctx),

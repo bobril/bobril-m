@@ -24,8 +24,9 @@ export const List = b.createComponent<IListData>({
         let hasSubheader = true;
         let ch = me.children;
         if (typeof ch !== "string") {
-            let firstChild = (<b.IBobrilCacheNode[]>me.children)[0];
-            if (firstChild.component) hasSubheader = false;
+            let children = (<b.IBobrilCacheNode[]>me.children);
+            if (!children || !children.length || !children[0]) return;
+            if (children[0].component) hasSubheader = false;
         }
         b.style(me, listStyle, hasSubheader || { paddingTop: 8 });
     }
