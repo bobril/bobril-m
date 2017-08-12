@@ -77,7 +77,7 @@ export const MenuItem = b.createComponent<IMenuItemData>({
         if (d.leftIcon) {
             leftIconElement = b.style(d.leftIcon, { color: d.disabled ? styles.strDisabledColor : styles.strTextColor });
         } else if (d.checked) {
-            leftIconElement = icons.navigationCheck();
+            leftIconElement = b.style(icons.navigationCheck(), { color: styles.strTextColor });
         }
 
         if (leftIconElement)
