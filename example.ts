@@ -215,11 +215,11 @@ function getMenuPreview(): b.IBobrilChildren {
                             menuItems: [
                                 m.MenuItem({
                                     primaryText: 'TypeScript',
-                                    onTouchTap: () => { console.log('ts') }
+                                    action: () => { console.log('ts') }
                                 }),
                                 m.MenuItem({
                                     primaryText: 'JavaScript',
-                                    onTouchTap: () => { console.log('js') }
+                                    action: () => { console.log('js') }
                                 })
                             ]
                         }),

@@ -25,7 +25,7 @@ export interface IMenuItemData {
     insetChildren?: boolean,
     leftIcon?: b.IBobrilNode,
     menuItems?: b.IBobrilChildren,
-    onTouchTap?: () => void,
+    action?: () => void,
     primaryText?: string,
     rightIcon?: b.IBobrilNode,
     secondaryText?: string,
@@ -35,7 +35,6 @@ export interface IMenuItemData {
 
 interface IMenuItemCtx extends b.IBobrilCtx {
     data: IMenuItemData;
-    anchorNode: b.IBobrilCacheNode | undefined;
     open: boolean;
 }
 
@@ -43,27 +42,25 @@ interface IMenuItemCtx extends b.IBobrilCtx {
 const innerDivStyle = { paddingBottom: 0, paddingTop: 0 };
 
 const rootStyle = b.styleDef({ whiteSpace: 'nowrap' });
-const nestedMenuStyle = b.styleDef({ position: 'relative', zIndex: 1000 });
+const nestedMenuStyle = b.styleDef({ position: 'relative' });
 const secondaryTextStyle = b.styleDef({ cssFloat: 'right' });
 const leftIconDesktopStyle = b.styleDef({ left: 24, top: 4 });
 const rightIconDesktopStyle = b.styleDef({ right: 24, top: 4 });
 
-function handleTouchTap(ctx: IMenuItemCtx) {
+function handleAction(ctx: IMenuItemCtx) {
     if (!ctx.data.menuItems) {
         ctx.open = false;
-        ctx.anchorNode = undefined;
     }
     else {
         ctx.open = !ctx.open;
     }
 
     b.invalidate(ctx);
-    if (ctx.data.onTouchTap) ctx.data.onTouchTap();
+    if (ctx.data.action) ctx.data.action();
 };
 
 function handleRequestClose(ctx: IMenuItemCtx) {
     ctx.open = false;
-    ctx.anchorNode = undefined;
     b.invalidate(ctx);
 };
 
@@ -98,7 +95,7 @@ export const MenuItem = b.createComponent<IMenuItemData>({
                 autoCloseWhenOffScreen: true,
                 animation: d.animation,
                 anchorOrigin: d.anchorOrigin || { horizontal: 'right', vertical: 'top' },
-                anchorNode: ctx.anchorNode,
+                anchorNode: ctx.me,
                 open: ctx.open,
                 targetOrigin: d.targetOrigin || { horizontal: 'left', vertical: 'top' },
                 onRequestClose: () => handleRequestClose(ctx)
@@ -119,7 +116,7 @@ export const MenuItem = b.createComponent<IMenuItemData>({
         const sidePadding = d.desktop ? 24 : 16;
 
         me.children = ListItem({
-            action: () => handleTouchTap(ctx),
+            action: () => handleAction(ctx),
             primaryText: d.primaryText,
             disabled: d.disabled,
             innerDivStyle: [innerDivStyle, {
@@ -137,11 +134,5 @@ export const MenuItem = b.createComponent<IMenuItemData>({
                 fontSize: d.desktop ? 15 : 16
             }, d.style]
         }, [d.children, secondaryTextElement, childMenuPopover]);
-    },
-    postInitDom(ctx: IMenuItemCtx, me: b.IBobrilCacheNode) {
-        ctx.anchorNode = me;
-    },
-    postUpdateDom(ctx: IMenuItemCtx, me: b.IBobrilCacheNode) {
-        ctx.anchorNode = me;
     }
 });
