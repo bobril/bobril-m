@@ -90,8 +90,11 @@ export const MenuItem = b.createComponent<IMenuItemData>({
         if (d.secondaryText) secondaryTextElement = b.styledDiv(d.secondaryText, secondaryTextStyle);
 
         let childMenuPopover;
-        if (d.menuItems) {
-            childMenuPopover = Popover({
+        if (d.menuItems && ctx.open) {
+            childMenuPopover = [b.withKey(ClickAwayListener({
+                onClick: () => handleRequestClose(ctx)
+            }), "c"),
+            Popover({
                 autoCloseWhenOffScreen: true,
                 animation: d.animation,
                 anchorOrigin: d.anchorOrigin || { horizontal: 'right', vertical: 'top' },
@@ -99,17 +102,12 @@ export const MenuItem = b.createComponent<IMenuItemData>({
                 open: ctx.open,
                 targetOrigin: d.targetOrigin || { horizontal: 'left', vertical: 'top' },
                 onRequestClose: () => handleRequestClose(ctx)
-            }, [
-                    Menu({
-                        desktop: d.desktop,
-                        style: nestedMenuStyle
-                    }, d.menuItems),
-                    ClickAwayListener({
-                        id: d.primaryText || "",
-                        onClick: () => handleRequestClose(ctx)
-                    }, undefined)
-                ]
-            );
+            },
+                Menu({
+                    desktop: d.desktop,
+                    style: nestedMenuStyle
+                }, d.menuItems),
+            )];
         }
 
         const indent = d.desktop ? 64 : 72;
@@ -129,7 +127,7 @@ export const MenuItem = b.createComponent<IMenuItemData>({
             style: [rootStyle, {
                 color: d.disabled ? styles.strDisabledColor : styles.strTextColor,
                 cursor: d.disabled ? 'default' : 'pointer',
-                minHeight: d.desktop ? '32px' : '48px',
+                minHeight: d.desktop ? 32 : 48,
                 lineHeight: d.desktop ? '32px' : '48px',
                 fontSize: d.desktop ? 15 : 16
             }, d.style]

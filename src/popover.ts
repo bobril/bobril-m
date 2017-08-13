@@ -1,5 +1,4 @@
 import * as b from 'bobril';
-import * as s from './styles';
 import * as paper from './paper';
 import { PopoverAnimationDefault, IPopoverAnimationDefaultData } from './popoverAnimationDefault';
 import { IPopoverOrigin } from './popoverOrigin';
@@ -67,6 +66,7 @@ export interface IPopoverData {
 interface IPopoverCtx extends b.IBobrilCtx {
     data: IPopoverData;
     id: string | undefined;
+    scrollAction: () => void;
 }
 
 function createPopover(ctx: IPopoverCtx): b.IBobrilChildren {
@@ -159,14 +159,14 @@ function setPlacement(ctx: IPopoverCtx, targetEl: HTMLElement, scrolling: boolea
     targetEl.style.left = `${Math.max(0, targetPosition.left)}px`;
     targetEl.style.maxHeight = `${window.innerHeight}px`;
     targetEl.style.position = 'absolute';
-    targetEl.style.zIndex = s.zIndex.popover.toString();
 };
 
-export const Popover = b.createComponent<IPopoverData>({
+export const Popover = b.createVirtualComponent<IPopoverData>({
     init(ctx: IPopoverCtx) {
-        b.addOnScroll(() => {
+        ctx.scrollAction = () => {
             b.invalidate(ctx); b.deferSyncUpdate();
-        });
+        };
+        b.addOnScroll(ctx.scrollAction);
     },
 
     render(ctx: IPopoverCtx) {
@@ -179,14 +179,19 @@ export const Popover = b.createComponent<IPopoverData>({
             ctx.id = undefined;
         }
     },
+    postInitDom(this: any, ctx: IPopoverCtx) {
+        this.postUpdateDomEverytime(ctx);
+    },
     postUpdateDomEverytime(ctx: IPopoverCtx) {
         if (ctx.id) {
             const popover = b.getRoots()[ctx.id];
-            if (popover && popover.c![0])
-                setPlacement(ctx, <HTMLElement>(popover.c![0] as any).element);
+            const dom = b.getDomNode(popover.c![0] as b.IBobrilCacheNode);
+            if (popover && dom)
+                setPlacement(ctx, <HTMLElement>dom);
         }
     },
     destroy(ctx: IPopoverCtx) {
+        b.removeOnScroll(ctx.scrollAction);
         if (ctx.id)
             b.removeRoot(ctx.id);
     }

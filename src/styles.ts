@@ -73,11 +73,6 @@ export let zDepthShadows = [
     b.styleDef({ boxShadow: () => `0 ${d[0]}px ${d[1]}px ${withTransparency(strShadowColor, d[2])},0 ${d[3]}px ${d[4]}px ${withTransparency(strShadowColor, d[5])}` }, undefined, "zDepth" + (i + 1))
     );
 
-export let zIndex = {
-    menu: 1000,
-    popover: 1000
-}
-
 b.selectorStyleDef("html", [c.widthHeight100p, {
     margin: 0
 }]);

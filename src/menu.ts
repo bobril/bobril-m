@@ -1,5 +1,4 @@
 import * as b from 'bobril';
-import * as styles from "./styles";
 import { List } from './list';
 
 export interface IMenuData {
@@ -18,8 +17,6 @@ interface IMenuCtx extends b.IBobrilCtx {
     isKeyboardFocused: boolean;
     keyWidth: number;
 }
-
-const rootStyle = b.styleDef({ zIndex: styles.zIndex.menu });
 
 function decrementKeyboardFocusIndex(ctx: IMenuCtx) {
     let index = ctx.focusIndex;
@@ -90,7 +87,12 @@ function setFocusIndex(ctx: IMenuCtx, newIndex: number, isKeyboardFocused: boole
     b.invalidate(ctx);
 }
 
-function setWidth(ctx: IMenuCtx, element: HTMLElement) {
+function setWidthAndFocus(ctx: IMenuCtx, element: HTMLElement) {
+    if (ctx.isKeyboardFocused) {
+        //set focus to correct item
+        b.focus((<any>ctx.me.children![0]).children[0].children[ctx.focusIndex]);
+    }
+
     const elWidth = element.offsetWidth;
     const keyWidth = ctx.keyWidth;
     const minWidth = keyWidth * 1.5;
@@ -116,22 +118,16 @@ export const Menu = b.createComponent<IMenuData>({
     render(ctx: IMenuCtx, me: b.IBobrilNode) {
         const d = ctx.data;
 
-        me.children = b.styledDiv(List({}, d.children), [rootStyle, {
+        me.children = b.styledDiv(List({}, d.children), {
             maxHeight: d.maxHeight,
             overflowY: d.maxHeight ? 'auto' : undefined,
-        }, d.style]);
-    },
-    postRender(ctx: IMenuCtx, _me: b.IBobrilNode, oldMe?: b.IBobrilCacheNode) {
-        if (ctx.isKeyboardFocused && oldMe) {
-            //set focus to correct item
-            b.focus((<any>oldMe.children![0]).children[0].children[ctx.focusIndex]);
-        }
+        }, d.style);
     },
     postInitDom(ctx: IMenuCtx, _me: b.IBobrilCacheNode, element: HTMLElement) {
-        setWidth(ctx, element);
+        setWidthAndFocus(ctx, element);
     },
-    postUpdateDom(ctx: IMenuCtx, _me: b.IBobrilCacheNode, element: HTMLElement) {
-        setWidth(ctx, element);
+    postUpdateDomEverytime(ctx: IMenuCtx, _me: b.IBobrilCacheNode, element: HTMLElement) {
+        setWidthAndFocus(ctx, element);
     },
     onPointerUp(ctx: IMenuCtx, _ev: b.IBobrilPointerEvent): boolean {
         ctx.isKeyboardFocused = false;

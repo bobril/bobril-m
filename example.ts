@@ -332,9 +332,10 @@ function createNavigation(): b.IBobrilNode {
     return m.Paper({
         zDepth: 3,
         style: {
-            cssFloat: 'left',
-            width: navigationWidth,
-            height: '100%'
+            position: 'absolute',
+            top: 0,
+            bottom: 0,
+            width: navigationWidth
         }
     }, m.List({}, [
         createNavigationItem('Badge', getBadgePreview),
@@ -359,17 +360,14 @@ function createHeaderContent(): b.IBobrilNode {
 
 b.init(() => {
     return [
-        m.Paper({
-            style: {
-                cssFloat: 'right',
-                width: 'calc(100% - ' + navigationWidth + 'px)',
-                height: '100%'
-            }
-        }, [
-                createHeaderContent(),
-                getPageContent()
-            ]
-        ),
+        b.styledDiv([
+            createHeaderContent(),
+            getPageContent()
+        ], {
+                paddingTop: 1,
+                paddingLeft: navigationWidth,
+                paddingBottom: 1
+            }),
         createNavigation()
     ];
 });
