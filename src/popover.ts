@@ -87,7 +87,7 @@ function createPopover(ctx: IPopoverCtx): b.IBobrilChildren {
 
 function getAnchorPositionRect(node: b.IBobrilCacheNode): IPositionRect {
     const pos = b.nodePagePos(node);
-    const el = <HTMLElement>node.element;
+    const el = b.getDomNode(node) as HTMLElement;
     const anchorRect = {
         left: pos[0],
         top: pos[1],

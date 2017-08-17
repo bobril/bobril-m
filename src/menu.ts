@@ -1,98 +1,161 @@
 import * as b from 'bobril';
 import { List } from './list';
 
+export interface IMenuItemControllerChild extends b.IBobrilCtx {
+    focused: boolean;
+    owner: IMenuController;
+    _disabled: boolean;
+}
+
+export interface IMenuController {
+    childRender(ctx: IMenuItemControllerChild, disabled: boolean): void;
+    close(): void;
+    focus(): void;
+}
+
 export interface IMenuData {
     children?: b.IBobrilChildren;
     desktop?: boolean;
     initiallyKeyboardFocused?: boolean;
     maxHeight?: number;
-    onEscKeyDown?: () => void;
-    onKeyDown?: () => void;
+    onClose?: () => void;
     style?: b.IBobrilStyleDef;
 }
 
 interface IMenuCtx extends b.IBobrilCtx {
     data: IMenuData;
-    focusIndex: number;
     isKeyboardFocused: boolean;
     keyWidth: number;
+    controller: MenuController;
+}
+
+class MenuController implements IMenuController {
+    self: b.IBobrilCacheNode;
+    parent: b.IBobrilCacheNode | undefined;
+    selectable: IMenuItemControllerChild[];
+    selected: IMenuItemControllerChild | undefined;
+    selectedIndex: number;
+    onClose?: () => void;
+
+    constructor() {
+        this.parent = undefined;
+        this.selectable = [];
+        this._clear();
+    }
+
+    close() {
+        let close = this.onClose;
+        if (close)
+            close();
+        else
+            focus();
+    }
+
+    focus() {
+        b.focus(this.self);
+    }
+
+    childRender(ctx: IMenuItemControllerChild, disabled: boolean): void {
+        ctx._disabled = disabled;
+        this.parent = ctx.me.parent;
+        if (disabled) ctx.focused = false;
+    }
+
+    private _clear() {
+        this.selectable.length = 0;
+        this.selected = undefined;
+        this.selectedIndex = -1;
+    }
+
+    private _update(focused: boolean) {
+        const selectable = this.selectable;
+        if (selectable.length > 0) {
+            if (this.selectedIndex < 0) {
+                this.selectedIndex = 0;
+            }
+            if (this.selectedIndex >= selectable.length) {
+                this.selectedIndex = selectable.length - 1;
+            }
+            let found = false;
+            if (this.selected != undefined) for (let i = 0; i < selectable.length; i++) {
+                if (this.selected === selectable[i]) {
+                    found = true;
+                    this.selectedIndex = i;
+                    break;
+                }
+            }
+            if (!found) this.selected = undefined;
+            if (this.selected == undefined) {
+                this.selected = selectable[this.selectedIndex];
+            }
+            for (let i = 0; i < selectable.length; i++) {
+                let c = selectable[i];
+                if (c.focused != (focused && i == this.selectedIndex)) {
+                    c.focused = !c.focused;
+                    b.invalidate(c);
+                }
+            }
+        } else {
+            this.selectedIndex = -1;
+            this.selected = undefined;
+        }
+    }
+
+    postRender(focused: boolean) {
+        if (this.parent == undefined) {
+            this._clear();
+            return;
+        }
+        let ch = this.parent.children;
+        if (!b.isArray(ch)) {
+            this._clear();
+            return;
+        }
+        const selectable = this.selectable;
+        selectable.length = 0;
+        for (let i = 0; i < ch.length; i++) {
+            let c = ch[i].ctx as IMenuItemControllerChild;
+            if (c.owner == this && !c._disabled) {
+                selectable.push(c);
+            }
+        }
+        this._update(focused);
+    }
+
+    addToIndex(delta: number) {
+        this.selected = undefined;
+        this.selectedIndex += delta;
+        this._update(true);
+    }
 }
 
 function decrementKeyboardFocusIndex(ctx: IMenuCtx) {
-    let index = ctx.focusIndex;
-    let lastValidIndex = ctx.focusIndex;
-    const children = <b.IBobrilChildArray>ctx.data.children;
-
-    do {
-        index--;
-        if (index < 0) index = 0;
-
-        if (isValidChild(<b.IBobrilNode>children[index])) {
-            lastValidIndex = index;
-            break;
-        }
-
-    } while (index !== 0)
-
-    setFocusIndex(ctx, lastValidIndex, true);
+    ctx.controller.addToIndex(-1);
+    ctx.isKeyboardFocused = true;
 }
-
-function handleKeyDown(ctx: IMenuCtx, event: b.IKeyDownUpEvent) {
-    switch (event.which) {
-        case 27:
-            ctx.data.onEscKeyDown && ctx.data.onEscKeyDown();
-            break;
-        case 9:
-            if (event.shift)
-                decrementKeyboardFocusIndex(ctx);
-            else
-                incrementKeyboardFocusIndex(ctx);
-            break;
-        case 38:
-            decrementKeyboardFocusIndex(ctx);
-            break;
-        case 40:
-            incrementKeyboardFocusIndex(ctx);
-            break;
-    }
-    if (ctx.data.onKeyDown) ctx.data.onKeyDown();
-};
 
 function incrementKeyboardFocusIndex(ctx: IMenuCtx) {
-    let index = ctx.focusIndex;
-    let lastValidIndex = ctx.focusIndex;
-    const children = <b.IBobrilChildArray>ctx.data.children;
-
-    do {
-        index++;
-        if (index > children.length - 1) index = children.length - 1;
-
-        if (isValidChild(<b.IBobrilNode>children[index])) {
-            lastValidIndex = index;
-            break;
-        }
-
-    } while (index !== children.length - 1)
-
-    setFocusIndex(ctx, lastValidIndex, true);
+    ctx.controller.addToIndex(1);
+    ctx.isKeyboardFocused = true;
 }
 
-function isValidChild(child: b.IBobrilNode): boolean {
-    return (child.component == null || child.component.id !== 'Divider') && (child.data && !child.data.disabled);
-}
-
-function setFocusIndex(ctx: IMenuCtx, newIndex: number, isKeyboardFocused: boolean) {
-    ctx.focusIndex = newIndex;
-    ctx.isKeyboardFocused = isKeyboardFocused;
-    b.invalidate(ctx);
-}
-
-function setWidthAndFocus(ctx: IMenuCtx, element: HTMLElement) {
-    if (ctx.isKeyboardFocused) {
-        //set focus to correct item
-        b.focus((<any>ctx.me.children![0]).children[0].children[ctx.focusIndex]);
+function handleKeyDown(ctx: IMenuCtx, event: b.IKeyDownUpEvent): boolean {
+    switch (event.which) {
+        case 27:
+            ctx.controller.close();
+            return true;
+        case 38:
+            decrementKeyboardFocusIndex(ctx);
+            return true;
+        case 40:
+            incrementKeyboardFocusIndex(ctx);
+            return true;
     }
+    return false;
+};
 
+function setWidth(ctx: IMenuCtx) {
+    let element = b.getDomNode(ctx.me) as HTMLElement;
     const elWidth = element.offsetWidth;
     const keyWidth = ctx.keyWidth;
     const minWidth = keyWidth * 1.5;
@@ -107,34 +170,61 @@ function setWidthAndFocus(ctx: IMenuCtx, element: HTMLElement) {
     element.style.width = `${newWidth}px`;
 }
 
-export const Menu = b.createComponent<IMenuData>({
+// This method belongs to Bobril
+function extendCfg(ctx: b.IBobrilCtx, propertyName: string, value: any): void {
+    let c = Object.assign({}, ctx.cfg);
+    c[propertyName] = value;
+    ctx.me.cfg = c;
+}
+
+export const Menu = b.createVirtualComponent<IMenuData>({
     init(ctx: IMenuCtx) {
         const d = ctx.data;
-
-        ctx.focusIndex = 0;
+        ctx.controller = new MenuController();
         ctx.isKeyboardFocused = d.initiallyKeyboardFocused || false;
         ctx.keyWidth = d.desktop ? 64 : 56;
     },
     render(ctx: IMenuCtx, me: b.IBobrilNode) {
         const d = ctx.data;
-
+        ctx.controller.onClose = d.onClose;
+        extendCfg(ctx, "menuController", ctx.controller);
         me.children = b.styledDiv(List({}, d.children), {
             maxHeight: d.maxHeight,
             overflowY: d.maxHeight ? 'auto' : undefined,
         }, d.style);
+        me.children.attrs = {};
+        me.children.attrs.tabindex = 0;
     },
-    postInitDom(ctx: IMenuCtx, _me: b.IBobrilCacheNode, element: HTMLElement) {
-        setWidthAndFocus(ctx, element);
+    postRender(ctx: IMenuCtx) {
+        ctx.controller.postRender(ctx.isKeyboardFocused);
     },
-    postUpdateDomEverytime(ctx: IMenuCtx, _me: b.IBobrilCacheNode, element: HTMLElement) {
-        setWidthAndFocus(ctx, element);
+    postInitDom(ctx: IMenuCtx) {
+        setWidth(ctx);
+        if (ctx.isKeyboardFocused) {
+            b.focus(ctx.me);
+        }
+    },
+    postUpdateDomEverytime(ctx: IMenuCtx) {
+        setWidth(ctx);
     },
     onPointerUp(ctx: IMenuCtx, _ev: b.IBobrilPointerEvent): boolean {
-        ctx.isKeyboardFocused = false;
+        if (ctx.isKeyboardFocused = true) {
+            ctx.isKeyboardFocused = false;
+            b.invalidate(ctx);
+        }
         return true;
     },
     onKeyDown(ctx: IMenuCtx, event: b.IKeyDownUpEvent): boolean {
-        handleKeyDown(ctx, event);
-        return true;
+        return handleKeyDown(ctx, event);
+    },
+    onFocusIn(ctx: IMenuCtx) {
+        if (!ctx.data.onClose) {
+            ctx.isKeyboardFocused = true;
+            b.invalidate(ctx);
+        }
+    },
+    onFocusOut(ctx: IMenuCtx) {
+        ctx.isKeyboardFocused = false;
+        b.invalidate(ctx);
     }
 });

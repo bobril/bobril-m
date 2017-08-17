@@ -2,17 +2,11 @@ import * as b from 'bobril';
 import { ClickAwayListener } from './clickAwayListener';
 import { ListItem } from './listItem';
 import * as icons from "bobril-m-icons";
-import { Menu } from './menu';
+import { Menu, IMenuItemControllerChild } from './menu';
 import { Popover } from './popover';
 import { IPopoverOrigin } from './popoverOrigin';
 import * as styles from './styles';
 import { IPopoverAnimationDefaultData } from "./popoverAnimationDefault";
-
-export const enum IFocusState {
-    None,
-    Focused,
-    KeyboardFocused
-}
 
 export interface IMenuItemData {
     anchorOrigin?: IPopoverOrigin,
@@ -26,6 +20,7 @@ export interface IMenuItemData {
     leftIcon?: b.IBobrilNode,
     menuItems?: b.IBobrilChildren,
     action?: () => void,
+    preventCloseOnAction?: boolean,
     primaryText?: string,
     rightIcon?: b.IBobrilNode,
     secondaryText?: string,
@@ -33,7 +28,7 @@ export interface IMenuItemData {
     targetOrigin?: IPopoverOrigin
 }
 
-interface IMenuItemCtx extends b.IBobrilCtx {
+interface IMenuItemCtx extends b.IBobrilCtx, IMenuItemControllerChild {
     data: IMenuItemData;
     open: boolean;
 }
@@ -50,13 +45,15 @@ const rightIconDesktopStyle = b.styleDef({ right: 24, top: 4 });
 function handleAction(ctx: IMenuItemCtx) {
     if (!ctx.data.menuItems) {
         ctx.open = false;
+        if (ctx.data.action) ctx.data.action();
+        if (!ctx.data.preventCloseOnAction) {
+            ctx.owner.close();
+        }
     }
     else {
         ctx.open = !ctx.open;
     }
-
     b.invalidate(ctx);
-    if (ctx.data.action) ctx.data.action();
 };
 
 function handleRequestClose(ctx: IMenuItemCtx) {
@@ -64,12 +61,15 @@ function handleRequestClose(ctx: IMenuItemCtx) {
     b.invalidate(ctx);
 };
 
-export const MenuItem = b.createComponent<IMenuItemData>({
+export const MenuItem = b.createVirtualComponent<IMenuItemData>({
     init(ctx: IMenuItemCtx) {
         ctx.open = false;
+        ctx.focused = false;
+        ctx.owner = ctx.cfg.menuController;
     },
     render(ctx: IMenuItemCtx, me: b.IBobrilNode) {
         const d = ctx.data;
+        ctx.owner.childRender(ctx, d.disabled || false);
         let leftIconElement: b.IBobrilNode | undefined;
         if (d.leftIcon) {
             leftIconElement = b.style(d.leftIcon, { color: d.disabled ? styles.strDisabledColor : styles.strTextColor });
@@ -105,6 +105,11 @@ export const MenuItem = b.createComponent<IMenuItemData>({
             },
                 Menu({
                     desktop: d.desktop,
+                    initiallyKeyboardFocused: ctx.focused,
+                    onClose: () => {
+                        handleRequestClose(ctx);
+                        if (!d.preventCloseOnAction) ctx.owner.close();
+                    },
                     style: nestedMenuStyle
                 }, d.menuItems),
             )];
@@ -124,6 +129,7 @@ export const MenuItem = b.createComponent<IMenuItemData>({
             insetChildren: d.insetChildren,
             leftIcon: leftIconElement,
             rightIcon: rightIconElement,
+            focusFromKeyboard: ctx.focused,
             style: [rootStyle, {
                 color: d.disabled ? styles.strDisabledColor : styles.strTextColor,
                 cursor: d.disabled ? 'default' : 'pointer',

@@ -19,6 +19,7 @@ export interface IListItemData {
     innerDivStyle?: b.IBobrilStyles;
     insetChildren?: boolean;
     selected?: boolean;
+    focusFromKeyboard?: boolean;
     open?: b.IProp<boolean>;
     leftAvatar?: b.IBobrilNode;
     leftCheckbox?: b.IBobrilNode;
@@ -208,10 +209,11 @@ const ItemHeader = b.createComponent<IListItemCtx>({
     render(ctx: IItemHeaderCtx, me: b.IBobrilNode) {
         const d = ctx.data.data;
         const showHover = (ctx.hover || ctx.focusFromKeyboard) && !d.disabled;
-
+        if (d.focusFromKeyboard != null)
+            ctx.focusFromKeyboard = d.focusFromKeyboard;
         me.attrs = {
             'aria-disabled': d.disabled ? 'true' : 'false',
-            tabindex: d.disabled ? undefined : (d.tabindex || 0)
+            tabindex: (d.disabled || (d.focusFromKeyboard != null)) ? undefined : (d.tabindex || 0)
         };
         b.style(me, d.disabled ? disabledStyle : enabledStyle);
         me.children = !d.rightToggle && !d.leftCheckbox

@@ -12,7 +12,7 @@ interface IListCtx extends b.IBobrilCtx {
 let listStyle = b.styleDef({
     padding: 0,
     paddingBottom: 8
-});
+}, { focus: { outline: 'none' } });
 
 export const List = b.createComponent<IListData>({
     id: "List",
