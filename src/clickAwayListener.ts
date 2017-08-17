@@ -20,10 +20,8 @@ const clickAwayListenerLayer = b.createComponent<never>({
         b.style(me, layerStyle);
     },
     onPointerUp(_ctx: IClickAwayListenerLayerCtx, _event: b.IBobrilPointerEvent): boolean {
-        console.log("Clicked listener");
         for (var id in onClicks)
             onClicks[id]();
-
         return true;
     }
 });

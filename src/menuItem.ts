@@ -66,6 +66,7 @@ export const MenuItem = b.createVirtualComponent<IMenuItemData>({
         ctx.open = false;
         ctx.focused = false;
         ctx.owner = ctx.cfg.menuController;
+        ctx.handleAction = () => handleAction(ctx);
     },
     render(ctx: IMenuItemCtx, me: b.IBobrilNode) {
         const d = ctx.data;
@@ -82,6 +83,8 @@ export const MenuItem = b.createVirtualComponent<IMenuItemData>({
                 leftIconDesktopStyle, { marginTop: d.desktop ? -8 : -4 });
 
         let rightIconElement: b.IBobrilNode | undefined;
+        if (d.menuItems && !d.rightIcon)
+            d.rightIcon = icons.navigationChevronRight();
         if (d.rightIcon)
             rightIconElement = b.styledDiv(d.rightIcon, { color: d.disabled ? styles.strDisabledColor : styles.strTextColor },
                 rightIconDesktopStyle, { marginTop: d.desktop ? -8 : -4 });
@@ -119,7 +122,7 @@ export const MenuItem = b.createVirtualComponent<IMenuItemData>({
         const sidePadding = d.desktop ? 24 : 16;
 
         me.children = ListItem({
-            action: () => handleAction(ctx),
+            action: ctx.handleAction,
             primaryText: d.primaryText,
             disabled: d.disabled,
             innerDivStyle: [innerDivStyle, {

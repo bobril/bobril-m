@@ -207,11 +207,9 @@ function getMenuPreview(): b.IBobrilChildren {
                 m.MenuItem({
                     primaryText: 'Books',
                     insetChildren: true,
-                    rightIcon: icons.navigationChevronRight(),
                     menuItems: [
                         m.MenuItem({
                             primaryText: 'Programming',
-                            rightIcon: icons.navigationChevronRight(),
                             menuItems: [
                                 m.MenuItem({
                                     primaryText: 'TypeScript',

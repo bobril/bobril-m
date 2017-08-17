@@ -171,11 +171,14 @@ export const Popover = b.createVirtualComponent<IPopoverData>({
 
     render(ctx: IPopoverCtx) {
         const d = ctx.data;
-        if (d.open && !ctx.id)
-            ctx.id = b.addRoot(() => createPopover(ctx));
+        if (d.open && !ctx.id) {
+            ctx.id = b.addRoot(() => createPopover(ctx), undefined, ctx.me);
+            b.registerFocusRoot(ctx);
+        }
 
         if (!d.open && ctx.id) {
             b.removeRoot(ctx.id);
+            b.unregisterFocusRoot(ctx);
             ctx.id = undefined;
         }
     },
@@ -192,7 +195,9 @@ export const Popover = b.createVirtualComponent<IPopoverData>({
     },
     destroy(ctx: IPopoverCtx) {
         b.removeOnScroll(ctx.scrollAction);
-        if (ctx.id)
+        if (ctx.id) {
             b.removeRoot(ctx.id);
+            b.unregisterFocusRoot(ctx);
+        }
     }
 });

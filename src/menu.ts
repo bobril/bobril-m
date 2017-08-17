@@ -5,6 +5,7 @@ export interface IMenuItemControllerChild extends b.IBobrilCtx {
     focused: boolean;
     owner: IMenuController;
     _disabled: boolean;
+    handleAction(): void;
 }
 
 export interface IMenuController {
@@ -47,12 +48,17 @@ class MenuController implements IMenuController {
         let close = this.onClose;
         if (close)
             close();
-        else
-            focus();
     }
 
     focus() {
         b.focus(this.self.ctx!.refs!["list"]!);
+    }
+
+    runFocusedItemAction() {
+        let c = this.selected;
+        if (c) {
+            c.handleAction();
+        }
     }
 
     childRender(ctx: IMenuItemControllerChild, disabled: boolean): void {
@@ -146,6 +152,10 @@ function handleKeyDown(ctx: IMenuCtx, event: b.IKeyDownUpEvent): boolean {
         case 27:
             ctx.controller.close();
             return true;
+        case 32:
+        case 13:
+            ctx.controller.runFocusedItemAction();
+            return true;
         case 38:
             decrementKeyboardFocusIndex(ctx);
             return true;
@@ -224,10 +234,9 @@ export const Menu = b.createVirtualComponent<IMenuData>({
         return handleKeyDown(ctx, event);
     },
     onFocusIn(ctx: IMenuCtx) {
-        if (!ctx.data.onClose) {
-            ctx.isKeyboardFocused = true;
-            b.invalidate(ctx);
-        }
+        ctx.isKeyboardFocused = true;
+        ctx.controller.postRender(true);
+        b.invalidate(ctx);
     },
     onFocusOut(ctx: IMenuCtx) {
         ctx.isKeyboardFocused = false;
