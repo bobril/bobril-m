@@ -208,9 +208,9 @@ const ItemHeader = b.createComponent<IListItemCtx>({
     },
     render(ctx: IItemHeaderCtx, me: b.IBobrilNode) {
         const d = ctx.data.data;
-        const showHover = (ctx.hover || ctx.focusFromKeyboard) && !d.disabled;
         if (d.focusFromKeyboard != null)
             ctx.focusFromKeyboard = d.focusFromKeyboard;
+        const showHover = (ctx.hover || ctx.focusFromKeyboard) && !d.disabled;
         me.attrs = {
             'aria-disabled': d.disabled ? 'true' : 'false',
             tabindex: (d.disabled || (d.focusFromKeyboard != null)) ? undefined : (d.tabindex || 0)

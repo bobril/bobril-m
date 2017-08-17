@@ -52,7 +52,7 @@ class MenuController implements IMenuController {
     }
 
     focus() {
-        b.focus(this.self);
+        b.focus(this.self.ctx!.refs!["list"]!);
     }
 
     childRender(ctx: IMenuItemControllerChild, disabled: boolean): void {
@@ -132,11 +132,13 @@ class MenuController implements IMenuController {
 function decrementKeyboardFocusIndex(ctx: IMenuCtx) {
     ctx.controller.addToIndex(-1);
     ctx.isKeyboardFocused = true;
+    ctx.controller.focus();
 }
 
 function incrementKeyboardFocusIndex(ctx: IMenuCtx) {
     ctx.controller.addToIndex(1);
     ctx.isKeyboardFocused = true;
+    ctx.controller.focus();
 }
 
 function handleKeyDown(ctx: IMenuCtx, event: b.IKeyDownUpEvent): boolean {
@@ -177,10 +179,16 @@ function extendCfg(ctx: b.IBobrilCtx, propertyName: string, value: any): void {
     ctx.me.cfg = c;
 }
 
+// This method belongs to Bobril
+function withRef(node: b.IBobrilNode, ctx: b.IBobrilCtx, name: string): b.IBobrilNode {
+    node.ref = [ctx, name];
+    return node;
+}
 export const Menu = b.createVirtualComponent<IMenuData>({
     init(ctx: IMenuCtx) {
         const d = ctx.data;
         ctx.controller = new MenuController();
+        ctx.controller.self = ctx.me;
         ctx.isKeyboardFocused = d.initiallyKeyboardFocused || false;
         ctx.keyWidth = d.desktop ? 64 : 56;
     },
@@ -188,12 +196,10 @@ export const Menu = b.createVirtualComponent<IMenuData>({
         const d = ctx.data;
         ctx.controller.onClose = d.onClose;
         extendCfg(ctx, "menuController", ctx.controller);
-        me.children = b.styledDiv(List({}, d.children), {
+        me.children = b.styledDiv(withRef(List({ tabindex: 0 }, d.children), ctx, "list"), {
             maxHeight: d.maxHeight,
             overflowY: d.maxHeight ? 'auto' : undefined,
         }, d.style);
-        me.children.attrs = {};
-        me.children.attrs.tabindex = 0;
     },
     postRender(ctx: IMenuCtx) {
         ctx.controller.postRender(ctx.isKeyboardFocused);
@@ -201,7 +207,7 @@ export const Menu = b.createVirtualComponent<IMenuData>({
     postInitDom(ctx: IMenuCtx) {
         setWidth(ctx);
         if (ctx.isKeyboardFocused) {
-            b.focus(ctx.me);
+            ctx.controller.focus();
         }
     },
     postUpdateDomEverytime(ctx: IMenuCtx) {

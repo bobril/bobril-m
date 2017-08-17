@@ -3,6 +3,7 @@ import * as b from 'bobril';
 export interface IListData {
     children?: b.IBobrilChildren;
     privateNested?: boolean;
+    tabindex?: number;
 }
 
 interface IListCtx extends b.IBobrilCtx {
@@ -17,7 +18,11 @@ let listStyle = b.styleDef({
 export const List = b.createComponent<IListData>({
     id: "List",
     render(ctx: IListCtx, me: b.IBobrilNode) {
-        me.children = ctx.data.children;
+        let d = ctx.data;
+        me.children = d.children;
+        if (d.tabindex != undefined) {
+            me.attrs = { tabindex: d.tabindex };
+        }
     },
     postRender(_ctx: IListCtx, me: b.IBobrilCacheNode) {
         let hasSubheader = true;
