@@ -84,7 +84,7 @@ export const MenuItem = b.createVirtualComponent<IMenuItemData>({
 
         let rightIconElement: b.IBobrilNode | undefined;
         if (d.menuItems && !d.rightIcon)
-            d.rightIcon = icons.navigationChevronRight();
+            d.rightIcon = icons.menuRight();
         if (d.rightIcon)
             rightIconElement = b.styledDiv(d.rightIcon, { color: d.disabled ? styles.strDisabledColor : styles.strTextColor },
                 rightIconDesktopStyle, { marginTop: d.desktop ? -8 : -4 });

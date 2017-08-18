@@ -31,14 +31,15 @@ interface IMenuCtx extends b.IBobrilCtx {
 }
 
 class MenuController implements IMenuController {
-    self: b.IBobrilCacheNode;
+    self: IMenuCtx;
     parent: b.IBobrilCacheNode | undefined;
     selectable: IMenuItemControllerChild[];
     selected: IMenuItemControllerChild | undefined;
     selectedIndex: number;
     onClose?: () => void;
 
-    constructor() {
+    constructor(ctx: IMenuCtx) {
+        this.self = ctx;
         this.parent = undefined;
         this.selectable = [];
         this._clear();
@@ -51,7 +52,7 @@ class MenuController implements IMenuController {
     }
 
     focus() {
-        b.focus(this.self.ctx!.refs!["list"]!);
+        b.focus(this.self.refs!["list"]!);
     }
 
     runFocusedItemAction() {
@@ -182,31 +183,18 @@ function setWidth(ctx: IMenuCtx) {
     element.style.width = `${newWidth}px`;
 }
 
-// This method belongs to Bobril
-function extendCfg(ctx: b.IBobrilCtx, propertyName: string, value: any): void {
-    let c = Object.assign({}, ctx.cfg);
-    c[propertyName] = value;
-    ctx.me.cfg = c;
-}
-
-// This method belongs to Bobril
-function withRef(node: b.IBobrilNode, ctx: b.IBobrilCtx, name: string): b.IBobrilNode {
-    node.ref = [ctx, name];
-    return node;
-}
 export const Menu = b.createVirtualComponent<IMenuData>({
     init(ctx: IMenuCtx) {
         const d = ctx.data;
-        ctx.controller = new MenuController();
-        ctx.controller.self = ctx.me;
+        ctx.controller = new MenuController(ctx);
         ctx.isKeyboardFocused = d.initiallyKeyboardFocused || false;
         ctx.keyWidth = d.desktop ? 64 : 56;
     },
     render(ctx: IMenuCtx, me: b.IBobrilNode) {
         const d = ctx.data;
         ctx.controller.onClose = d.onClose;
-        extendCfg(ctx, "menuController", ctx.controller);
-        me.children = b.styledDiv(withRef(List({ tabindex: 0 }, d.children), ctx, "list"), {
+        b.extendCfg(ctx, "menuController", ctx.controller);
+        me.children = b.styledDiv(b.withRef(List({ tabindex: 0 }, d.children), ctx, "list"), {
             maxHeight: d.maxHeight,
             overflowY: d.maxHeight ? 'auto' : undefined,
         }, d.style);

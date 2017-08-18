@@ -9,14 +9,14 @@ bobril-flex-ie10@*:
     bobril "*"
 
 bobril-m-icons@*:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/bobril-m-icons/-/bobril-m-icons-2.0.0.tgz#3c792ce64640d6c5735006aee8b0d14368e56a50"
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/bobril-m-icons/-/bobril-m-icons-2.1.0.tgz#32f81d515a7faf71f857a2ed1b637ec566f4161f"
   dependencies:
     bobril "*"
 
 bobril@*:
-  version "7.4.0"
-  resolved "https://registry.yarnpkg.com/bobril/-/bobril-7.4.0.tgz#05866687889182bdbdb8e83a3e5dcdb222c39d73"
+  version "7.5.0"
+  resolved "https://registry.yarnpkg.com/bobril/-/bobril-7.5.0.tgz#0a99f2913756f67c361105f0424df4f78d99dc90"
 
 webfontloader@^1.6.21:
   version "1.6.28"
