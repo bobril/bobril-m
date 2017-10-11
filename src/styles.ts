@@ -84,56 +84,113 @@ b.selectorStyleDef("body", [c.widthHeight100p, {
     color: textColor
 }]);
 
-export function lightTheme() {
-    strPrimary1Color = Colors.cyan500;
-    strPrimary2Color = Colors.cyan700;
-    strPrimary3Color = Colors.grey400;
-    strAccent1Color = Colors.pinkA200;
-    strAccent2Color = Colors.grey100;
-    strAccent3Color = Colors.grey500;
-    strTextColor = withTransparency(Colors.black, 0.87);
-    strCheckboxOffColor = withTransparency(Colors.black, 0.54);
-    strSecondaryTextColor = Colors.grey500;
-    strSelectColor = withTransparency(Colors.black, 0.2);
-    strSubheaderColor = withTransparency(Colors.black, 0.54);
-    strAlternateTextColor = Colors.white;
-    strCanvasColor = Colors.white;
-    strBorderColor = Colors.grey300;
-    strDisabledColor = withTransparency(Colors.black, 0.3);
-    strSliderColor = withTransparency(Colors.black, 0.54);
-    strAlternateDisabledColor = Colors.grey50;
-    strPickerHeaderColor = Colors.cyan500;
-    strClockCircleColor = withTransparency(Colors.black, 0.07);
-    strShadowColor = Colors.black;
-    strHoverColor = withTransparency("#999", 0.3);
-    strKeyboardFocusColor = withTransparency("#777", 0.3);
-    strErrorColor = Colors.red500;
+export interface ITheme {
+    primary1Color?: string;
+    primary2Color?: string;
+    primary3Color?: string;
+    accent1Color?: string;
+    accent2Color?: string;
+    accent3Color?: string;
+    textColor?: string;
+    checkboxOffColor?: string;
+    secondaryTextColor?: string;
+    selectColor?: string;
+    subheaderColor?: string;
+    alternateTextColor?: string;
+    canvasColor?: string;
+    borderColor?: string;
+    disabledColor?: string;
+    sliderColor?: string;
+    alternateDisabledColor?: string;
+    pickerHeaderColor?: string;
+    clockCircleColor?: string;
+    shadowColor?: string;
+    hoverColor?: string;
+    keyboardFocusColor?: string;
+    errorColor?: string;
+    rightIconDesktopFillColor?: string;
+}
+
+export function defineTheme(theme: ITheme) {
+    if (theme.primary1Color) strPrimary1Color = theme.primary1Color;
+    if (theme.primary2Color) strPrimary2Color = theme.primary2Color;
+    if (theme.primary3Color) strPrimary3Color = theme.primary3Color;
+    if (theme.accent1Color) strAccent1Color = theme.accent1Color;
+    if (theme.accent2Color) strAccent2Color = theme.accent2Color;
+    if (theme.accent3Color) strAccent3Color = theme.accent3Color;
+    if (theme.textColor) strTextColor = theme.textColor;
+    if (theme.checkboxOffColor) strCheckboxOffColor = theme.checkboxOffColor;
+    if (theme.secondaryTextColor) strSecondaryTextColor = theme.secondaryTextColor;
+    if (theme.selectColor) strSelectColor = theme.selectColor;
+    if (theme.subheaderColor) strSubheaderColor = theme.subheaderColor;
+    if (theme.alternateTextColor) strAlternateTextColor = theme.alternateTextColor;
+    if (theme.canvasColor) strCanvasColor = theme.canvasColor;
+    if (theme.borderColor) strBorderColor = theme.borderColor;
+    if (theme.disabledColor) strDisabledColor = theme.disabledColor;
+    if (theme.sliderColor) strSliderColor = theme.sliderColor;
+    if (theme.alternateDisabledColor) strAlternateDisabledColor = theme.alternateDisabledColor;
+    if (theme.pickerHeaderColor) strPickerHeaderColor = theme.pickerHeaderColor;
+    if (theme.clockCircleColor) strClockCircleColor = theme.clockCircleColor;
+    if (theme.shadowColor) strShadowColor = theme.shadowColor;
+    if (theme.hoverColor) strHoverColor = theme.hoverColor;
+    if (theme.keyboardFocusColor) strKeyboardFocusColor = theme.keyboardFocusColor;
+    if (theme.errorColor) strErrorColor = theme.errorColor;
+    if (theme.rightIconDesktopFillColor) strRightIconDesktopFillColor = theme.rightIconDesktopFillColor;
     b.invalidateStyles();
 }
 
+export function lightTheme() {
+    defineTheme({
+        primary1Color: Colors.cyan500,
+        primary2Color: Colors.cyan700,
+        primary3Color: Colors.grey400,
+        accent1Color: Colors.pinkA200,
+        accent2Color: Colors.grey100,
+        accent3Color: Colors.grey500,
+        textColor: withTransparency(Colors.black, 0.87),
+        checkboxOffColor: withTransparency(Colors.black, 0.54),
+        secondaryTextColor: Colors.grey500,
+        selectColor: withTransparency(Colors.black, 0.2),
+        subheaderColor: withTransparency(Colors.black, 0.54),
+        alternateTextColor: Colors.white,
+        canvasColor: Colors.white,
+        borderColor: Colors.grey300,
+        disabledColor: withTransparency(Colors.black, 0.3),
+        sliderColor: withTransparency(Colors.black, 0.54),
+        alternateDisabledColor: Colors.grey50,
+        pickerHeaderColor: Colors.cyan500,
+        clockCircleColor: withTransparency(Colors.black, 0.07),
+        shadowColor: Colors.black,
+        hoverColor: withTransparency("#999", 0.3),
+        keyboardFocusColor: withTransparency("#777", 0.3),
+        errorColor: Colors.red500
+    });
+}
+
 export function darkTheme() {
-    strPrimary1Color = Colors.cyan700;
-    strPrimary2Color = Colors.cyan700;
-    strPrimary3Color = Colors.grey600;
-    strAccent1Color = Colors.pinkA200;
-    strAccent2Color = Colors.pinkA400;
-    strAccent3Color = Colors.pinkA100;
-    strTextColor = Colors.white;
-    strAlternateTextColor = '#303030';
-    strCanvasColor = '#303030';
-    strBorderColor = withTransparency(Colors.white, 0.3);
-    strDisabledColor = withTransparency(Colors.white, 0.3);
-    strAlternateDisabledColor = Colors.grey800;
-    strCheckboxOffColor = withTransparency(Colors.black, 0.54);
-    strSecondaryTextColor = Colors.grey500;
-    strSelectColor = withTransparency(Colors.black, 0.2);
-    strSubheaderColor = withTransparency(Colors.white, 0.3);
-    strSliderColor = withTransparency(Colors.black, 0.54);
-    strPickerHeaderColor = Colors.cyan500;
-    strClockCircleColor = withTransparency(Colors.black, 0.07);
-    strShadowColor = Colors.black;
-    strHoverColor = withTransparency("#999", 0.3);
-    strKeyboardFocusColor = withTransparency("#777", 0.3);
-    strErrorColor = Colors.red500;
-    b.invalidateStyles();
+    defineTheme({
+        primary1Color: Colors.cyan700,
+        primary2Color: Colors.cyan700,
+        primary3Color: Colors.grey600,
+        accent1Color: Colors.pinkA200,
+        accent2Color: Colors.pinkA400,
+        accent3Color: Colors.pinkA100,
+        textColor: Colors.white,
+        alternateTextColor: '#303030',
+        canvasColor: '#303030',
+        borderColor: withTransparency(Colors.white, 0.3),
+        disabledColor: withTransparency(Colors.white, 0.3),
+        alternateDisabledColor: Colors.grey800,
+        checkboxOffColor: withTransparency(Colors.black, 0.54),
+        secondaryTextColor: Colors.grey500,
+        selectColor: withTransparency(Colors.black, 0.2),
+        subheaderColor: withTransparency(Colors.white, 0.3),
+        sliderColor: withTransparency(Colors.black, 0.54),
+        pickerHeaderColor: Colors.cyan500,
+        clockCircleColor: withTransparency(Colors.black, 0.07),
+        shadowColor: Colors.black,
+        hoverColor: withTransparency("#999", 0.3),
+        keyboardFocusColor: withTransparency("#777", 0.3),
+        errorColor: Colors.red500
+    });
 }
