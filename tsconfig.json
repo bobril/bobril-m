@@ -10,7 +10,9 @@
             "es5",
             "dom",
             "es2015.core",
-            "es2015.promise"
+            "es2015.promise",
+            "es2015.iterable",
+            "es2015.collection"
         ],
         "removeComments": false,
         "noLib": false,
@@ -22,7 +24,8 @@
         "noUnusedParameters": true,
         "noImplicitReturns": true,
         "noFallthroughCasesInSwitch": true,
-        "strictNullChecks": true
+        "strictNullChecks": true,
+        "types": []
     },
     "compileOnSave": false,
     "files": [

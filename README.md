@@ -9,5 +9,6 @@ Heavily inspired by www.material-ui.com
 
 Changes:
 
+- Themable thanks to Mirek Grela 
 - Renamed onTouchTap in menu to action to be consistent with rest
 - Icons are now passed directly as IBobrilNode instead of function
