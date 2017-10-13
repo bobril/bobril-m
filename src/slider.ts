@@ -28,7 +28,8 @@ interface ISliderCtx extends b.IBobrilCtx {
 
 const rootStyle = b.styleDef([c.userSelectNone, {
     width: "100%",
-    height: 48
+    height: 48,
+    touchAction: "none"
 }], { focus: { outline: "none" } });
 
 const strokeDisabledStyle = b.styleDef({
@@ -210,8 +211,8 @@ export const Slider = b.createComponent<ISliderData>({
     onPointerDown(ctx: ISliderCtx, event: b.IBobrilPointerEvent): boolean {
         let d = ctx.data;
         if (d.disabled) return false;
-        let rect = (<Element>ctx.me.element).getBoundingClientRect();
-        if (!ctx.down && Math.pow(event.x - rect.left - ctx.pos, 2) + Math.pow(event.y - rect.top - 24, 2) < 24 * 24) {
+        var [x, y] = b.convertPointFromClientToNode(ctx.me, event.x, event.y);
+        if (!ctx.down && Math.pow(x - ctx.pos, 2) + Math.pow(y - 24, 2) < 24 * 24) {
             ctx.down = true;
             ctx.revertValue = b.getValue(d.value);
             ctx.pointerId = event.id;
