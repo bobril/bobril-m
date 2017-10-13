@@ -63,11 +63,11 @@ const enabledRadius = 5;
 const disabledRadius = 3;
 const gapFromRadius = 3;
 
-function setByPos(ctx: ISliderCtx, x: number) {
+function setByPos(ctx: ISliderCtx, x: number, y: number) {
     let d = ctx.data;
-    let left = b.nodePagePos(ctx.me)[0] + ctx.gap;
-    let right = left + ctx.width - ctx.gap * 2;
-    let pos = x;
+    let left = ctx.gap;
+    let right = ctx.width - ctx.gap;
+    let pos = b.convertPointFromClientToNode(ctx.me, x, y)[0];
     if (pos > right) pos = right;
     if (pos < left) pos = left;
     if (right <= left) right = left + 1;
@@ -226,8 +226,7 @@ export const Slider = b.createComponent<ISliderData>({
     onPointerMove(ctx: ISliderCtx, event: b.IBobrilPointerEvent): boolean {
         if (ctx.data.disabled) return false;
         if (ctx.down && ctx.pointerId == event.id) {
-            var x = b.convertPointFromClientToNode(ctx.me, event.x, event.y)[0];
-            setByPos(ctx, x);
+            setByPos(ctx, event.x, event.y);
             return true;
         }
         return false;
@@ -254,7 +253,7 @@ export const Slider = b.createComponent<ISliderData>({
     },
     onClick(ctx: ISliderCtx, event: b.IBobrilMouseEvent): boolean {
         if (ctx.data.disabled) return false;
-        setByPos(ctx, event.x);
+        setByPos(ctx, event.x, event.y);
         b.focus(ctx.me);
         return true;
     },
