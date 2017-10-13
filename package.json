@@ -1,37 +1,37 @@
 {
-  "name": "bobril-m",
-  "version": "0.12.3",
-  "dependencies": {
-    "bobril": "*",
-    "bobril-flex-ie10": "*",
-    "bobril-m-icons": "*",
-    "webfontloader": "^1.6.21"
-  },
-  "main": "index.js",
-  "typescript": {
-    "main": "index.ts"
-  },
-  "bobril": {
-    "title": "Bobril Material",
-    "example": "example.ts",
-    "compilerOptions": {
-      "noImplicitAny": true,
-      "noImplicitThis": true,
-      "noUnusedLocals": true,
-      "noUnusedParameters": true,
-      "noImplicitReturns": true,
-      "noFallthroughCasesInSwitch": true,
-      "strictNullChecks": true
-    }
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/bobril/bobril-m.git"
-  },
-  "keywords": [
-    "bobril",
-    "material"
-  ],
-  "author": "Boris Letocha",
-  "license": "MIT"
+    "name": "bobril-m",
+    "version": "0.12.4",
+    "dependencies": {
+        "bobril": "*",
+        "bobril-flex-ie10": "*",
+        "bobril-m-icons": "*",
+        "webfontloader": "^1.6.21"
+    },
+    "main": "index.js",
+    "typescript": {
+        "main": "index.ts"
+    },
+    "prettier": {
+        "tabWidth": 4
+    },
+    "bobril": {
+        "title": "Bobril Material",
+        "example": "example.ts",
+        "compilerOptions": {
+            "noImplicitAny": true,
+            "noImplicitThis": true,
+            "noUnusedLocals": true,
+            "noUnusedParameters": true,
+            "noImplicitReturns": true,
+            "noFallthroughCasesInSwitch": true,
+            "strictNullChecks": true
+        }
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/bobril/bobril-m.git"
+    },
+    "keywords": ["bobril", "material"],
+    "author": "Boris Letocha",
+    "license": "MIT"
 }

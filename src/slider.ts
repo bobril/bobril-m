@@ -26,11 +26,17 @@ interface ISliderCtx extends b.IBobrilCtx {
     pointerId: number;
 }
 
-const rootStyle = b.styleDef([c.userSelectNone, {
-    width: "100%",
-    height: 48,
-    touchAction: "none"
-}], { focus: { outline: "none" } });
+const rootStyle = b.styleDef(
+    [
+        c.userSelectNone,
+        {
+            width: "100%",
+            height: 48,
+            touchAction: "none"
+        }
+    ],
+    { focus: { outline: "none" } }
+);
 
 const strokeDisabledStyle = b.styleDef({
     fill: colors.transparent,
@@ -80,11 +86,10 @@ function setByPos(ctx: ISliderCtx, x: number, y: number) {
     }
     let step = d.step;
     pos = pos * (max - min);
-    if (step != null)
-        pos = Math.round(pos / step) * step;
+    if (step != null) pos = Math.round(pos / step) * step;
     pos += min;
     b.emitChange(d, pos);
-};
+}
 
 export const Slider = b.createComponent<ISliderData>({
     init(ctx: ISliderCtx) {
@@ -112,8 +117,7 @@ export const Slider = b.createComponent<ISliderData>({
         }
         let step = d.step;
         value -= min;
-        if (step != null)
-            value = Math.round(value / step) * step;
+        if (step != null) value = Math.round(value / step) * step;
         value = value / (max - min);
         if (value > 1) value = 1;
         let gap = 12;
@@ -124,7 +128,7 @@ export const Slider = b.createComponent<ISliderData>({
         let ch: b.IBobrilNode[] = [];
         let high = ctx.hover || ctx.focus;
         let radius = ctx.down ? downRadius : enabledRadius;
-        let radiush = (high && !ctx.down) ? 12 : 0;
+        let radiush = high && !ctx.down ? 12 : 0;
         if (d.disabled) {
             radius = disabledRadius;
             ctx.radius = radius;
@@ -155,15 +159,49 @@ export const Slider = b.createComponent<ISliderData>({
             radius1 = radius + gapFromRadius;
         }
         if (gap < pos - radius1) {
-            ch.push(b.style({ tag: "path", attrs: { d: `M${gap} 24H${pos - radius1}` } }, d.disabled ? strokeDisabledStyle : strokeEnabledStyle));
+            ch.push(
+                b.style(
+                    {
+                        tag: "path",
+                        attrs: { d: `M${gap} 24H${pos - radius1}` }
+                    },
+                    d.disabled ? strokeDisabledStyle : strokeEnabledStyle
+                )
+            );
         }
         if (pos + radius1 < width - gap) {
-            ch.push(b.style({ tag: "path", attrs: { d: `M${pos + radius1} 24H${width - gap}` } }, high ? strokeSliderStyle : strokeDisabledStyle));
+            ch.push(
+                b.style(
+                    {
+                        tag: "path",
+                        attrs: { d: `M${pos + radius1} 24H${width - gap}` }
+                    },
+                    high ? strokeSliderStyle : strokeDisabledStyle
+                )
+            );
         }
         if (radiush > 0) {
-            ch.push(b.style({ tag: "path", attrs: { opacity: 0.3, d: b.svgCircle(pos, 24, radiush) } }, value <= 0 ? fillDisabledStyle : fillEnabledStyle));
+            ch.push(
+                b.style(
+                    {
+                        tag: "path",
+                        attrs: {
+                            opacity: 0.3,
+                            d: b.svgCircle(pos, 24, radiush)
+                        }
+                    },
+                    value <= 0 ? fillDisabledStyle : fillEnabledStyle
+                )
+            );
         }
-        ch.push(b.style({ tag: "path", attrs: { d: b.svgCircle(pos, 24, radius) } }, value <= 0 ? (high ? strokeSliderStyle : strokeDisabledStyle) : d.disabled ? fillDisabledStyle : fillEnabledStyle));
+        ch.push(
+            b.style(
+                { tag: "path", attrs: { d: b.svgCircle(pos, 24, radius) } },
+                value <= 0
+                    ? high ? strokeSliderStyle : strokeDisabledStyle
+                    : d.disabled ? fillDisabledStyle : fillEnabledStyle
+            )
+        );
         me.children = {
             tag: "svg",
             attrs: {
@@ -179,7 +217,7 @@ export const Slider = b.createComponent<ISliderData>({
             "aria-valuemax": max.toString(),
             "aria-valuenow": value.toString(),
             "aria-disabled": d.disabled ? "true" : "false",
-            tabindex: d.disabled ? undefined : (d.tabindex || 0)
+            tabindex: d.disabled ? undefined : d.tabindex || 0
         };
         b.style(me, rootStyle, ctx.data.style);
     },
@@ -212,7 +250,10 @@ export const Slider = b.createComponent<ISliderData>({
         let d = ctx.data;
         if (d.disabled) return false;
         var [x, y] = b.convertPointFromClientToNode(ctx.me, event.x, event.y);
-        if (!ctx.down && Math.pow(x - ctx.pos, 2) + Math.pow(y - 24, 2) < 24 * 24) {
+        if (
+            !ctx.down &&
+            Math.pow(x - ctx.pos, 2) + Math.pow(y - 24, 2) < 24 * 24
+        ) {
             ctx.down = true;
             ctx.revertValue = b.getValue(d.value);
             ctx.pointerId = event.id;
@@ -277,7 +318,7 @@ export const Slider = b.createComponent<ISliderData>({
         this.postUpdateDom(ctx, me);
     },
     postUpdateDom(ctx: ISliderCtx, me: b.IBobrilCacheNode) {
-        let w = Math.floor((<Element>me.element).getBoundingClientRect().width);
+        let w = Math.floor((<Element>me.element).clientWidth);
         if (ctx.width != w) {
             ctx.width = w;
             b.invalidate(ctx);
