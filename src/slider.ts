@@ -226,7 +226,8 @@ export const Slider = b.createComponent<ISliderData>({
     onPointerMove(ctx: ISliderCtx, event: b.IBobrilPointerEvent): boolean {
         if (ctx.data.disabled) return false;
         if (ctx.down && ctx.pointerId == event.id) {
-            setByPos(ctx, event.x);
+            var x = b.convertPointFromClientToNode(ctx.me, event.x, event.y)[0];
+            setByPos(ctx, x);
             return true;
         }
         return false;
