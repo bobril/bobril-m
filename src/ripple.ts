@@ -15,7 +15,7 @@ interface IRippleCtx extends b.IBobrilCtx {
     pulseStart: number;
     width: number;
     height: number;
-    ripples: number[]; // tripples x,y,start time
+    ripples: number[]; // triples x, y, start time
 }
 
 const oneRippleStyle = b.styleDef([
@@ -23,25 +23,31 @@ const oneRippleStyle = b.styleDef([
     c.noTapHighlight,
     c.pointerEventsNone,
     c.userSelectNone,
-    c.circle, {
-        backgroundColor: "#000",
-    }]);
+    c.circle,
+    {
+        backgroundColor: "#000"
+    }
+]);
 
 const pulseRippleStyle = b.styleDef([
     c.positionAbsolute,
     c.noTapHighlight,
     c.pointerEventsNone,
     c.userSelectNone,
-    c.circle, {
-        backgroundColor: withTransparency("#fff", 0.3),
-    }]);
+    c.circle,
+    {
+        backgroundColor: withTransparency("#fff", 0.3)
+    }
+]);
 
 const rippleStyle = b.styleDef([
     c.positionRelative,
     c.noTapHighlight,
-    c.widthHeight100p, {
-        boxSizing: "border-box",
-    }]);
+    c.widthHeight100p,
+    {
+        boxSizing: "border-box"
+    }
+]);
 
 export const Ripple = b.createComponent<IRippleData>({
     init(ctx: IRippleCtx) {
@@ -63,12 +69,14 @@ export const Ripple = b.createComponent<IRippleData>({
             let t = time - ctx.pulseStart;
             let r = Math.sqrt(Math.pow(height2, 2) + Math.pow(width2, 2));
             r = r * (0.75 + 0.05 * Math.sin(t * 0.004));
-            (<b.IBobrilNode[]>me.children).push(b.styledDiv(null, pulseRippleStyle, {
-                left: width2 - r,
-                top: height2 - r,
-                width: 2 * r,
-                height: 2 * r
-            }));
+            (<b.IBobrilNode[]>me.children).push(
+                b.styledDiv(null, pulseRippleStyle, {
+                    left: width2 - r,
+                    top: height2 - r,
+                    width: 2 * r,
+                    height: 2 * r
+                })
+            );
         } else {
             ctx.pulseStart = 0;
         }
@@ -77,18 +85,25 @@ export const Ripple = b.createComponent<IRippleData>({
             let x = ripples[i];
             let y = ripples[i + 1];
             let t = (time - ripples[i + 2]) * 0.004;
-            let maxRadius = Math.sqrt(Math.pow(Math.abs(y - height2) + height2, 2) + Math.pow(Math.abs(x - width2) + width2, 2));
+            let maxRadius = Math.sqrt(
+                Math.pow(Math.abs(y - height2) + height2, 2) +
+                    Math.pow(Math.abs(x - width2) + width2, 2)
+            );
             if (t > 2) {
-                ripples.splice(i, 3); i -= 3; continue;
+                ripples.splice(i, 3);
+                i -= 3;
+                continue;
             }
             let r = Math.min(t * maxRadius, maxRadius);
-            (<b.IBobrilNode[]>me.children).push(b.styledDiv(null, oneRippleStyle, {
-                left: x - r,
-                top: y - r,
-                width: 2 * r,
-                height: 2 * r,
-                opacity: 0.16 - 0.08 * t
-            }));
+            (<b.IBobrilNode[]>me.children).push(
+                b.styledDiv(null, oneRippleStyle, {
+                    left: x - r,
+                    top: y - r,
+                    width: 2 * r,
+                    height: 2 * r,
+                    opacity: 0.16 - 0.08 * t
+                })
+            );
         }
         if (ripples.length > 0 || ctx.data.pulse) b.invalidate(ctx);
     },
@@ -96,14 +111,14 @@ export const Ripple = b.createComponent<IRippleData>({
         this.postUpdateDom(ctx);
     },
     postUpdateDom(ctx: IRippleCtx) {
-        let r = (<Element>ctx.me.element).getBoundingClientRect();
-        ctx.width = r.width;
-        ctx.height = r.height;
+        let e = <Element>ctx.me.element;
+        ctx.width = e.clientWidth;
+        ctx.height = e.clientHeight;
     },
     onPointerDown(ctx: IRippleCtx, ev: b.IBobrilPointerEvent): boolean {
         if (ctx.data.disabled) return true;
-        let r = (<Element>ctx.me.element).getBoundingClientRect();
-        ctx.ripples.push(ev.x - r.left, ev.y - r.top, b.now());
+        const [x, y] = b.convertPointFromClientToNode(ctx.me, ev.x, ev.y);
+        ctx.ripples.push(x, y, b.now());
         let cb = ctx.data.pointerDown;
         if (cb) cb();
         b.invalidate(ctx);
