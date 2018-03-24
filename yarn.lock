@@ -15,8 +15,8 @@ bobril-m-icons@*:
     bobril "*"
 
 bobril@*:
-  version "7.6.6"
-  resolved "https://registry.yarnpkg.com/bobril/-/bobril-7.6.6.tgz#6089e1aae8a99fe5a01f96d8d7ba13b12cf59b3d"
+  version "8.4.2"
+  resolved "https://registry.yarnpkg.com/bobril/-/bobril-8.4.2.tgz#deb8df008695b1ee9aee9a832bfed7794f13b9ca"
 
 webfontloader@^1.6.21:
   version "1.6.28"

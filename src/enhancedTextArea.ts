@@ -92,7 +92,7 @@ export const EnhancedTextarea = b.createComponent<IEnhancedTextAreaData>({
         b.style(me, d.style);
         const rowStr = "" + (d.rows || 1);
         me.children = [
-            b.style({ tag: "textarea", attrs: { readOnly: true, tabIndex: "-1", rows: rowStr } }, textAreaShadowStyle),
+            b.style({ tag: "textarea", attrs: { readOnly: true, tabindex: -1, rows: rowStr } }, textAreaShadowStyle),
             b.style({
                 tag: "textarea",
                 attrs: { disabled: d.disabled, tabindex: d.disabled ? -1 : (d.tabindex || 0), value: b.getValue(d.value), rows: rowStr, id: d.id },
