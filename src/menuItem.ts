@@ -73,7 +73,7 @@ export const MenuItem = b.createVirtualComponent<IMenuItemData>({
         ctx.owner.childRender(ctx, d.disabled || false);
         let leftIconElement: b.IBobrilNode | undefined;
         if (d.leftIcon) {
-            leftIconElement = b.style(d.leftIcon, { color: d.disabled ? styles.strDisabledColor : styles.strTextColor });
+            leftIconElement = b.style(Object.assign({}, d.leftIcon), { color: d.disabled ? styles.strDisabledColor : styles.strTextColor });
         } else if (d.checked) {
             leftIconElement = b.style(icons.navigationCheck(), { color: styles.strTextColor });
         }
