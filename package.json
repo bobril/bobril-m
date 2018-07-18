@@ -31,7 +31,10 @@
         "type": "git",
         "url": "https://github.com/bobril/bobril-m.git"
     },
-    "keywords": ["bobril", "material"],
+    "keywords": [
+        "bobril",
+        "material"
+    ],
     "author": "Boris Letocha",
     "license": "MIT"
 }
