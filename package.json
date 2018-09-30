@@ -36,5 +36,8 @@
         "material"
     ],
     "author": "Boris Letocha",
-    "license": "MIT"
+    "license": "MIT",
+    "devDependencies": {
+        "typescript": "*"
+    }
 }
