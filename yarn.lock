@@ -2,26 +2,24 @@
 # yarn lockfile v1
 
 
-bobril-flex-ie10@*:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/bobril-flex-ie10/-/bobril-flex-ie10-1.1.1.tgz#181b998f942b55036934f0a11e7d85d8689e9690"
-  dependencies:
-    bobril "*"
-
 bobril-m-icons@*:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/bobril-m-icons/-/bobril-m-icons-2.1.0.tgz#32f81d515a7faf71f857a2ed1b637ec566f4161f"
+  integrity sha1-MvgdUVp/r3H4V6LtG2N+xWb0Fh8=
   dependencies:
     bobril "*"
 
 bobril@*:
-  version "8.15.1"
-  resolved "https://registry.yarnpkg.com/bobril/-/bobril-8.15.1.tgz#8a786b84a268938dea955856ab2c07249b71d59e"
+  version "8.18.0"
+  resolved "https://registry.yarnpkg.com/bobril/-/bobril-8.18.0.tgz#334d792b4e38ef7964a1a8b8ebf15c7c7853f635"
+  integrity sha512-ZSxj680giunwvQbc7mBnSU/n7DBLeTiPj9/tRilOrrKSFihe5sAChL2zPhB+smmcJ2TYThlMF+fSwh7y/pDHvA==
 
 typescript@*:
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.1.1.tgz#3362ba9dd1e482ebb2355b02dfe8bcd19a2c7c96"
+  version "3.2.4"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.2.4.tgz#c585cb952912263d915b462726ce244ba510ef3d"
+  integrity sha512-0RNDbSdEokBeEAkgNbxJ+BLwSManFy9TeXz8uW+48j/xhEXv1ePME60olyzw2XzUqUBNAYFeJadIqAgNqIACwg==
 
 webfontloader@^1.6.21:
   version "1.6.28"
   resolved "https://registry.yarnpkg.com/webfontloader/-/webfontloader-1.6.28.tgz#db786129253cb6e8eae54c2fb05f870af6675bae"
+  integrity sha1-23hhKSU8tujq5UwvsF+HCvZnW64=

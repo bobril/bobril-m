@@ -1,5 +1,5 @@
-import * as b from 'bobril';
-import { List } from './list';
+import * as b from "bobril";
+import { List } from "./list";
 
 export interface IMenuItemControllerChild extends b.IBobrilCtx {
     focused: boolean;
@@ -35,7 +35,7 @@ class MenuController implements IMenuController {
     parent: b.IBobrilCacheNode | undefined;
     selectable: IMenuItemControllerChild[];
     selected: IMenuItemControllerChild | undefined;
-    selectedIndex: number;
+    selectedIndex!: number; // set by this._clear()
     onClose?: () => void;
 
     constructor(ctx: IMenuCtx) {
@@ -47,8 +47,7 @@ class MenuController implements IMenuController {
 
     close() {
         let close = this.onClose;
-        if (close)
-            close();
+        if (close) close();
     }
 
     focus() {
@@ -84,13 +83,14 @@ class MenuController implements IMenuController {
                 this.selectedIndex = selectable.length - 1;
             }
             let found = false;
-            if (this.selected != undefined) for (let i = 0; i < selectable.length; i++) {
-                if (this.selected === selectable[i]) {
-                    found = true;
-                    this.selectedIndex = i;
-                    break;
+            if (this.selected != undefined)
+                for (let i = 0; i < selectable.length; i++) {
+                    if (this.selected === selectable[i]) {
+                        found = true;
+                        this.selectedIndex = i;
+                        break;
+                    }
                 }
-            }
             if (!found) this.selected = undefined;
             if (this.selected == undefined) {
                 this.selected = selectable[this.selectedIndex];
@@ -165,7 +165,7 @@ function handleKeyDown(ctx: IMenuCtx, event: b.IKeyDownUpEvent): boolean {
             return true;
     }
     return false;
-};
+}
 
 function setWidth(ctx: IMenuCtx) {
     let element = b.getDomNode(ctx.me) as HTMLElement;
@@ -194,10 +194,14 @@ export const Menu = b.createVirtualComponent<IMenuData>({
         const d = ctx.data;
         ctx.controller.onClose = d.onClose;
         b.extendCfg(ctx, "menuController", ctx.controller);
-        me.children = b.styledDiv(b.withRef(List({ tabindex: 0 }, d.children), ctx, "list"), {
-            maxHeight: d.maxHeight,
-            overflowY: d.maxHeight ? 'auto' : undefined,
-        }, d.style);
+        me.children = b.styledDiv(
+            b.withRef(List({ tabindex: 0 }, d.children), ctx, "list"),
+            {
+                maxHeight: d.maxHeight,
+                overflowY: d.maxHeight ? "auto" : undefined
+            },
+            d.style
+        );
     },
     postRender(ctx: IMenuCtx) {
         ctx.controller.postRender(ctx.isKeyboardFocused);
@@ -212,7 +216,7 @@ export const Menu = b.createVirtualComponent<IMenuData>({
         setWidth(ctx);
     },
     onPointerUp(ctx: IMenuCtx, _ev: b.IBobrilPointerEvent): boolean {
-        if (ctx.isKeyboardFocused = true) {
+        if ((ctx.isKeyboardFocused = true)) {
             ctx.isKeyboardFocused = false;
             b.invalidate(ctx);
         }

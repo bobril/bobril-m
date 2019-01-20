@@ -15,21 +15,14 @@
     ],
     "module": "commonjs",
     "noEmitHelpers": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
     "preserveConstEnums": false,
     "reactNamespace": "b",
     "removeComments": false,
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "sourceMap": true,
-    "strictNullChecks": true,
-    "target": "es5",
-    "types": []
+    "strict": true,
+    "target": "es5"
   },
   "files": [
     "node_modules/bobril/jsx.d.ts"

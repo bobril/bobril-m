@@ -1,6 +1,6 @@
 import * as b from "bobril";
 import * as icons from "bobril-m-icons";
-import * as checkbox from './checkbox';
+import * as checkbox from "./checkbox";
 
 let radioButtonIcons: checkbox.CheckBoxLikeIcons = {
     off: icons.toggleRadioButtonUnchecked(),
@@ -8,35 +8,43 @@ let radioButtonIcons: checkbox.CheckBoxLikeIcons = {
     radioButtonLike: true
 };
 
-export interface IRadioButtonData {
+export interface IRadioButtonData<T> {
     children?: b.IBobrilChildren;
-    value?: number | string;
+    value: T;
     disabled?: boolean;
 }
 
-interface IRadioButtonCtx extends b.IBobrilCtx {
-    data: IRadioButtonData;
+interface IRadioButtonCtx<T> extends b.IBobrilCtx {
+    data: IRadioButtonData<T>;
     action: () => void;
-    group: IRadioButtonGroupCtx;
+    group: IRadioButtonGroupCtx<T>;
     idx: number;
 }
 
-export const RadioButton = b.createVirtualComponent<IRadioButtonData>({
-    init(ctx: IRadioButtonCtx) {
+export const RadioButton = b.createVirtualComponent<
+    IRadioButtonData<number | string>
+>({
+    init(ctx: IRadioButtonCtx<any>) {
         ctx.action = () => {
             ctx.group.forceFocus = true;
             b.emitChange(ctx.group.data, ctx.data.value);
-        }
+        };
     },
-    render(ctx: IRadioButtonCtx, me: b.IBobrilNode) {
+    render(ctx: IRadioButtonCtx<any>, me: b.IBobrilNode) {
         let data = ctx.data;
-        const group: IRadioButtonGroupCtx = (ctx.cfg || {})[radioButtonCfgName];
-        if (group == null) throw new Error("RadioButton must be wrapped in RadioButtonGroup");
+        const group: IRadioButtonGroupCtx<any> = (ctx.cfg || {})[
+            radioButtonCfgName
+        ];
+        if (group == null)
+            throw new Error("RadioButton must be wrapped in RadioButtonGroup");
         ctx.group = group;
         let list = group.list;
         let idx = -1;
         for (let i = 0; i < list.length; i++) {
-            if (list[i] === ctx) { idx = i; break; }
+            if (list[i] === ctx) {
+                idx = i;
+                break;
+            }
         }
         if (idx === -1) {
             idx = list.length;
@@ -45,7 +53,8 @@ export const RadioButton = b.createVirtualComponent<IRadioButtonData>({
         ctx.idx = idx;
         let checked = false;
         if (b.getValue(group.data.value) === data.value) {
-            if (group.selIdx !== -2) throw new Error("Duplicate value in RadioButton");
+            if (group.selIdx !== -2)
+                throw new Error("Duplicate value in RadioButton");
             group.selIdx = idx;
             checked = true;
         }
@@ -66,7 +75,7 @@ export const RadioButton = b.createVirtualComponent<IRadioButtonData>({
             children: data.children
         });
     },
-    onKeyDown(ctx: IRadioButtonCtx, ev: b.IKeyDownUpEvent): boolean {
+    onKeyDown(ctx: IRadioButtonCtx<any>, ev: b.IKeyDownUpEvent): boolean {
         if (ev.which === 37 || ev.which === 38) {
             let i = ctx.idx;
             while (i-- > 0) {
@@ -88,31 +97,44 @@ export const RadioButton = b.createVirtualComponent<IRadioButtonData>({
             }
         }
         return false;
-    },
-
+    }
 });
 
-export interface IRadioButtonGroupData extends b.IValueData<number | string> {
+export interface IRadioButtonGroupData<T> extends b.IValueData<T> {
     children?: b.IBobrilChildren;
-    unselectedValue?: number | string;
+    unselectedValue?: T;
     tabindex?: number;
     style?: b.IBobrilStyle;
 }
 
-interface IRadioButtonGroupCtx extends b.IBobrilCtx {
-    data: IRadioButtonGroupData;
-    list: IRadioButtonCtx[];
+interface IRadioButtonGroupCtx<T> extends b.IBobrilCtx {
+    data: IRadioButtonGroupData<T>;
+    list: IRadioButtonCtx<T>[];
     selIdx: number;
     firstEnabled: number;
     forceFocus: boolean;
 }
 
+export type RadioButtonGroupFactory<T> = b.IComponentFactory<
+    IRadioButtonGroupData<T>
+>;
 const radioButtonCfgName = "radioButtonGroup";
-export const RadioButtonGroup = b.createComponent<IRadioButtonGroupData>({
-    init(ctx: IRadioButtonGroupCtx) {
+export function RadioButtonGroup<T>(
+    data?: IRadioButtonGroupData<T>,
+    children?: b.IBobrilChildren
+): b.IBobrilNode<IRadioButtonGroupData<T>> {
+    if (children !== undefined) {
+        if (data == null) data = <any>{};
+        (<any>data).children = children;
+    }
+    return { data, component: RadioButtonGroupComponent };
+}
+
+const RadioButtonGroupComponent = {
+    init(ctx: IRadioButtonGroupCtx<any>) {
         ctx.forceFocus = false;
     },
-    render(ctx: IRadioButtonGroupCtx, me: b.IBobrilNode) {
+    render(ctx: IRadioButtonGroupCtx<any>, me: b.IBobrilNode) {
         let d = ctx.data;
         me.attrs = { role: "radiogroup" };
         me.children = d.children;
@@ -121,15 +143,15 @@ export const RadioButtonGroup = b.createComponent<IRadioButtonGroupData>({
         let cfg = ctx.cfg || {};
         cfg[radioButtonCfgName] = ctx;
         ctx.cfg = cfg;
-        ctx.selIdx = (b.getValue(d.value) === d.unselectedValue) ? -1 : -2;
+        ctx.selIdx = b.getValue(d.value) === d.unselectedValue ? -1 : -2;
         ctx.firstEnabled = -1;
     },
-    postRender(ctx: IRadioButtonGroupCtx, _me: b.IBobrilCacheNode) {
+    postRender(ctx: IRadioButtonGroupCtx<any>, _me: b.IBobrilCacheNode) {
         if (ctx.selIdx === -2) {
-            b.emitChange(ctx.data, ctx.data.unselectedValue);
+            b.emitChange(ctx.data, ctx.data.unselectedValue!);
         }
     },
-    postUpdateDom(ctx: IRadioButtonGroupCtx) {
+    postUpdateDom(ctx: IRadioButtonGroupCtx<any>) {
         let shouldBeFocused = ctx.selIdx;
         if (shouldBeFocused === -1) {
             shouldBeFocused = ctx.firstEnabled;
@@ -155,4 +177,4 @@ export const RadioButtonGroup = b.createComponent<IRadioButtonGroupData>({
         }
         ctx.forceFocus = false;
     }
-});
+};

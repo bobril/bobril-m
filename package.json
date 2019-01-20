@@ -1,9 +1,8 @@
 {
     "name": "bobril-m",
-    "version": "0.12.6",
+    "version": "0.13.0",
     "dependencies": {
         "bobril": "*",
-        "bobril-flex-ie10": "*",
         "bobril-m-icons": "*",
         "webfontloader": "^1.6.21"
     },
@@ -18,13 +17,7 @@
         "title": "Bobril Material",
         "example": "example.ts",
         "compilerOptions": {
-            "noImplicitAny": true,
-            "noImplicitThis": true,
-            "noUnusedLocals": true,
-            "noUnusedParameters": true,
-            "noImplicitReturns": true,
-            "noFallthroughCasesInSwitch": true,
-            "strictNullChecks": true
+            "strict": true
         }
     },
     "repository": {
