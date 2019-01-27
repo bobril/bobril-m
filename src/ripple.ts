@@ -122,6 +122,9 @@ export const Ripple = b.createComponent<IRippleData>({
         let cb = ctx.data.pointerDown;
         if (cb) cb();
         b.invalidate(ctx);
-        return true;
+        return false;
+    },
+    shouldStopBubble(ctx: IRippleCtx, name: string) {
+        return name == "onPointerDown";
     }
 });

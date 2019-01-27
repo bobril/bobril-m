@@ -79,45 +79,79 @@ function getBadgePreview(): b.IBobrilChildren {
     ]);
 }
 
+function sampleAction() {
+    console.log("Action!");
+}
+
 function getButtonPreview(): b.IBobrilChildren {
     return [
         m.Paper({ style: { margin: 16, padding: 8 } }, [
-            m.Button({}, "Default"),
-            m.Spacer(),
-            m.Button({ feature: m.Feature.Primary }, "Primary"),
-            m.Spacer(),
-            m.Button({ feature: m.Feature.Secondary }, "Secondary"),
-            m.Spacer(),
-            m.Button({ disabled: true }, "Disabled")
-        ]),
-        m.Paper({ style: { margin: 16, padding: 8 } }, [
-            m.Button({ type: m.ButtonType.Raised }, "Default"),
+            m.Button({ action: sampleAction }, "Default"),
             m.Spacer(),
             m.Button(
-                { type: m.ButtonType.Raised, feature: m.Feature.Primary },
+                { feature: m.Feature.Primary, action: sampleAction },
                 "Primary"
             ),
             m.Spacer(),
             m.Button(
-                { type: m.ButtonType.Raised, feature: m.Feature.Secondary },
+                { feature: m.Feature.Secondary, action: sampleAction },
                 "Secondary"
             ),
             m.Spacer(),
-            m.Button({ type: m.ButtonType.Raised, disabled: true }, "Disabled")
+            m.Button({ disabled: true, action: sampleAction }, "Disabled")
         ]),
         m.Paper({ style: { margin: 16, padding: 8 } }, [
-            m.Button({ type: m.ButtonType.Floating, icon: icons.contentAdd() }),
+            m.Button(
+                { type: m.ButtonType.Raised, action: sampleAction },
+                "Default"
+            ),
+            m.Spacer(),
+            m.Button(
+                {
+                    type: m.ButtonType.Raised,
+                    feature: m.Feature.Primary,
+                    action: sampleAction
+                },
+                "Primary"
+            ),
+            m.Spacer(),
+            m.Button(
+                {
+                    type: m.ButtonType.Raised,
+                    feature: m.Feature.Secondary,
+                    action: sampleAction
+                },
+                "Secondary"
+            ),
+            m.Spacer(),
+            m.Button(
+                {
+                    type: m.ButtonType.Raised,
+                    disabled: true,
+                    action: sampleAction
+                },
+                "Disabled"
+            )
+        ]),
+        m.Paper({ style: { margin: 16, padding: 8 } }, [
+            m.Button({
+                type: m.ButtonType.Floating,
+                icon: icons.contentAdd(),
+                action: sampleAction
+            }),
             m.Spacer(),
             m.Button({
                 type: m.ButtonType.Floating,
                 feature: m.Feature.Secondary,
-                icon: icons.toggleStar()
+                icon: icons.toggleStar(),
+                action: sampleAction
             }),
             m.Spacer(),
             m.Button({
                 type: m.ButtonType.Floating,
                 disabled: true,
-                icon: icons.toggleStarHalf()
+                icon: icons.toggleStarHalf(),
+                action: sampleAction
             })
         ])
     ];
