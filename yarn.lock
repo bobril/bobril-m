@@ -10,9 +10,9 @@ bobril-m-icons@*:
     bobril "*"
 
 bobril@*:
-  version "8.18.0"
-  resolved "https://registry.yarnpkg.com/bobril/-/bobril-8.18.0.tgz#334d792b4e38ef7964a1a8b8ebf15c7c7853f635"
-  integrity sha512-ZSxj680giunwvQbc7mBnSU/n7DBLeTiPj9/tRilOrrKSFihe5sAChL2zPhB+smmcJ2TYThlMF+fSwh7y/pDHvA==
+  version "8.19.0"
+  resolved "https://registry.yarnpkg.com/bobril/-/bobril-8.19.0.tgz#e53f32eb7f86a1e113856e17937285d7f3d4c851"
+  integrity sha512-AIi4jBP3RYrb0RwAicoGcxEYdzrgLXVM/hI1a7OGVDsez6PI8QsJOcKPQolznOdTHLQEUactZmbcEBYINgKrjw==
 
 typescript@*:
   version "3.2.4"
