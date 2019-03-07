@@ -157,6 +157,7 @@ let floatingButtonStyles = [
 ];
 
 export const Button = b.createComponent<IButtonData>({
+    id: "Button",
     init(ctx: IButtonCtx) {
         ctx.focusFromKeyboard = false;
         ctx.down = false;
@@ -253,7 +254,7 @@ export const Button = b.createComponent<IButtonData>({
             tabindex: d.disabled ? undefined : d.tabindex || 0
         };
     },
-    onPointerUp(ctx: IButtonCtx, ev: b.IBobrilPointerEvent): boolean {
+    onPointerUp(ctx: IButtonCtx, ev: b.IBobrilPointerEvent): b.EventResult {
         const wasDown = ctx.down;
         b.invalidate(ctx);
         if (wasDown) {
@@ -268,13 +269,10 @@ export const Button = b.createComponent<IButtonData>({
             ) {
                 let a = ctx.data.action;
                 if (a) a();
-                return true;
+                return b.EventResult.HandledPreventDefault;
             }
         }
-        return false;
-    },
-    shouldStopBubble(ctx: IButtonCtx, name: string) {
-        return name == "onPointerUp";
+        return b.EventResult.HandledButRunDefault;
     },
     onKeyDown(ctx: IButtonCtx, ev: b.IKeyDownUpEvent): boolean {
         if (ev.which === 32 && !ctx.data.disabled && ctx.focusFromKeyboard) {

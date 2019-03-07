@@ -7,6 +7,7 @@ m.initRobotoFonts();
 const navigationWidth = 250;
 
 let getPageContent: () => b.IBobrilChildren = getBadgePreview;
+let keyPageContent: string = "Badge";
 
 let examplePaper = b.styleDef({
     width: 100,
@@ -594,6 +595,7 @@ function createNavigationItem(
         primaryText: text,
         action: () => {
             getPageContent = contentCallback;
+            keyPageContent = text;
             b.invalidate();
         }
     });
@@ -640,11 +642,17 @@ function createHeaderContent(): b.IBobrilNode {
 
 b.init(() => {
     return [
-        b.styledDiv([createHeaderContent(), getPageContent()], {
-            paddingTop: 1,
-            paddingLeft: navigationWidth,
-            paddingBottom: 1
-        }),
+        b.styledDiv(
+            [
+                createHeaderContent(),
+                b.withKey(getPageContent(), keyPageContent)
+            ],
+            {
+                paddingTop: 1,
+                paddingLeft: navigationWidth,
+                paddingBottom: 1
+            }
+        ),
         createNavigation()
     ];
 });

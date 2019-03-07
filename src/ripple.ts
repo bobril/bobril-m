@@ -115,16 +115,13 @@ export const Ripple = b.createComponent<IRippleData>({
         ctx.width = e.clientWidth;
         ctx.height = e.clientHeight;
     },
-    onPointerDown(ctx: IRippleCtx, ev: b.IBobrilPointerEvent): boolean {
-        if (ctx.data.disabled) return true;
+    onPointerDown(ctx: IRippleCtx, ev: b.IBobrilPointerEvent): b.EventResult {
+        if (ctx.data.disabled) return b.EventResult.HandledPreventDefault;
         const [x, y] = b.convertPointFromClientToNode(ctx.me, ev.x, ev.y);
         ctx.ripples.push(x, y, b.now());
         let cb = ctx.data.pointerDown;
         if (cb) cb();
         b.invalidate(ctx);
-        return false;
-    },
-    shouldStopBubble(ctx: IRippleCtx, name: string) {
-        return name == "onPointerDown";
+        return b.EventResult.HandledButRunDefault;
     }
 });
