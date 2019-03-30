@@ -22,7 +22,7 @@ interface IRadioButtonCtx<T> extends b.IBobrilCtx {
 }
 
 export const RadioButton = b.createVirtualComponent<
-    IRadioButtonData<number | string>
+    IRadioButtonData<number | string | boolean>
 >({
     init(ctx: IRadioButtonCtx<any>) {
         ctx.action = () => {
@@ -68,7 +68,7 @@ export const RadioButton = b.createVirtualComponent<
         }
         me.children = checkbox.Checkbox({
             checked,
-            tabindex: tabindex,
+            tabindex,
             disabled,
             action: ctx.action,
             icons: radioButtonIcons,
@@ -140,9 +140,7 @@ const RadioButtonGroupComponent = {
         me.children = d.children;
         b.style(me, d.style);
         ctx.list = [];
-        let cfg = ctx.cfg || {};
-        cfg[radioButtonCfgName] = ctx;
-        ctx.cfg = cfg;
+        b.extendCfg(ctx, radioButtonCfgName, ctx);
         ctx.selIdx = b.getValue(d.value) === d.unselectedValue ? -1 : -2;
         ctx.firstEnabled = -1;
     },

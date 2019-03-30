@@ -6,13 +6,14 @@
     "language": "en",
     // words - list of words to be always considered correct
     "words": [
+        "bobril",
         "Consts",
         "Everytime",
+        "nowrap",
         "Roboto",
         "Selectable",
         "Subheader",
-        "bobril",
-        "nowrap",
+        "tabindex",
         "webfontloader"
     ],
     // flagWords - list of words to be always considered incorrect
