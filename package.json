@@ -1,6 +1,6 @@
 {
     "name": "bobril-m",
-    "version": "0.15.0",
+    "version": "0.15.1",
     "dependencies": {
         "bobril": "*",
         "bobril-m-icons": "*",
