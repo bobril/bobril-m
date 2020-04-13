@@ -6,20 +6,16 @@ let onClicks: { [id: string]: () => void } = {};
 let lastId = 0;
 let count = 0;
 
-interface IClickAwayListenerLayerCtx extends b.IBobrilCtx {
-    data: IClickAwayListenerData;
-}
-
 const layerStyle = b.styleDef([c.widthHeight100p, {
     position: 'fixed',
     top: 0
 }]);
 
-const clickAwayListenerLayer = b.createComponent<never>({
-    render(_ctx: b.IBobrilCtx, me: b.IBobrilNode) {
+const clickAwayListenerLayer = b.createComponent<IClickAwayListenerData>({
+    render(_ctx, me) {
         b.style(me, layerStyle);
     },
-    onPointerUp(_ctx: IClickAwayListenerLayerCtx, _event: b.IBobrilPointerEvent): boolean {
+    onPointerUp(): boolean {
         for (var id in onClicks)
             onClicks[id]();
         return true;
