@@ -52,7 +52,8 @@ export const hoverColor = () => strHoverColor;
 export const keyboardFocusColor = () => strKeyboardFocusColor;
 export const errorColor = () => strErrorColor;
 
-export let strFontFamily = 'Roboto, sans-serif';
+export let strFontFamily =
+    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
 
 export const fontFamily = () => strFontFamily;
 
@@ -68,21 +69,40 @@ export let zDepthShadows = [
     [3, 10, 0.16, 3, 10, 0.23],
     [10, 30, 0.19, 6, 10, 0.23],
     [14, 45, 0.25, 10, 18, 0.22],
-    [19, 60, 0.30, 15, 20, 0.22],
+    [19, 60, 0.3, 15, 20, 0.22],
 ].map((d, i) =>
-    b.styleDef({ boxShadow: () => `0 ${d[0]}px ${d[1]}px ${withTransparency(strShadowColor, d[2])},0 ${d[3]}px ${d[4]}px ${withTransparency(strShadowColor, d[5])}` }, undefined, "zDepth" + (i + 1))
-    );
+    b.styleDef(
+        {
+            boxShadow: () =>
+                `0 ${d[0]}px ${d[1]}px ${withTransparency(
+                    strShadowColor,
+                    d[2]
+                )},0 ${d[3]}px ${d[4]}px ${withTransparency(
+                    strShadowColor,
+                    d[5]
+                )}`,
+        },
+        undefined,
+        "zDepth" + (i + 1)
+    )
+);
 
-b.selectorStyleDef("html", [c.widthHeight100p, {
-    margin: 0
-}]);
+b.selectorStyleDef("html", [
+    c.widthHeight100p,
+    {
+        margin: 0,
+    },
+]);
 
-b.selectorStyleDef("body", [c.widthHeight100p, {
-    margin: 0,
-    backgroundColor: canvasColor,
-    fontFamily: fontFamily,
-    color: textColor
-}]);
+b.selectorStyleDef("body", [
+    c.widthHeight100p,
+    {
+        margin: 0,
+        backgroundColor: canvasColor,
+        fontFamily: fontFamily,
+        color: textColor,
+    },
+]);
 
 export interface ITheme {
     primary1Color?: string;
@@ -120,22 +140,27 @@ export function defineTheme(theme: ITheme) {
     if (theme.accent3Color) strAccent3Color = theme.accent3Color;
     if (theme.textColor) strTextColor = theme.textColor;
     if (theme.checkboxOffColor) strCheckboxOffColor = theme.checkboxOffColor;
-    if (theme.secondaryTextColor) strSecondaryTextColor = theme.secondaryTextColor;
+    if (theme.secondaryTextColor)
+        strSecondaryTextColor = theme.secondaryTextColor;
     if (theme.selectColor) strSelectColor = theme.selectColor;
     if (theme.subheaderColor) strSubheaderColor = theme.subheaderColor;
-    if (theme.alternateTextColor) strAlternateTextColor = theme.alternateTextColor;
+    if (theme.alternateTextColor)
+        strAlternateTextColor = theme.alternateTextColor;
     if (theme.canvasColor) strCanvasColor = theme.canvasColor;
     if (theme.borderColor) strBorderColor = theme.borderColor;
     if (theme.disabledColor) strDisabledColor = theme.disabledColor;
     if (theme.sliderColor) strSliderColor = theme.sliderColor;
-    if (theme.alternateDisabledColor) strAlternateDisabledColor = theme.alternateDisabledColor;
+    if (theme.alternateDisabledColor)
+        strAlternateDisabledColor = theme.alternateDisabledColor;
     if (theme.pickerHeaderColor) strPickerHeaderColor = theme.pickerHeaderColor;
     if (theme.clockCircleColor) strClockCircleColor = theme.clockCircleColor;
     if (theme.shadowColor) strShadowColor = theme.shadowColor;
     if (theme.hoverColor) strHoverColor = theme.hoverColor;
-    if (theme.keyboardFocusColor) strKeyboardFocusColor = theme.keyboardFocusColor;
+    if (theme.keyboardFocusColor)
+        strKeyboardFocusColor = theme.keyboardFocusColor;
     if (theme.errorColor) strErrorColor = theme.errorColor;
-    if (theme.rightIconDesktopFillColor) strRightIconDesktopFillColor = theme.rightIconDesktopFillColor;
+    if (theme.rightIconDesktopFillColor)
+        strRightIconDesktopFillColor = theme.rightIconDesktopFillColor;
     b.invalidateStyles();
 }
 
@@ -163,7 +188,7 @@ export function lightTheme() {
         shadowColor: Colors.black,
         hoverColor: withTransparency("#999", 0.3),
         keyboardFocusColor: withTransparency("#777", 0.3),
-        errorColor: Colors.red500
+        errorColor: Colors.red500,
     });
 }
 
@@ -176,8 +201,8 @@ export function darkTheme() {
         accent2Color: Colors.pinkA400,
         accent3Color: Colors.pinkA100,
         textColor: Colors.white,
-        alternateTextColor: '#303030',
-        canvasColor: '#303030',
+        alternateTextColor: "#303030",
+        canvasColor: "#303030",
         borderColor: withTransparency(Colors.white, 0.3),
         disabledColor: withTransparency(Colors.white, 0.3),
         alternateDisabledColor: Colors.grey800,
@@ -191,6 +216,6 @@ export function darkTheme() {
         shadowColor: Colors.black,
         hoverColor: withTransparency("#999", 0.3),
         keyboardFocusColor: withTransparency("#777", 0.3),
-        errorColor: Colors.red500
+        errorColor: Colors.red500,
     });
 }

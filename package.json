@@ -1,10 +1,9 @@
 {
     "name": "bobril-m",
-    "version": "0.15.0",
+    "version": "0.16.0",
     "dependencies": {
         "bobril": "*",
-        "bobril-m-icons": "*",
-        "webfontloader": "^1.6.21"
+        "bobril-m-icons": "*"
     },
     "main": "index.js",
     "typescript": {
