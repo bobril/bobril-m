@@ -5,16 +5,16 @@
 bobril-m-icons@*:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/bobril-m-icons/-/bobril-m-icons-2.1.0.tgz#32f81d515a7faf71f857a2ed1b637ec566f4161f"
-  integrity sha1-MvgdUVp/r3H4V6LtG2N+xWb0Fh8=
+  integrity sha512-UZijK0S11hiLTNLBUtgqocePzJWcD2w34EJklHlacJrX2peY/i+ofICz9oGtVQnh2uPE+E7SbZKvyWB0ICb0Aw==
   dependencies:
     bobril "*"
 
 bobril@*:
-  version "14.5.0"
-  resolved "https://registry.yarnpkg.com/bobril/-/bobril-14.5.0.tgz#9176878125052cdcbd519e151ef570d3f1409b0f"
-  integrity sha512-oWTc6txKembWnBySiXDkUkFZGoT0ni8Z/hpSChgX5Gp9mFXwqhGr7NEEruTmBJe6RgOrCn37i5EzPo4X7Y6vLQ==
+  version "20.4.0"
+  resolved "https://registry.yarnpkg.com/bobril/-/bobril-20.4.0.tgz#2808af926a704310dd1c99ab1b0062cc05c4e667"
+  integrity sha512-VdEo6bQNF/6OtHbBKgE6RrH+zLa0ycBBFMbN4Yl1ga1za22OJ8/ZBTSH0hIiqAGtVYbgJfwi/V5gHy6ptHpypA==
 
 typescript@*:
-  version "3.8.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.8.3.tgz#409eb8544ea0335711205869ec458ab109ee1061"
-  integrity sha512-MYlEfn5VrLNsgudQTVJeNaQFUAI7DkhnOjdpAp4T+ku1TfQClewlbSuTVHiA+8skNBgaf02TL/kLOvig4y3G8w==
+  version "4.8.4"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.8.4.tgz#c464abca159669597be5f96b8943500b238e60e6"
+  integrity sha512-QCh+85mCy+h0IGff8r5XWzOVSbBO+KfeYrMQh7NJ58QujwcE22u+NUSmUxqF+un70P9GXKxa2HCNiTTMJknyjQ==
