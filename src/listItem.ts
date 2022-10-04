@@ -159,7 +159,7 @@ function createChildren(ctx: IItemHeaderCtx): b.IBobrilNode {
         d.secondaryText && d.secondaryTextLines === SecondaryTextLines.Single;
     const threeLine =
         d.secondaryText && d.secondaryTextLines === SecondaryTextLines.Double;
-    const hasNestListItems = d.nestedItems != null && d.nestedItems != [];
+    const hasNestListItems = b.isArray(d.nestedItems) && !!d.nestedItems.length;
     const hasRightElement =
         d.rightAvatar || d.rightIcon || d.rightIconButton || d.rightToggle;
     const needsNestedIndicator =
@@ -403,7 +403,7 @@ export const ListItem = b.createComponent<IListItemData>({
     render(ctx: IListItemCtx, me: b.IBobrilNode) {
         const d = ctx.data;
         if (d.open) ctx.open = d.open;
-        ctx.hasNested = d.nestedItems != null && d.nestedItems != [];
+        ctx.hasNested = b.isArray(d.nestedItems) && !!d.nestedItems.length;
         let nestedItems: b.IBobrilNode | undefined;
         if (ctx.open() && ctx.hasNested) {
             nestedItems = list.List({ privateNested: true }, d.nestedItems);
